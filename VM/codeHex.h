@@ -1,0 +1,117 @@
+#ifndef CODEHEX_C
+#define CODEHEX_C
+
+#include "../includedefines/defines.h"
+
+typedef enum{
+//---<PROGRAM: STRUCTURE>---//
+    PROGRAM = 0X01,         //INITIALIZE STRUCTURE
+    GLOBAL,                 //POINT OF ORIGIN
+    END,                    //END OF AN INSTRUCTION BLOCK
+    LOCAL,                  //LOCATIONS OF FUNCTIONS AND METHODS
+    END_PROGRAM,            //END PROGRAM AND CLEAN SYSTEM MEMORY
+//---<=>---//
+
+//---<PROGRAM: INSTRUCTIONS>---//
+    START,                  //INITIALIZES ARRAYS OF OBJECTS THAT WILL BE USED
+    ADDRE,                  //STORES AN OBJECT TYPE IN AN ARRAY OF OBJECTS WITH THE SAME TYPE
+    STORE,                  //STORES A TEMPORARY OBJECT
+    DESTR,                  //RELEASING AN ARRAY OF OBJECTS FROM MEMORY
+    STTIF,                  //START A CONDITION IF
+    ENDIF,                  //END A CONDITION IF
+    JUMPC,                  //STORES LAST INSTRUCTION AND JUMP TO ANY INSTRUCTION
+    ADDCC,                  //ADD INSTRUCTION
+    SUBTR,                  //SUBTRACTION INSTRUCTION
+    MULTI,                  //MULTIPLY INSTRUCTION
+    DIVID,                  //DIVIDE INSTRUCTION
+    POWCC,                  //POW INSTRUCTION
+    ORCCC,                  //OR OPERATION INSTRUCTION
+    ANDCC,                  //AND OPERATION INSTRUCTION
+    NOTCC,                  //NOT OPERATION INSTRUCTION
+    BORCC,                  //OR BIT WISE INSTRUCTION
+    BANDC,                  //AND BIT WISE INSTRUCTION
+    BNOTC,                  //NOT BIT WISE INSTRUCTION
+    LOADC,                  //LOADS A STORED VALUE INSTRUCTION
+    STCCC,                  //STORES AT AN ADDRESS
+    CALLC,                  //CALL A FUNCTION OR METHOD
+    SYSIN,                  //CALL INPUT FUNCTION (sys.rd() OR sys.getbyte())
+    SYSOT,                  //CALL OUTPUT FUNCTION (sys.wrt())
+    CASTC,                  //CONVERT OBJECTS TYPE
+    PUSHC,                  //ADD ITEM IN LIST AND ARRAYLIST
+    LENGT,                  //GET SIZE, STRING, LIST AND ARRAYLIST
+    EACHC,                  //SCROLL DOWN TO LISTS AND HASHMAPS
+    KEYSC,                  //GET KEYS FROM A HASHMAP
+    VALUE,                  //GET VALUES FROM A HASHMAP
+    RESIZ,                  //RESIZES AN ARRAY
+    HMADD,                  //ADD OBJECT IN HASHMAP
+    REMOV,                  //REMOVE A VALUE OR VALUES FROM STRING, LIST, ARRAYLIST AND HASHMAP
+    CLEAR,                  //CLEAR ALL LIST, ARRAYLIST AND HASHMAP
+    INVER,                  //INVERT LIST ITEMS
+    INDEX,                  //GET INDEX OF VALUE FROM STRING, LIST AND ARRAYLIST
+    POPCC,                  //REMOVE AN INDEX FROM LIST, ARRAY LIST
+//---<=>---//
+
+//---<PROGRAM: PROTOCOL>---//
+    LONG,                   //LONG OBJECT:  SIZE: 64 BITS, MAX: 2^63 - 1, MIN: -2^63
+    INT,                    //INT OBJECT:   SIZE: 32 BITS, MAX: 2^31 - 1, MIN: -2^31
+    SHORT,                  //SHORT OBJECT: SIZE: 16 BITS, MAX: 2^15 - 1, MIN: -2^15
+    BYTE,                   //BYTE OBJECT:  SIZE: 08 BITS, MAX: 2^07 - 1, MIN: -2^07
+    CHAR,                   //CHAR (TWO BYTES) OBJECT
+    STRING,                 //STRING (UNSIGNED SHORT[]) OBJECT
+    FLOAT,                  //FLOAT OBJECT
+    DOUBLE,                 //DOUBLE OBJECT
+    VAR_HOLLOW,             //VARIABLES HOLLOW
+    DS_HOLLOW,              //DATA STRUCTURE HOLLOW
+    BIGINT,                 //BIGINT OBJECT
+    BIGFLOAT,               //BIGFLOAT OBJECT
+    ARRAY_LONG,             //(ARRAY LONG) OBJECT
+    ARRAY_INT,              //(ARRAY INT) OBJECT
+    ARRAY_SHORT,            //(ARRAY SHORT) OBJECT
+    ARRAY_BYTE,             //(ARRAY BYTE) OBJECT
+    ARRAY_CHAR,             //(ARRAY CHAR) OBJECT
+    ARRAY_FLOAT,            //(ARRAY FLOAT) OBJECT
+    ARRAY_DOUBLE,           //(ARRAY DOUBLE) OBJECT
+    ARRAYLIST,              //ARRAYLIST OBJECT
+    LIST,                   //LIST OBJECT
+    HASHMAP,                //HASHMAP OBJECT
+    FN_ADDRESS,             //FN AND METHODS PROTOCOL
+    ADDRESS_,               //ADDRESS
+    CLASS,                  //CLASS OBJECT
+    STRUCT,                 //STRUCT OBJECT
+    LOAD,                   //LOAD AN OBJECT
+    SEND,                   //SEND AN OBJECT
+    MEMORY_ADDRESS,         //PROTOCOL FOR PASSING OBJECT BY REFERENCE
+    END_INSTRUCTION,        //POINTS THE END OF AN INSTRUCTION
+    INIT_SET,               //INIT A SET OF INFORMATION
+    END_SET,                //FINALIZES A SET OF INFORMATION
+//---<=>---//
+
+//---<PROGRAM: ARRAYS OF OBJECTS>---//
+    STORAGE_LONG,           //STORES LONG OBJECTS
+    STORAGE_INT,            //STORES INT OBJECTS
+    STORAGE_SHORT,          //STORES SHORT OBJECTS
+    STORAGE_BYTE,           //STORES BYTES OBJECTS
+    STORAGE_CHAR,           //STORES CHAR OBJECTS
+    STORAGE_STRING,         //STORES STRING OBJECTS
+    STORAGE_FLOAT,          //STORES FLOAT OBJECTS
+    STORAGE_DOUBLE,         //STORES DOUBLE OBJECTS
+    STOREGE_VARHOLLOW,      //STORES HOLLOW VARIABLES ARRAY
+    STOREGE_DSHOLLOW,       //STORES HOLLOW DATA STRUCTURE
+    STORAGE_BIGINT,         //STORES BIGINT OBJECTS
+    STORAGE_BIGFLOAT,       //STORES BIGFLOAT OBJECTS
+    STORAGE_LONG_ARR,       //STORES LONG ARRAY
+    STORAGE_INT_ARR,        //STORES INT ARRAY
+    STORAGE_SHORT_ARR,      //STORES SHORT ARRAY
+    STORAGE_BYTE_ARR,       //STORES BYTE ARRAY
+    STORAGE_CHAR_ARR,       //STORES CHAR ARRAY
+    STORAGE_FLOAT_ARR,      //STORES FLOAT ARRAY
+    STORAGE_DOUBLE_ARR,     //STORES DOUBLE ARRAY
+    STORAGE_LIST,           //STORES LIST ARRAY
+    STORAGE_ARRAYLIST,      //STORES ARRAYSLIST ARRAY
+    STOREGE_HASHMAP,        //STORES HASHMAP ARRAY
+    STOREGE_CLASS,          //STORES CLASS ARRAY
+    STOREGE_STRUCT,         //STORES STRUCT ARRAY
+    STORAGE_FN              //STORES FUNCTIONS ARRAY
+}PROGRAM_CODEHEX;
+
+#endif //CODEHEX_C
