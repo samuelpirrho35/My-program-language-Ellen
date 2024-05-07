@@ -2,7 +2,7 @@
 #define ENCODEUTF_H
 
 #include "../includedefines/defines.h"
-#include "../includedefines/inttypes.h"
+#include "../includedefines/referenceTypes.h"
 
 #define C_CEDILLA 0xE7
 #define C_CEDILLA_UPPERCASE 0xC7
@@ -45,6 +45,6 @@
 #define CENT_SIGN 0xA2
 #define NEGATION 0xAC
 
-String GetUTF(String path, Byte *Error);
+String GetUTF(String path, i8 *Error);
 
 #endif //ENCODEUTF_H

@@ -1,4 +1,4 @@
-#include "includedefines/inttypes.h"
+#include "includedefines/referenceTypes.h"
 #include "includedefines/allocs.h"
 #include "includeclass/objectsStruct.h"
 #include "includelib/convertObjectsTypes.h"
@@ -9,15 +9,15 @@
 #include <stdlib.h>
 #include <string.h>
 
-Long compressToInteger(data_c bytes[]){
-    Long comprssBty = 0;
+i64 compressToi32eger(u8 bytes[]){
+    i64 comprssBty = 0;
     char sign = 1;
 
     if(bytes[0]){
         sign = -1;
     }
 
-    Long i = 1;
+    i64 i = 1;
     while(bytes[i] != ENDBYTE){
         comprssBty = comprssBty * 10 + bytes[i++];
     }
@@ -25,32 +25,32 @@ Long compressToInteger(data_c bytes[]){
     return comprssBty * sign;
 }
 
-lchar* compressListToString(List **list, mode exhibition, Long start, Long end){
+lchar* compressListToString(List **list, mode exhibition, i64 start, i64 end){
     if((start < 0 || start > (*list)->GN_Fields.extention) || (end < 0 || end > (*list)->GN_Fields.extention))
         return NULL;
 
     lchar *liststr = (lchar*)malloc(((*list)->GN_Fields.lengthstr + 1) * sizeof(lchar));
     lchar *str = NULL;
-    Long setposition = 0;
+    u64 setposition = 0;
 
     (exhibition == MODE_PRINT_LIST) ? setBuffer(liststr, L"[", &setposition) : (void)0;
 
     for(; start < end; start++){
-        Long v;
+        i64 v;
 
         switch((*list)[start].ref_ty){
-            case __Long__:
-                v = (*list)[start].types.primitiveTys.intTys.long_ty;
+            case __i64__:
+                v = (*list)[start].types.primitiveTys.intTys.i64_ty;
                 str = inttstr(v);
                 break;
 
-            case __Int__:
-                v = (*list)[start].types.primitiveTys.intTys.int_ty;
+            case __i32__:
+                v = (*list)[start].types.primitiveTys.intTys.i32_ty;
                 str = inttstr(v);
                 break;
 
-            case __Short__:
-                v = (*list)[start].types.primitiveTys.intTys.short_ty;
+            case __i16__:
+                v = (*list)[start].types.primitiveTys.intTys.i16_ty;
                 str = inttstr(v);
                 break;
 
@@ -58,8 +58,8 @@ lchar* compressListToString(List **list, mode exhibition, Long start, Long end){
                 str = strcopy((lchar[]){(*list)[start].types.primitiveTys.char_ty, L'\0'});
                 break;
 
-            case __Byte__:
-                v = (*list)[start].types.primitiveTys.intTys.byte_ty;
+            case __i8__:
+                v = (*list)[start].types.primitiveTys.intTys.i8_ty;
                 str = inttstr(v);
                 break;
 
@@ -68,7 +68,7 @@ lchar* compressListToString(List **list, mode exhibition, Long start, Long end){
                 size_ty lenstr = strsize((*list)[start].types.primitiveTys.string_ty) + 4;
                 str = (lchar*)malloc(lenstr * sizeof(lchar));
                 (exhibition == MODE_PRINT_LIST) ? str[0] = L'"' : (void)0;
-                Long setpos = (exhibition == MODE_PRINT_LIST) ? 1 : 0;
+                i64 setpos = (exhibition == MODE_PRINT_LIST) ? 1 : 0;
                 setBuffer(str, (*list)[start].types.primitiveTys.string_ty, &setpos);
                 (exhibition == MODE_PRINT_LIST) ? setBuffer(str, L"\"", &setpos) : (void)0;
                 break;
@@ -98,17 +98,17 @@ lchar* compressListToString(List **list, mode exhibition, Long start, Long end){
 }
 
 /*int main(){
-    Int n = 305419896;
-    //Long n = 9223372036854775807;
-    data_c *bytes = byteParser(&n, __Int__, 0);
+    i32 n = 305419896;
+    //i64 n = 9223372036854775807;
+    u8 *bytes = byteParser(&n, __i32__, 0);
 
     int i = 0;
-    for(; i < int_size; i++){
+    for(; i < i32_size; i++){
         printf("%d\n", bytes[i]);
     }
 
-    Int v;
-    memcpyint(&v, bytes, int_size);
+    i32 v;
+    memcpyint(&v, bytes, i32_size);
     printf("V = %ld\n", v);
 
     free(bytes);

@@ -1,4 +1,4 @@
-#include "includedefines/inttypes.h"
+#include "includedefines/referenceTypes.h"
 #include "includedefines/sizeDefined.h"
 #include "includedefines/allocs.h"
 #include "includeerror/errors.h"
@@ -10,9 +10,9 @@
 #include <stdlib.h>
 
 
-void TokenGenerator(String sourceCode, Token *token, Long *indexToken){
-    Byte ERROR = 0;
-    Long counterCharacteres = 0, limit = INITSIZEWORDIDENTIFIER, tokenFound = 0, counter = 0;
+void TokenGenerator(String sourceCode, Token *token, i64 *indexToken){
+    i8 ERROR = 0;
+    i64 counterCharacteres = 0, limit = INITSIZEWORDIDENTIFIER, tokenFound = 0, counter = 0;
     String word = STRALLOC(limit);
 
     while(*sourceCode){
@@ -22,21 +22,22 @@ void TokenGenerator(String sourceCode, Token *token, Long *indexToken){
 
             if(counterCharacteres == limit - 2){
                 limit += limit / 2;
-                word = (String)realloc(word, limit * sizeof(lchar));
+                String newWord = (String)realloc(word, limit * sizeof(lchar));
+                word = newWord;
             }
         }
 
         word[counterCharacteres] = L'\0';
 
-        Long identifyInternalOper = keyWordIdentify(word, InternalOperTable, INTERNALOPERQTTY);
-        Long identifyKeyWord = 0;
+        i64 identifyi32ernalOper = keyWordIdentify(word, i32ernalOperTable, INTERNALOPERQTTY);
+        i64 identifyKeyWord = 0;
 
-        if(!identifyInternalOper){
+        if(!identifyi32ernalOper){
             identifyKeyWord = keyWordIdentify(word, KeyWordTable, KEYWORDsQTTY);
         }
 
-        if(identifyInternalOper || identifyKeyWord){
-            register Byte flag = 0;
+        if(identifyi32ernalOper || identifyKeyWord){
+            register i8 flag = 0;
             sourceCode++;
             if(checkTokenValid(*sourceCode, ALLCHARACTERES)){
                 sourceCode--;
@@ -52,12 +53,12 @@ void TokenGenerator(String sourceCode, Token *token, Long *indexToken){
             }
 
             if(!flag){
-                if(identifyInternalOper){
-                    Long codeFnCall = codeString(word);
+                if(identifyi32ernalOper){
+                    i64 codeFnCall = codeString(word);
                     switch(codeFnCall){
                         case WRT:
                         case RD:
-                        case GETByte:
+                        case GETi8:
                         case IMPORT:
                         case LENGTH:
                         case TYPE:
@@ -119,23 +120,23 @@ void TokenGenerator(String sourceCode, Token *token, Long *indexToken){
                         case CONST:
                             token[*indexToken].type = _KEYWORD_const;
                             break;
-                        case _Int:
+                        case _i32:
                             token[*indexToken].type = _KEYWORD_int;
                             break;
-                        case _Long:
-                            token[*indexToken].type = _KEYWORD_Long;
+                        case _i64:
+                            token[*indexToken].type = _KEYWORD_i64;
                             break;
-                        case _Short:
+                        case _i16:
                             token[*indexToken].type = _KEYWORD_short;
                             break;
-                        case _Byte:
+                        case _i8:
                             token[*indexToken].type = _KEYWORD_byte;
                             break;
                         case _Float:
-                            token[*indexToken].type = _KEYWORD_float;
+                            token[*indexToken].type = _KEYWORD_f32;
                             break;
                         case _Double:
-                            token[*indexToken].type = _KEYWORD_double;
+                            token[*indexToken].type = _KEYWORD_f64;
                             break;
                         case _String:
                             token[*indexToken].type = _KEYWORD_str;
@@ -196,7 +197,7 @@ void TokenGenerator(String sourceCode, Token *token, Long *indexToken){
 
         if((checkTokenValid(*sourceCode, L"=+*-/%%(){}[]&$@#!|^,;:.<>?°~º´`¨/ª¹²³£¢¬§\"'\\ \n\t\r") ||
         nextCharacters == L'\0') && tokenFound == 0){
-            register Byte flagAccessScope = 1, flagTokenPointer = 1;
+            register i8 flagAccessScope = 1, flagTokenPointer = 1;
             if(word[0] != L'\0'){
                 if(word[0] == L'0'){
                     sourceCode++;
@@ -268,7 +269,7 @@ void TokenGenerator(String sourceCode, Token *token, Long *indexToken){
                             auxWord++;
                         }
 
-                        token[*indexToken].type = (flagFloat) ? _IDENTIFIER_CONST_Float : _IDENTIFIER_CONST_Int;
+                        token[*indexToken].type = (flagFloat) ? _IDENTIFIER_CONST_Float : _IDENTIFIER_CONST_i32;
                         token[*indexToken].Identifiers.constData.addinfo = (flagHex) ? HEX : DEC;
                         token[*indexToken].Identifiers.constData.data = strcopy(word);
                     }
@@ -330,7 +331,8 @@ void TokenGenerator(String sourceCode, Token *token, Long *indexToken){
 
                             if(counterCharacteres == limit - 2){
                                 limit += limit / 2;
-                                word = (String)realloc(word, limit * sizeof(lchar));
+                                String newWord = (String)realloc(word, limit * sizeof(lchar));
+                                word = newWord;
                             }
                         }
 
@@ -388,7 +390,7 @@ void TokenGenerator(String sourceCode, Token *token, Long *indexToken){
             }
 
             else if((*sourceCode != L' ' && *sourceCode != L'"' && *sourceCode != L'\'' && *sourceCode != L'.')){
-                register Byte flag = 1;
+                register i8 flag = 1;
                 if(tokenFound){
                     (*indexToken)++;
                 }
@@ -638,10 +640,10 @@ void TokenGenerator(String sourceCode, Token *token, Long *indexToken){
 
 int main(){
     String str = L"int:: array = [35, 0x3F]";
-    register Long sourceSize = strsize(str);
+    register i64 sourceSize = strsize(str);
 
     Token *tokens = (Token*)malloc(sizeof(Token) * 1024);
-    Long indexToken = 0, i = 0;
+    i64 indexToken = 0, i = 0;
 
     TokenGenerator(str, tokens, &indexToken);
 
@@ -655,14 +657,14 @@ int main(){
             WindowsWrt(tokens[i].Identifiers.error.dataError, L"\n");
         }
 
-        else if(tokens[i].type == _IDENTIFIER_CONST_Int || tokens[i].type == _IDENTIFIER_CONST_Float ||
+        else if(tokens[i].type == _IDENTIFIER_CONST_i32 || tokens[i].type == _IDENTIFIER_CONST_Float ||
                 tokens[i].type == _IDENTIFIER_CONST_STR || tokens[i].type == _IDENTIFIER_CONST_CHAR){
             WindowsWrt(L"value: ", tokens[i].Identifiers.constData.data);
             printf("\n");
         }
 
         else if(tokens[i].type == _INTERNAL_FN){
-            printf("Internal fn: %d\n", tokens[i].Identifiers.internaFn.fnCode);
+            printf("i32ernal fn: %d\n", tokens[i].Identifiers.internaFn.fnCode);
             printf("\n");
         }
 

@@ -1,13 +1,13 @@
 #ifndef SIZEDEFINED_H
 #define SIZEDEFINED_H
 
-#include "../includedefines/inttypes.h"
+#include "../includedefines/referenceTypes.h"
 #include "../includedefines/defines.h"
 
-#define Int_SIZE_64Char 19
-#define Int_SIZE_32Char 10
-#define Int_SIZE_16Char 5
-#define Int_SIZE_8Char 3
+#define i32_SIZE_64Char 19
+#define i32_SIZE_32Char 10
+#define i32_SIZE_16Char 5
+#define i32_SIZE_8Char 3
 #define Float_SIZE_64 35
 
 #define START_DATA_STRUCTURE 0x10
@@ -15,21 +15,21 @@
 #define NO_MODIFY 0
 #define WITH_MODIFY 1
 
-#define INIT_SIZE_STRING 0x10
+#define INIT_SIZE_STRING 0x255
 
 #define LENGTH_MAX_Float_DINAMIC 0x80
-#define MAX_SIZEEXTENTION_Int_Float_DINAMIC 0x80
+#define MAX_SIZEEXTENTION_i32_Float_DINAMIC 0x80
 #define MAX_PRECISION_Float 9
 #define MAX_PRECISON_Double 17
 
-#define CONST_MAX_Int64 9223372036854775807
-#define CONST_MAX_Int32 2147483647
-#define CONST_MAX_Int16 32767
-#define CONST_MAX_Int8 127
-#define CONST_MIN_Int64 -9223372036854775808
-#define CONST_MIN_Int32 -2147483648
-#define CONST_MIN_Int16 -32768
-#define CONST_MIN_Int8 -128
+#define CONST_MAX_i3264 9223372036854775807
+#define CONST_MAX_i3232 2147483647
+#define CONST_MAX_i3216 32767
+#define CONST_MAX_i328 127
+#define CONST_MIN_i3264 -9223372036854775808
+#define CONST_MIN_i3232 -2147483648
+#define CONST_MIN_i3216 -32768
+#define CONST_MIN_i328 -128
 #define CONST_MAX_Float 340282346638528859811704183484516925440.000000F
 #define CONST_MAX_Float_SIGNED -340282346638528859811704183484516925440.000000F
 #define CONST_MIN_Float 0.00000000000000000000000000000000001175494
@@ -49,11 +49,12 @@
 #define BUFFER_SIZE 1024
 
 typedef enum{
-    long_size   =   sizeof(Long),
-    int_size    =   sizeof(Int),
-    short_size  =   sizeof(Short),
-    byte_size   =   sizeof(Byte),
-    char_size   =   sizeof(lchar),
+    i64_size  =   sizeof(i64),
+    i32_size  =   sizeof(i32),
+    i16_size  =   sizeof(i16),
+    i8_size   =   sizeof(i8),
+    f32_size  =   sizeof(f32),
+    f64_size  =   sizeof(f64)
 }referencesSize_t;
 
 #endif //SIZEDEFINED_H

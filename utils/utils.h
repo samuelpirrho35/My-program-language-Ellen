@@ -3,31 +3,33 @@
 
 #include "../System/System.h"
 #include "../includedefines/defines.h"
-#include "../includedefines/inttypes.h"
+#include "../includedefines/referenceTypes.h"
 #include "../includedefines/allocs.h"
 #include "../includelib/libString.h"
 
-data_c* expandsToBytes(Long n, charsize_t *newSize);
+u8* expandsToi8s(i64 n, charsize_t *newSize);
 
-Long codeString(String str);
-Long keyWordIdentify(String str, String *KeyWordTable, u8 lengthTable);
-Byte checkTokenValid(lchar actCharacter, String nextCharacters);
-CachingData CreateCacheData(String IdentifierName, reference_types TypeObject, Long Calls, String Value);
+i64 codeString(String str);
+i64 keyWordIdentify(String str, String *KeyWordTable, u8 lengthTable);
+i8 checkTokenValid(lchar actCharacter, String nextCharacters);
 
-u8 initializeListCache(CachingData ***Cache, Int Address[], u8 *TypeStructureCache);
-u8 AddListCache
-(CachingData ***Cache, Int Address[], String IdentifierName,
-reference_types TypeObject, Long Calls, String Value, u8 *TypeStructureCache);
+#ifndef RUNTIMEVM
+CachingData CreateCacheData(String IdentifierName, reference_types TypeObject, i64 Calls, String Value);
+u8 initializeListCache(CachingData ***Cache, i32 Address[], u8 *TypeStructureCache);
+i8 AddListCache
+(CachingData ***Cache, i32 Address[], String IdentifierName,
+reference_types TypeObject, i64 Calls, String Value, u8 *TypeStructureCache);
+#endif
 
 typedef struct{
     char pack_ty;
     union{
-        data_c *pack_bytes;
-        data_s *pack_doubleBytes;
-        Long pack_integer;
+        u8 *pack_bytes;
+        u16 *pack_f64i8s;
+        i64 pack_integer;
         char character;
-        double pack_float;
-        Long pack_anyInteger;
+        f64 pack_f32;
+        i64 pack_anyi32eger;
     }package_ty;
 }packageReceived;
 

@@ -1,17 +1,17 @@
 #include "utils/utils.h"
 
-data_c* expandsToBytes(Long n, charsize_t *newSize){
-    data_c *bytes;
-    char sign = STARTBYTE_0X00;
+u8* expandsToi8s(i64 n, charsize_t *newSize){
+    u8 *bytes;
+    char sign = STARTBYTE_0X0E;
     if(n < 0){
-        sign = STARTBYTE_0X01;
+        sign = STARTBYTE_0X0F;
         n *= -1;
     }
 
     char qttyDigits = 0;
     
     if(n >= 10){
-        Long ncpy = n;
+        i64 ncpy = n;
         while(ncpy){
             qttyDigits++;
             ncpy /= 10;
@@ -22,14 +22,14 @@ data_c* expandsToBytes(Long n, charsize_t *newSize){
 
     else{
         (*newSize) = 3;
-        bytes = (data_c*)malloc(3);
+        bytes = (u8*)malloc(3);
         bytes[0] = sign;
         bytes[1] = n;
         bytes[2] = ENDBYTE;
         return bytes;
     }
 
-    bytes = (data_c*)malloc(qttyDigits + 2);
+    bytes = (u8*)malloc(qttyDigits + 2);
     
     bytes[0] = sign;
     bytes[qttyDigits + 1] = ENDBYTE;
@@ -42,11 +42,11 @@ data_c* expandsToBytes(Long n, charsize_t *newSize){
     return bytes;
 }
 
-Long codeString(String str){
-    Int code = 0;
+i64 codeString(String str){
+    i32 code = 0;
 
     while(*str){
-        Int characterUniCode = (u16)*str;
+        i32 characterUniCode = (u16)*str;
         code += characterUniCode;
         *str++;
     }
@@ -54,11 +54,11 @@ Long codeString(String str){
     return code;
 }
 
-Long keyWordIdentify(String str, String *KeyWordTable, u8 lengthTable){
-    register Long strEqualKey_word = 0, lenStr = strsize(str);
-    register Byte index = 0;
+i64 keyWordIdentify(String str, String *KeyWordTable, u8 lengthTable){
+    register i64 strEqualKey_word = 0, lenStr = strsize(str);
+    register i8 index = 0;
     while(index < lengthTable){
-        register Byte lenKeyIndex = strsize(KeyWordTable[index]), countChar = 0;
+        register i8 lenKeyIndex = strsize(KeyWordTable[index]), countChar = 0;
         if(lenStr == lenKeyIndex){
             while(countChar < lenStr){
                 if(str[countChar] != KeyWordTable[index][countChar]){
@@ -79,7 +79,7 @@ Long keyWordIdentify(String str, String *KeyWordTable, u8 lengthTable){
     return strEqualKey_word;
 }
 
-Byte checkTokenValid(lchar actCharacter, String nextCharacters){
+i8 checkTokenValid(lchar actCharacter, String nextCharacters){
     while(*nextCharacters){
         if(actCharacter == *nextCharacters){
             return 1;
@@ -90,19 +90,20 @@ Byte checkTokenValid(lchar actCharacter, String nextCharacters){
     return 0;
 }
 
-Int HashCode(String str, float Multiplier){
-    Long code = 0;
+i32 HashCode(String str, f32 Multiplier){
+    i64 code = 0;
 
     while(*str){
         u16 characterUniCode = *str;
         code += characterUniCode;
-        *str++;
+        str++;
     }
 
-    return code % (Int)(0x64 * Multiplier);
+    return code % (i32)(0x64 * Multiplier);
 }
 
-u8 initializeListCache(CachingData ***Cache, Int Address[], u8 *TypeStructureCache)
+#ifndef RUNTIMEVM
+u8 initializeListCache(CachingData ***Cache, i32 Address[], u8 *TypeStructureCache)
 {
     CachingData **CopyCache = *Cache;
     if(*TypeStructureCache != LISTCACHE){
@@ -143,9 +144,9 @@ u8 initializeListCache(CachingData ***Cache, Int Address[], u8 *TypeStructureCac
     return 0;
 }
 
-u8 AddListCache
-(CachingData ***Cache, Int Address[], String IdentifierName,
-reference_types TypeObject, Long Calls, String Value, u8 *TypeStructureCache)
+i8 AddListCache
+(CachingData ***Cache, i32 Address[], String IdentifierName,
+reference_types TypeObject, i64 Calls, String Value, u8 *TypeStructureCache)
 {
 
     CachingData **CopyCache = *Cache;
@@ -154,14 +155,16 @@ reference_types TypeObject, Long Calls, String Value, u8 *TypeStructureCache)
     if(listCache->Extention == listCache->Capacity - 1)
     {
         listCache->Capacity += listCache->Capacity / 2;
-        listCache = realloc(listCache, listCache->Capacity * sizeof(CacheStructure));
+        CacheStructure *newlistCache = realloc(listCache, listCache->Capacity * sizeof(CacheStructure));
+        if(newlistCache == NULL)
+            return -5;
         if(listCache == NULL){
             return 1;
         }
         CopyCache[Address[0]][Address[1]].TypeCache.ListCache = listCache;
     }
 
-    Int extention = listCache->Extention;
+    i32 extention = listCache->Extention;
     listCache[extention].IdentifierName = strcopy(IdentifierName);
     listCache[extention].TypeObject = TypeObject;
     listCache[extention].Calls = Calls;
@@ -182,7 +185,7 @@ reference_types TypeObject, Long Calls, String Value, u8 *TypeStructureCache)
 
 CachingData CreateCacheData
 (String IdentifierName, reference_types TypeObject,
-Long Calls, String Value)
+i64 Calls, String Value)
 {
     CachingData newCache;
     newCache.TypeStructureCache = HASHCACHE;
@@ -213,3 +216,4 @@ cache:
         *cache = {...,obj};
 
 */
+#endif

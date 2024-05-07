@@ -18,15 +18,15 @@ typedef enum{
     _KEYWORD_dataStructure,
     _KEYWORD_variable,
     _KEYWORD_fn,
-    _KEYWORD_InternalOper,
+    _KEYWORD_i32ernalOper,
     _KEYWORD_return,
     _KEYWORD_const,
     _KEYWORD_int,
     _KEYWORD_short,
     _KEYWORD_byte,
-    _KEYWORD_Long,
-    _KEYWORD_float,
-    _KEYWORD_double,
+    _KEYWORD_i64,
+    _KEYWORD_f32,
+    _KEYWORD_f64,
     _KEYWORD_str,
     _KEYWORD_char,
     _KEYWORD_FILE,
@@ -51,7 +51,7 @@ typedef enum{
     _KEYWORD_Resize,
     _INTERNAL_FN,
     __IDENTIFIER__,
-    _IDENTIFIER_CONST_Int,
+    _IDENTIFIER_CONST_i32,
     _IDENTIFIER_CONST_Float,
     _IDENTIFIER_CONST_STR,
     _IDENTIFIER_CONST_CHAR,
@@ -59,7 +59,7 @@ typedef enum{
     _IDENTIFIER_CONST_PSEUDOOBJECTS,
     _IDENTIFIER_int,
     _IDENTIFIER_str,
-    _IDENTIFIER_float,
+    _IDENTIFIER_f32,
     _IDENTIFIER_list,
     _IDENTIFIER_array,
     _IDENTIFIER_pseudoObjects,
@@ -137,14 +137,14 @@ typedef enum{
     ATTRIBUTE       = 948,
     PUBLIC          = 639,
     PRIVATE         = 763,
-    _Int            = 331,
+    _i32            = 331,
     _String         = 663,
     _CHAR           = 414,
     _Float          = 534,
     _Double         = 635,
-    _Long           = 432,
-    _Short          = 560,
-    _Byte           = 436,
+    _i64           = 432,
+    _i16          = 560,
+    _i8           = 436,
     _FILE           = 288,
     AND             = 307,
     OR              = 225,
@@ -154,7 +154,7 @@ typedef enum{
     SYS             = 351,
     WRT             = 349,
     RD              = 214,
-    GETByte         = 756,
+    GETi8         = 756,
     LENGTH          = 642,
     TYPE            = 418,
     READFILEBYTE    = 1168,
@@ -176,11 +176,26 @@ typedef enum{
     RESIZE          = 626
 }ReservedWordsCodes;
 
+// String KeyWordTable[KEYWORDsQTTY] = {
+//     L"if", L"elif", L"else", L"for",
+//     L"while", L"int", L"i64", L"short",
+//     L"byte", L"f32", L"String", L"char",
+//     L"f64", L"Class", L"This", L"Method",
+//     L"Attribute", L"public", L"private", L"break",
+//     L"continue", L"and", L"or", L"endif",
+//     L"return", L"case", L"default", L"in",
+//     L"sys", L"Try", L"Catch", L"const",
+//     L"export", L"all", L"switch", L"fn",
+//     L"new", L"ArrayList", L"Hash", L"Resize",
+//     L"FILE"
+// };
+
 String KeyWordTable[KEYWORDsQTTY] = {
     L"if", L"elif", L"else", L"for",
-    L"while", L"int", L"Long", L"short",
-    L"byte", L"float", L"String", L"char",
-    L"double", L"Class", L"This", L"Method",
+    L"while", L"i32", L"i64", L"i16",
+    L"i8", L"u64", L"u32", L"u16",
+    "u8", L"f32", L"string", L"char",
+    L"f64", L"Class", L"This", L"Method",
     L"Attribute", L"public", L"private", L"break",
     L"continue", L"and", L"or", L"endif",
     L"return", L"case", L"default", L"in",
@@ -190,9 +205,9 @@ String KeyWordTable[KEYWORDsQTTY] = {
     L"FILE"
 };
 
-String InternalOperTable[INTERNALOPERQTTY] = {
+String i32ernalOperTable[INTERNALOPERQTTY] = {
     L"wrt", L"rd", L"length", L"import",
-    L"getbyte", L"Type", L"ReadFileByte", L"ReadFileLine",
+    L"getbyte", L"Type", L"ReadFilei8", L"ReadFileLine",
     L"ReadFile", L"WriteFile", L"FileOpen", L"FileClose"
 };
 

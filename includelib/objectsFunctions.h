@@ -3,24 +3,23 @@
 
 #include "../includeclass/objectsStruct.h"
 #include "../includedefines/defines.h"
-#include "../includedefines/inttypes.h"
+#include "../includedefines/referenceTypes.h"
 #include "../utils/utils.h"
 
-/*BigintObject* create_Int_Dinamic_Object(String parseToInt);
-void print_BigintObject(BigintObject *int_Object);
-void free_BigintObject(BigintObject *int_Object);*/
-
-//Identifier_Int_Static_Object* create_Int_Static_Object(String strData, reference_types IntegerType);
-
-//StringTypeObject* create_String_Object(String data, u64 length_Data);
-
-/*BigfloatObject* create_Float_Dinamic_Object(String DataFloat, u64 float_Length);
-void print_Float_Dinamic_Object(BigfloatObject *FloatObject);
-void free_Float_Dinamic_Object(BigfloatObject *float_Object);*/
-
+//-------------<Functions for List Object>-----------------
 List* newList(u64 size);
 void freeList(List *list);
-Byte printList(List **list, mode exhibition, Long start, Long end);
-unsigned char pushList(List **list, reference_types ref_ty, packageReceived pkrv, size_ty size);
+i8 printList(List **list, mode exhibition, i64 start, i64 end);
+i8 pushList(List **list, reference_types ref_ty, packageReceived pkrv, size_ty size);
+
+//-------------<Functions for Array Object>-----------------
+void initializeDataArray(GenericArray *Generic, size_ty init, size_ty end, reference_types ref_dataTy);
+GenericArray* newArray(size_ty capacity, size_ty size, reference_types ref_dataTy);
+void resizeArray(size_ty newCapacity, size_ty size, GenericArray *array, reference_types ref_dataTy);
+
+//-------------<Functions for Ouroboros Object>-----------------
+Ouroboros* newOuroboros();
+Ouroboros* initOuroboros(u8 data[]);
+void freeOuroboros(Ouroboros *ouroboros);
 
 #endif //OBJECTSFUNCTIONS_H

@@ -1,7 +1,7 @@
 #ifndef DEFINES_H
 #define DEFINES_H
 
-#include "./inttypes.h"
+#include "./referenceTypes.h"
 
 #define SYSTEM64 0x40
 #define SYSTEM32 0x20
@@ -29,9 +29,6 @@
 #define _GLOBAL 0
 #define _LOCAL 1
 
-typedef unsigned short lchar;
-typedef lchar* String;
-
 #define _INTERNAL_FNCHARPOINTERNUMCODE 46
 #define ALLCHARACTERES L"aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ0123456789_çÇãÃõÕâÂôÔêÊîÎûÛáÁóÓéÉíÍúÚ"
 #define TOKENSCHARACTERES L"+-*/|&!?°ºª<>,.:;^~´`{}[]()¹²³£¢¬@#$%%¨&=_§"
@@ -50,8 +47,8 @@ typedef lchar* String;
 #define MODE_DATA_FLOAT   1
 #define MODE_DATA_STRING  3
 
-#define STARTBYTE_0X00 0x00
-#define STARTBYTE_0X01 0x01
+#define STARTBYTE_0X0E 0x0E
+#define STARTBYTE_0X0F 0x0F
 #define ENDBYTE 0x0A
 
 #define WORKING 1

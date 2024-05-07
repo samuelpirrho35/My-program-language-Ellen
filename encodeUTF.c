@@ -1,4 +1,4 @@
-#include "includedefines/inttypes.h"
+#include "includedefines/referenceTypes.h"
 #include "includedefines/defines.h"
 #include "includedefines/allocs.h"
 #include "includeerror/errors.h"
@@ -6,28 +6,28 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-Long getFileSize(FILE *file) {
-    Long size;
+i64 getFileSize(FILE *file) {
+    i64 size;
     fseek(file, 0, SEEK_END);
     size = ftell(file);
     rewind(file);
     return size;
 }
 
-u16 GetUTF(u8 byte[], Byte *Error, Long *setptr){
+u16 GetUTF(u8 byte[], i8 *Error, i64 *setptr){
     if(byte[*setptr] < 0x80){
         return byte[*setptr];
     }
 
     else if((byte[*setptr] & 0xE0) == 0xC0){
-        u16 lastByte = byte[*setptr];
+        u16 lasti8 = byte[*setptr];
         (*setptr)++;
 
         if((byte[*setptr] & 0xC0) == 0x80){
-            lastByte &= 0x1F;
-            lastByte <<= 6;
+            lasti8 &= 0x1F;
+            lasti8 <<= 6;
             byte[*setptr] &= 0x3F;
-            return lastByte | byte[*setptr];
+            return lasti8 | byte[*setptr];
         }
         else{
             (*Error) = ERRORUTF2BYTES;
@@ -36,17 +36,17 @@ u16 GetUTF(u8 byte[], Byte *Error, Long *setptr){
     }
 
     else if((byte[*setptr] & 0xF0) == 0xE0){
-        u16 firstByte = byte[(*setptr)++];
-        u16 secondByte = byte[(*setptr)++];
-        u8 thirdByte = byte[*setptr];
+        u16 firsti8 = byte[(*setptr)++];
+        u16 secondi8 = byte[(*setptr)++];
+        u8 thirdi8 = byte[*setptr];
 
-        if((secondByte & 0xC0) == 0x80 && (thirdByte & 0xC0) == 0x80){
-            firstByte &= 0x0F;
-            firstByte <<= 12;
-            secondByte &= 0x3F;
-            secondByte <<= 6;
-            thirdByte &= 0x3F;
-            return firstByte | secondByte | thirdByte;
+        if((secondi8 & 0xC0) == 0x80 && (thirdi8 & 0xC0) == 0x80){
+            firsti8 &= 0x0F;
+            firsti8 <<= 12;
+            secondi8 &= 0x3F;
+            secondi8 <<= 6;
+            thirdi8 &= 0x3F;
+            return firsti8 | secondi8 | thirdi8;
         }
         else{
             (*Error) = ERRORUTF3BYTES;
@@ -55,20 +55,20 @@ u16 GetUTF(u8 byte[], Byte *Error, Long *setptr){
     }
 
     else if((byte[*setptr] & 0xF8) == 0xF0){
-        u16 firstByte = byte[(*setptr)++];
-        u16 secondByte = byte[(*setptr)++];
-        u8 thirdByte = byte[(*setptr)++];
-        u8 fourthByte = byte[*setptr];
+        u16 firsti8 = byte[(*setptr)++];
+        u16 secondi8 = byte[(*setptr)++];
+        u8 thirdi8 = byte[(*setptr)++];
+        u8 fourthi8 = byte[*setptr];
 
-        if((secondByte & 0xC0) == 0x80 && (thirdByte & 0xC0) == 0x80 && (fourthByte & 0xC0) == 0x80){
-            firstByte &= 0x07;
-            firstByte <<= 18;
-            secondByte &= 0x3F;
-            secondByte <<= 12;
-            thirdByte &= 0x3F;
-            thirdByte <<= 6;
-            fourthByte &= 0x3F;
-            return firstByte | secondByte | thirdByte | fourthByte;
+        if((secondi8 & 0xC0) == 0x80 && (thirdi8 & 0xC0) == 0x80 && (fourthi8 & 0xC0) == 0x80){
+            firsti8 &= 0x07;
+            firsti8 <<= 18;
+            secondi8 &= 0x3F;
+            secondi8 <<= 12;
+            thirdi8 &= 0x3F;
+            thirdi8 <<= 6;
+            fourthi8 &= 0x3F;
+            return firsti8 | secondi8 | thirdi8 | fourthi8;
         }
         else{
             (*Error) = ERRORUTF4BYTES;
@@ -82,9 +82,9 @@ u16 GetUTF(u8 byte[], Byte *Error, Long *setptr){
     }
 }
 
-String GetSourceCode(String path, Byte *Error){
+String GetSourceCode(String path, i8 *Error){
     FILE *f = _wfopen(path, L"rb");
-    Long len = getFileSize(f), counter = 0, setptr = 0;
+    i64 len = getFileSize(f), counter = 0, setptr = 0;
     String rune = STRALLOC(len);
 
     if(f == NULL){
@@ -92,7 +92,7 @@ String GetSourceCode(String path, Byte *Error){
         return NULL;
     }
 
-    u8 *byte = uByteALLOC(len);
+    u8 *byte = UINT8ALLOC(len);
     fread(byte, sizeof(u8), len, f);
 
     while(setptr < len){
@@ -111,7 +111,7 @@ String GetSourceCode(String path, Byte *Error){
 }
 
 int main(){
-    Byte Error;
+    i8 Error;
     String path = L"pi.txt";
     String rune = GetSourceCode(path, &Error);
 

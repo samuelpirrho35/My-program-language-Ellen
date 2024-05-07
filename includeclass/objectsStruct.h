@@ -1,29 +1,32 @@
 #ifndef OBJECTSSTRUCT_H
 #define OBJECTSSTRUCT_H
 
-#include "../includedefines/inttypes.h"
+#include "../includedefines/referenceTypes.h"
 #include "../includedefines/sizeDefined.h"
-#include "../includedefines/defines.h"
 #include "../includeEnumerator/typeObjects.h"
 
 
 //-----------<Generic Data>-----------
 
 typedef union{
-    Long long_ty;
-    Int int_ty;
-    Short short_ty;
+    i64   i64_ty;
+    i32   i32_ty;
+    i16   i16_ty;
+    i8    i8_ty;
+    u64   u64_ty;
+    u32   u32_ty;
+    u16   u16_ty;
+    u8    u8_ty;
     lchar char_ty;
-    Byte byte_ty;
-}Integers;
+}integers;
 
 
 typedef struct{
-    size_ty extention;
-    size_ty capacity;
-    size_ty lengthstr;
-    String dataStructurestr;
-    char modify_flag;
+    u32     extention;
+    u32     capacity;
+    u32     lengthstr;
+    String  dataStructurestr;
+    char    modify_flag;
 }GNFieldsStructures;
 
 
@@ -39,26 +42,47 @@ typedef struct List List;
 typedef struct HashMap HashMap;
 typedef struct Class Class;
 typedef struct Struct Struct;
+typedef struct Ouroboros Ouroboros;
 
 
 typedef struct{
-    Long longTy;
-}longObject;
+    i64 i64Ty;
+}i64Object;
 
 
 typedef struct{
-    Int intTy;
-}intObject;
+    i32 i32Ty;
+}i32Object;
 
 
 typedef struct{
-    Short shortTy;
-}shortObject;
+    i16 i16Ty;
+}i16Object;
 
 
 typedef struct{
-    Byte byteTy;
-}byteObject;
+    i8 i8Ty;
+}i8Object;
+
+
+typedef struct{
+    u64 u64Ty;
+}u64Object;
+
+
+typedef struct{
+    u32 u32Ty;
+}u32Object;
+
+
+typedef struct{
+    u16 u16Ty;
+}u16Object;
+
+
+typedef struct{
+    u8 u8Ty;
+}u8Object;
 
 
 typedef struct{
@@ -67,105 +91,134 @@ typedef struct{
 
 
 typedef struct{
-    float longTy;
-}floatObject;
+    f32 i64Ty;
+}f32Object;
 
 
 typedef struct{
-    double longTy;
-}doubleObject;
+    f64 i64Ty;
+}f64Object;
+
+
+typedef struct{
+    u32    length;
+    String stringTy;
+}stringObject;
 
 
 typedef union{
-    Integers intTys;
-    lchar *string_ty;
-    lchar char_ty;
-    float float_ty;
-    double double_ty;
+    integers intTys;
+    String   string_ty;
+    lchar    char_ty;
+    f32      f32_ty;
+    f64      f64_ty;
 }PrimitiveTypes;
 
 
-typedef struct{
-    size_ty extention;
-    data_c *data;
-}BigintObject;
-
-
-typedef struct{
-    size_ty extfData;
-    data_c *data_float;
-}BigfloatObject;
+typedef struct Ouroboros{
+    u8        val;
+    Ouroboros *next;
+    Ouroboros *previous;
+}Ouroboros;
 
 
 typedef struct{
     GNFieldsArrays GN_Fields;
-    Long *data;
-}Array_longTy;
+    i64            *data;
+}Array_i64Ty;
 
 
 typedef struct{
     GNFieldsArrays GN_Fields;
-    Int *data;
-}Array_intTy;
+    i32            *data;
+}Array_i32Ty;
 
 
 typedef struct{
     GNFieldsArrays GN_Fields;
-    Short *data;
-}Array_shortTy;
+    i16            *data;
+}Array_i16Ty;
 
 
 typedef struct{
     GNFieldsArrays GN_Fields;
-    Byte *data;
-}Array_byteTy;
+    i8             *data;
+}Array_i8Ty;
 
 
 typedef struct{
     GNFieldsArrays GN_Fields;
-    lchar *data;
+    u64            *data;
+}Array_u64Ty;
+
+
+typedef struct{
+    GNFieldsArrays GN_Fields;
+    u32            *data;
+}Array_u32Ty;
+
+
+typedef struct{
+    GNFieldsArrays GN_Fields;
+    u16            *data;
+}Array_u16Ty;
+
+
+typedef struct{
+    GNFieldsArrays GN_Fields;
+    u8             *data;
+}Array_u8Ty;
+
+
+typedef struct{
+    GNFieldsArrays GN_Fields;
+    lchar          *data;
 }Array_charTy;
 
 
 typedef struct{
     GNFieldsArrays GN_Fields;
-    float *data;
-}Array_floatTy;
+    f32            *data;
+}Array_f32Ty;
 
 
 typedef struct{
     GNFieldsArrays GN_Fields;
-    double *data;
-}Array_doubleTy;
+    f64            *data;
+}Array_f64Ty;
 
 
 typedef struct{
     GNFieldsArrays GN_Fields;
-    void* data;
+    void*          data;
 }GenericArray;
 
 
 typedef union{
-    Array_longTy a_longTy;
-    Array_intTy a_intTy;
-    Array_shortTy a_shortTy;
-    Array_byteTy a_byteTy;
+    Array_i64Ty  a_i64Ty;
+    Array_i32Ty  a_i32Ty;
+    Array_i16Ty  a_i16Ty;
+    Array_i8Ty   a_i8Ty;
+    Array_u64Ty  a_u64Ty;
+    Array_u32Ty  a_u32Ty;
+    Array_u16Ty  a_u16Ty;
+    Array_u8Ty   a_u8Ty;
     Array_charTy a_charTy;
-    Array_floatTy a_floatTy;
-    Array_doubleTy a_doubleTy;
+    Array_f32Ty  a_f32Ty;
+    Array_f64Ty  a_f64Ty;
 }All_Arrays;
 
 
 typedef struct{
     GNFieldsStructures GN_Fields;
-    reference_types Array_ty;
-    All_Arrays all_arrays;
+    reference_types    Array_ty;
+    All_Arrays         all_arrays;
 }ArrayList;
 
 
 typedef struct{
     reference_types hollow_ty;
-    PrimitiveTypes primitiveTys;
+    PrimitiveTypes  primitiveTys;
 }VarHollow;
 
 
@@ -173,56 +226,56 @@ typedef struct{
     reference_types hollow_ty;
     union{
         All_Arrays all_arrays;
-        ArrayList *arrayList;
-        List *list;
-        HashMap *hashMap;
-        Struct *StructObj;
+        ArrayList  *arrayList;
+        List       *list;
+        HashMap    *hashMap;
+        Struct     *StructObj;
     }HollowDsType;
 }DSHollow;
 
 
 typedef struct List{
     GNFieldsStructures GN_Fields;
-    reference_types ref_ty;
+    reference_types    ref_ty;
     union{
         PrimitiveTypes primitiveTys;
-        BigintObject IntDinamicType;
-        BigfloatObject FloatDinamicType;
-        All_Arrays all_arrays;
-        ArrayList *ArrayList;
-        HashMap *HashObject;
-        List *ListObject;
-        Class *classObject;
-        Struct *StructObject;
-        ADDRESS fn__address__;
+        Ouroboros      *BigintType;
+        Ouroboros      *BigfloatType;
+        All_Arrays     all_arrays;
+        ArrayList      *ArrayList;
+        HashMap        *HashObject;
+        List           *ListObject;
+        Class          *classObject;
+        Struct         *StructObject;
+        ADDRESS        fn__address__;
     }types;
 }List;
 
 
 typedef struct Class{
-    List *private__This__;
-    List *public__This__;
-    List *__Attributes__;
+    List    *private__This__;
+    List    *public__This__;
+    List    *__Attributes__;
     ADDRESS *Address_private__Methods__;
     ADDRESS *Address_public__Methods__;
-    Class **extends;
+    Class   **extends;
 }Class;
 
 
 typedef struct HashMap{
-    Long Key;
+    i64             Key;
     reference_types ref_keyTy;
     union{
         PrimitiveTypes primitiveTy;
-        BigintObject IntDinamicType;
-        BigfloatObject FloatDinamicType;
-        All_Arrays all_arrays;
-        ArrayList *ArrayList;
-        List *ListObject;
-        HashMap *HashObject;
-        Class ClassObject;
-        ADDRESS fn__address__;
-        Struct *StructObject;
+        Ouroboros      *BigintType;
+        Ouroboros      *BigfloatType;
+        All_Arrays     all_arrays;
+        ArrayList      *ArrayList;
+        List           *ListObject;
+        HashMap        *HashObject;
+        Class          ClassObject;
+        ADDRESS        fn__address__;
+        Struct         *StructObject;
     }Value;
 }HashMap;
 
@@ -234,17 +287,17 @@ typedef struct fn{
 
 
 typedef struct Struct{
-    reference_types ref_StructTy;
+    reference_types    ref_StructTy;
     union{
         PrimitiveTypes primitiveTy;
-        BigintObject IntDinamicType;
-        BigfloatObject FloatDinamicType;
-        All_Arrays all_arrays;
-        ArrayList *ArrayList;
-        List *ListObject;
-        HashMap *HashObject;
-        Class classObject;
-        ADDRESS fn__address__;
+        Ouroboros      *BigintType;
+        Ouroboros      *BigfloatType;
+        All_Arrays     all_arrays;
+        ArrayList      *ArrayList;
+        List           *ListObject;
+        HashMap        *HashObject;
+        Class          classObject;
+        ADDRESS        fn__address__;
     }TypeFieldStruct;
 }Struct;
 
@@ -252,38 +305,43 @@ typedef struct Struct{
 typedef struct{
     reference_types ref_constTy;
     union{
-        Long integerType;
-        double floatType;
-        BigintObject BigintType;
-        BigfloatObject BigfloatType;
-        ArrayList *arrayList;
-        HashMap *hash;
-        List *list;
+        i64         i64Type;
+        u64         u64Type;
+        f32         f32Type;
+        f64         f64Type;
+        Ouroboros   *BigintType;
+        Ouroboros   *BigfloatType;
+        ArrayList   *arrayList;
+        HashMap     *hash;
+        List        *list;
     }constObjects;
 }Const;
 
 
 //-----------<Array storage objects>-----------
 
-typedef longObject** storage_longTy;
-typedef intObject** storage_intTy;
-typedef shortObject** storage_shortTy;
-typedef byteObject** storage_byteTy;
+typedef i64Object**  storage_i64Ty;
+typedef i32Object**  storage_i32Ty;
+typedef i16Object**  storage_i16Ty;
+typedef i8Object**   storage_i8Ty;
+typedef u64Object**  storage_u64Ty;
+typedef u32Object**  storage_u32Ty;
+typedef u16Object**  storage_u16Ty;
+typedef u8Object**   storage_u8Ty;
 typedef charObject** storage_charTy;
-typedef String* storage_stringTy;
-typedef float* storage_floatTy;
-typedef double* storage_doubleTy;
-typedef VarHollow** storage_varhollowTy;
-typedef DSHollow** storage_dshollowTy;
+typedef String*      storage_stringTy;
+typedef f32Object**  storage_f32Ty;
+typedef f64Object**  storage_f64Ty;
+typedef VarHollow**  storage_varhollowTy;
+typedef DSHollow**   storage_dshollowTy;
 
-typedef BigintObject** storage_BigintTy;
-typedef BigfloatObject** storage_BigfloatTy;
-typedef ArrayList** storage_ArrayListTy;
-typedef List** storage_ListTy;
-typedef HashMap** storage_HashMapTy;
-typedef Struct** storage_StructTy;
-typedef Class** storage_ClassTy;
-typedef fn** storage_fnTy;
-
+typedef Ouroboros**  storage_Bigi32Ty;
+typedef Ouroboros**  storage_Bigf32Ty;
+typedef ArrayList**  storage_ArrayListTy;
+typedef List**       storage_ListTy;
+typedef HashMap**    storage_HashMapTy;
+typedef Struct**     storage_StructTy;
+typedef Class**      storage_ClassTy;
+typedef fn**         storage_fnTy;
 
 #endif //OBJECTSSTRUCT_H

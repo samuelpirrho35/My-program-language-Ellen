@@ -1,18 +1,21 @@
-#ifndef INTTYPES_H
-#define INTTYPES_H
+#ifndef REFERENCETYPES_H
+#define REFERENCETYPES_H
 
 typedef unsigned long long u64;
 typedef unsigned long      u32;
 typedef unsigned short     u16;
 typedef unsigned char       u8;
 
-typedef long long Long;
-typedef long      Int;
-typedef short     Short;
-typedef char      Byte;
+typedef long long i64;
+typedef long      i32;
+typedef short     i16;
+typedef char      i8;
 
-typedef unsigned char  data_c;
-typedef unsigned short data_s;
+typedef float f32;
+typedef double f64;
+
+typedef unsigned short lchar;
+typedef lchar* String;
 
 typedef unsigned long long filesize_t;
 typedef unsigned long long size_ty;
@@ -26,4 +29,4 @@ typedef char STATUS;
 typedef unsigned long long ADDRESS;
 typedef unsigned long long memory_t;
 
-#endif //INTTYPES_H
+#endif //REFERENCETYPES_H

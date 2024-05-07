@@ -3,16 +3,16 @@
 
 #include "../includeclass/objectsStruct.h"
 
-BigintObject*
-sum_IntDinamic_and_IntDinamic(BigintObject *IntObject_store,
-BigintObject *IntObject);
+/*BigintObject*
+sum_i32Dinamic_and_i32Dinamic(BigintObject *i32Object_store,
+BigintObject *i32Object);
 
 BigintObject*
-sum_IntDinamic_and_IntStatic(BigintObject *IntObjectDinamic,
-BigintObject *IntObjectStatic);
+sum_i32Dinamic_and_i32Static(BigintObject *i32ObjectDinamic,
+BigintObject *i32ObjectStatic);
 
 BigintObject*
-subtract_IntDinamic_and_IntDinamic(BigintObject *IntObject1,
-BigintObject* IntObject2);
+subtract_i32Dinamic_and_i32Dinamic(BigintObject *i32Object1,
+BigintObject* i32Object2);*/
 
 #endif //BASICMATH_H

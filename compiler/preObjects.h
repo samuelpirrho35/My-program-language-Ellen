@@ -21,7 +21,7 @@ typedef struct{
 
 typedef struct{
     u8 fnCode;
-}IdentifierInternalFn;
+}Identifieri32ernalFn;
 
 
 typedef struct{
@@ -34,7 +34,7 @@ typedef struct{
     union{
         IdentifierData Data;
         IdentifierConst constData;
-        IdentifierInternalFn internaFn;
+        Identifieri32ernalFn internaFn;
         ERROR_ error;
     }Identifiers;
 }Token;

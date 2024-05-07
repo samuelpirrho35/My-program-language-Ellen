@@ -6,23 +6,23 @@
 #include "includelib/libIo.h"
 #include <stdio.h>
 
-u8 destroyObject(__Objects__ *objects, data_c storagesUsing[], Long address[], Long index){
+u8 destroyObject(__System__ *System, u8 storagesUsing[], i64 address[], i64 index){
     for(; index >= 0; index--){
         switch(storagesUsing[index]){
             case STORAGE_LONG:
-                free(objects->st_long[address[index]]);
+                free(System->Manager.Objects.st_i32[address[index]]);
                 break;
             case STORAGE_INT:
-                free(objects->st_int[address[index]]);
+                free(System->Manager.Objects.st_i32[address[index]]);
                 break;
             case STORAGE_SHORT:
-                free(objects->st_short[address[index]]);
+                free(System->Manager.Objects.st_i16[address[index]]);
                 break;
             case STORAGE_CHAR:
-                free(objects->st_char[address[index]]);
+                free(System->Manager.Objects.st_char[address[index]]);
                 break;
             case STORAGE_BYTE:
-                free(objects->st_byte[address[index]]);
+                free(System->Manager.Objects.st_i8[address[index]]);
                 break;
             default:
                 return 1;
@@ -37,26 +37,24 @@ u8 ENDPROGRAM(__System__ *System){
     while(System->Manager.objectsUsing[index] && index < OBJECTsQTTY){
         switch(System->Manager.objectsUsing[index++]){
             case STORAGE_LONG:
-                free(System->Manager.Objects.st_long);
+                free(System->Manager.Objects.st_i64);
                 break;
             case STORAGE_INT:
-                free(System->Manager.Objects.st_int);
+                free(System->Manager.Objects.st_i32);
                 break;
             case STORAGE_SHORT:
-                free(System->Manager.Objects.st_short);
+                free(System->Manager.Objects.st_i16);
                 break;
             case STORAGE_CHAR:
                 free(System->Manager.Objects.st_char);
                 break;
             case STORAGE_BYTE:
-                free(System->Manager.Objects.st_byte);
+                free(System->Manager.Objects.st_i8);
                 break;
             default:
                 return 1;
         }
     }
-
-    free(System);
 
     return 0;
 }

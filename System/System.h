@@ -2,32 +2,22 @@
 #define SYSTEM_H
 
 #include "../includedefines/defines.h"
-#include "../includedefines/inttypes.h"
+#include "../includedefines/referenceTypes.h"
 #include "../includedefines/sizeDefined.h"
 #include "../includeclass/objectsStruct.h"
 #include "../includeEnumerator/typeObjects.h"
 
-#define JUSTVIRTUALMACHINE
+#define RUNTIMEVM
 
+#ifndef RUNTIMEVM
 typedef struct{
-    u32 MaxSizeExtentionIntDinamic;
-    u32 MaxSizeExtentionFloatDinamic;
-}__DinamicsSizeExtention__;
-
-
-typedef struct{
-    __DinamicsSizeExtention__ DinamicsSizeExtention;
-}__Types__;
-
-
-typedef struct{
-    u16 Extention;
-    u16 Capacity;
-    String IdentifierName;
+    u16             Extention;
+    u16             Capacity;
+    String          IdentifierName;
     reference_types TypeObject;
-    u16 Calls;
-    STATUS State;
-    String Value;
+    u16             Calls;
+    STATUS          State;
+    String          Value;
 }CacheStructure;
 
 
@@ -38,60 +28,74 @@ typedef struct{
         CacheStructure *ListCache;
     }TypeCache;
 }CachingData;
-
+#endif
 
 typedef struct{
     String FileSourseCode;
-    data_c *bytecode;
+    u8     *bytecode;
 }__FilesManager__;
 
 
+#ifdef RUNTIMEVM
 typedef struct{
-    storage_longTy st_long;
-    storage_intTy st_int;
-    storage_shortTy st_short;
-    storage_byteTy st_byte;
-    storage_charTy st_char;
-    storage_stringTy st_string;
-    storage_floatTy st_float;
-    storage_doubleTy st_double;
+    storage_i64Ty       st_i64;
+    storage_i32Ty       st_i32;
+    storage_i16Ty       st_i16;
+    storage_i8Ty        st_i8;
+    storage_u64Ty       st_u64;
+    storage_u32Ty       st_u32;
+    storage_u16Ty       st_u16;
+    storage_u8Ty        st_u8;
+    storage_charTy      st_char;
+    storage_stringTy    st_string;
+    storage_f32Ty       st_f32;
+    storage_f64Ty       st_f64;
     storage_varhollowTy st_varhollow;
-    storage_dshollowTy st_dshollow;
-    storage_BigintTy st_Bigint;
-    storage_BigfloatTy st_BigFloat;
+    storage_dshollowTy  st_dshollow;
+    storage_Bigi32Ty    st_Bigint;
+    storage_Bigf32Ty    st_BigFloat;
     storage_ArrayListTy st_arraylist;
-    storage_ListTy st_list;
-    storage_HashMapTy st_hashMap;
-    storage_StructTy st_struct;
-    storage_ClassTy st_class;
-    storage_fnTy st_fnAddress;
-    storage_longTy st_long_array;
-    storage_intTy st_int_array;
-    storage_shortTy st_short_array;
-    storage_byteTy st_byte_array;
-    storage_charTy st_char_array;
-    storage_floatTy st_float_array;
-    storage_doubleTy st_double_array;
+    storage_ListTy      st_list;
+    storage_HashMapTy   st_hashMap;
+    storage_StructTy    st_struct;
+    storage_ClassTy     st_class;
+    storage_fnTy        st_fnAddress;
+    storage_i64Ty       st_i64_array;
+    storage_i32Ty       st_i32_array;
+    storage_i16Ty       st_i16_array;
+    storage_i8Ty        st_i8_array;
+    storage_charTy      st_char_array;
+    storage_f32Ty       st_f32_array;
+    storage_f64Ty       st_f64_array;
 }__Objects__;
+#endif
 
 
 typedef struct{
-    __Types__ IdentifiersTy;
-    CachingData **Cache;
-    __FilesManager__ FileManager;
-    u16 SizeCacheScopes;
-    data_c objectsUsing[OBJECTsQTTY];
-    __Objects__ Objects;
+    #ifndef RUNTIMEVM
+    CachingData       **Cache;
+    u16               SizeCacheScopes;
+    #endif
+
+    __FilesManager__  FileManager;
+
+    #ifdef RUNTIMEVM
+    u8                objectsUsing[OBJECTsQTTY];
+    __Objects__       Objects;
+    __Objects__       TemporaryObjects;
+    #endif
 }__Manager__;
 
 
 typedef struct{
     __Manager__ Manager;
-    lchar status;
-    String version;
-    Byte (*WRT)(List**);
-    lchar (*GETByte)();
-    String (*RD)(String);
+    lchar       status;
+    String      version;
+
+    #ifdef RUNTIMEVM
+    i8          (*WRT)(List**);
+    String      (*RD)(String);
+    #endif
 }__System__;
 
 #endif //SYSTEM_H

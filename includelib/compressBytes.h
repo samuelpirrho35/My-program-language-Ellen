@@ -1,9 +1,9 @@
 #ifndef COMPRESSBYTES_H
 #define COMPRESSBYTES_H
 
-#include "../includedefines/inttypes.h"
+#include "../includedefines/referenceTypes.h"
 
-Long compressToInteger(data_c bytes[]);
-lchar* compressListToString(List **list, mode exhibition, Long start, Long end);
+i64 compressToi32eger(u8 bytes[]);
+lchar* compressListToString(List **list, mode exhibition, i64 start, i64 end);
 
 #endif //COMPRESSBYTES_H

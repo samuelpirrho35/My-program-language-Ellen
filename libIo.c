@@ -3,21 +3,21 @@
 #include "includelib/convertObjectsTypes.h"
 #include "includelib/objectsFunctions.h"
 #include "includedefines/defines.h"
-#include "includedefines/inttypes.h"
+#include "includedefines/referenceTypes.h"
 #include "includedefines/allocs.h"
 #include "includeclass/objectsStruct.h"
 #include <stdlib.h>
 #include <stdio.h>
 
-#define ERRORGETByte -1
+#define ERRORGETi8 -1
 
 #ifdef WINDOWS
 #include <windows.h>
 
-unsigned char WindowsWrt(lchar *StringObject, lchar *end){
+unsigned char WindowsWrt(String StringObject, String end){
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
-    lchar *str = strmerger(StringObject, end);
+    String str = strmerger(StringObject, end);
 
     if(hConsole == INVALID_HANDLE_VALUE){
         return 1;
@@ -33,9 +33,9 @@ unsigned char WindowsWrt(lchar *StringObject, lchar *end){
 }
 #endif
 
-u8 wrtlchar(lchar LongChar){
+u8 wrtlchar(lchar i64Char){
     String strLchar = STRALLOC(2);
-    strLchar[0] = LongChar;
+    strLchar[0] = i64Char;
     strLchar[1] = L'\0';
 #ifdef WINDOWS
     if(WindowsWrt(strLchar, L"")){
@@ -45,25 +45,21 @@ u8 wrtlchar(lchar LongChar){
     return 0;
 }
 
-Byte wrt(List **objects){
-    Byte result = printList(objects, MODE_PRINT_FUNC, 0, (*objects)->GN_Fields.extention);
-    freeList((*objects));
-
-    if(result == -1){
+i8 wrt(List **objects){
+    if(printList(objects, MODE_PRINT_FUNC, 0, (*objects)->GN_Fields.extention) == -1)
         return -1;
-    }
 
     return 0;
 }
 
-lchar getByte(){
+lchar geti8(){
 #ifdef WINDOWS
     lchar buffer[2];
-    Int numberOfCharsRead;
+    u32 numberOfCharsRead;
 
     HANDLE hConsole = GetStdHandle(STD_INPUT_HANDLE);
     if(hConsole == INVALID_HANDLE_VALUE){
-        return ERRORGETByte;
+        return ERRORGETi8;
     }
 
     SetConsoleMode(hConsole, ENABLE_WINDOW_INPUT | ENABLE_MOUSE_INPUT | ENABLE_INSERT_MODE | ENABLE_EXTENDED_FLAGS);
@@ -76,7 +72,7 @@ lchar getByte(){
     else{
         SetConsoleMode(hConsole, ENABLE_PROCESSED_INPUT);
         FlushConsoleInputBuffer(hConsole);
-        return ERRORGETByte;
+        return ERRORGETi8;
     }
 #endif
 }
@@ -85,19 +81,19 @@ String rd(String msg){
 #ifdef WINDOWS
     WindowsWrt(msg, L"");
 
-    lchar LongChar[2];
-    Long size = 100, index = 0, counter = 0;
+    lchar i64Char[2];
+    i64 size = 100, index = 0;
     String str = STRALLOC((size + 1));
 
     while(1){
-        LongChar[0] = getByte();
-        LongChar[1] = '\0';
-        if(LongChar[0] == L'\n' || LongChar[0] == L'\r'){
+        i64Char[0] = geti8();
+        i64Char[1] = '\0';
+        if(i64Char[0] == L'\n' || i64Char[0] == L'\r'){
             str[index] = '\0';
             break;
         }
 
-        else if((Int)LongChar[0] == 8){
+        else if((i32)i64Char[0] == 8){
             if(index > 0){
                 index--;
                 WindowsWrt(L"\b \b", L"");
@@ -105,21 +101,22 @@ String rd(String msg){
         }
 
         else{
-            WindowsWrt(LongChar, L"");
-            str[index] = LongChar[0];
+            WindowsWrt(i64Char, L"");
+            str[index] = i64Char[0];
             index++;
             if(index == size - 2){
-                size += size / 2;
-                str = (String)realloc(str, size * sizeof(lchar));
+                size += size >> 1;
+                String newstr = (String)realloc(str, size * sizeof(lchar));
+                if(newstr == NULL)
+                    return NULL;
+                
+                str = newstr;
             }
         }
     }
 
+    WindowsWrt(L"\n", L"");
+
     return str;
 #endif
 }
-
-/*int main(){
-    lchar c = L'é';
-    printf("size: %d", (int)c);
-}*/

@@ -2,7 +2,7 @@
 #include "includelib/libIo.h"
 #include "includelib/convertObjectsTypes.h"
 #include "includedefines/defines.h"
-#include "includedefines/inttypes.h"
+#include "includedefines/referenceTypes.h"
 #include "includedefines/allocs.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -69,48 +69,37 @@ String strfastmerger(String str1, String str2, size_ty sizestr1, size_ty sizestr
     return newstr;
 }
 
-lchar* strcopy(lchar *source){
-    unsigned long long len = strsize(source);
+String strcopy(lchar *source){
+    i64 len = strsize(source);
     if(source == NULL){
         return NULL;
     }
 
-    lchar *copy = (lchar*)malloc((len + 1) * sizeof(lchar));
-    lchar *cpy = copy;
+    String copy = STRALLOC((len + 1));
+    copy[--len] = L'\0';
+    len--;
 
-    lchar *src = source;
+    while(len--)
+        copy[len] = source[len];
 
-    while(len--){
-        *cpy = *src;
-        cpy++;
-        src++;
-    }
-
-    *cpy = L'\0';
     return copy;
 }
 
-String strfastcopy(String source, Long len){
+String strfastcopy(String source, i64 len){
     if(len <= 0){
         return NULL;
     }
 
     String copy = STRALLOC((len + 1));
-    String cpy = copy;
+    copy[--len] = L'\0';
 
-    String src = source;
+    while(len--)
+        copy[len] = source[len];
 
-    while(len--){
-        *cpy = *src;
-        cpy++;
-        src++;
-    }
-
-    *cpy = L'\0';
     return copy;
 }
 
-u8 strncopy(String *dstny, String source, Long limit){
+u8 strncopy(String *dstny, String source, i64 limit){
     if(!((limit <= strsize(source) && limit > 0))){
         return 1;
     }
@@ -146,7 +135,7 @@ u8 strgetnextstr(String *dstny, String *formatptr){
         extention++;
     }
 
-    Long size = extention - format;
+    i64 size = extention - format;
     dty = STRALLOC((size + 1));
     strncopy(&dty, format, size);
 
@@ -156,7 +145,7 @@ u8 strgetnextstr(String *dstny, String *formatptr){
     return 0;
 }
 
-char setBuffer(lchar *dstny, lchar *copy, unsigned long long *setposition){
+i8 setBuffer(String dstny, String copy, u64 *setposition){
     lchar *cpy = copy;
     
     if(dstny == NULL || cpy == NULL){
@@ -171,4 +160,16 @@ char setBuffer(lchar *dstny, lchar *copy, unsigned long long *setposition){
     dstny[*setposition] = L'\0';
 
     return 0;
+}
+
+String DataToString(u8 data[], i64 size, i64 start){
+    if(size <= 0)
+        return NULL;
+
+    String newString = STRALLOC(size);
+    i64 i = start, j = start;
+    for(; i < start + size; i++)
+        newString[i - start] = ((data[j++] << 8) | data[j++]);
+
+    return newString;
 }

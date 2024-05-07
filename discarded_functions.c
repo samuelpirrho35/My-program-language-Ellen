@@ -9,19 +9,19 @@
     }
 }*/
 
-/*static uint8_t verifySizeInt(char *str_int){
+/*static uint8_t verifySizei32(char *str_int){
     register uint8_t bigger_than_int = 0, sign = 0;
-    int lengthInt_str = strsize(str_int);
+    int lengthi32_str = strsize(str_int);
 
     if(str_int[0] == '-'){
         sign = 1;
     }
 
-    if((lengthInt_str - sign) > Int_SIZE_64){
+    if((lengthi32_str - sign) > i32_SIZE_64){
         bigger_than_int = 1;
     }
 
-    else if((lengthInt_str - sign) < Int_SIZE_64){
+    else if((lengthi32_str - sign) < i32_SIZE_64){
         bigger_than_int = -1;
     }
 
@@ -30,7 +30,7 @@
         char int_max_in_str[20] = "18446744073709551615";
 
         int i;
-        for(i = lengthInt_str - 1; i >= sign; i--){
+        for(i = lengthi32_str - 1; i >= sign; i--){
             if(((int)str_int[i] - 48) > ((int)int_max_in_str[i - sign] - 48) && stack_overFlow == 0){
                 stack_overFlow = 1;
             }
@@ -52,11 +52,11 @@
     printf("[");
     register uint64_t i;
     for(i = 0; i < list_Object->extention; i++){
-        if(list_Object[i].Type_Identifier_Object == IDENTIFIER_Int_OBJECT_DINAMIC){
+        if(list_Object[i].Type_Identifier_Object == IDENTIFIER_i32_OBJECT_DINAMIC){
             print_BigintObject(list_Object[i].types.int_Object_dinamic);
         }
 
-        else if(list_Object[i].Type_Identifier_Object == IDENTIFIER_Int_OBJECT_STATIC){
+        else if(list_Object[i].Type_Identifier_Object == IDENTIFIER_i32_OBJECT_STATIC){
             printf("%" PRId64, list_Object[i].types.int_Object_static->data);
         }
 
@@ -78,7 +78,7 @@
 
     register u64 index;
     for(index = 0; index < (*list_Object)->extention; index++){
-        if((*list_Object)[index].Type_Identifier_Object == IDENTIFIER_Int_OBJECT_STATIC){
+        if((*list_Object)[index].Type_Identifier_Object == IDENTIFIER_i32_OBJECT_STATIC){
             register int length_List_Object_index = strsize((*list_Object)[index].types.int_Object_static->_String_data);
             counter += length_List_Object_index;
 
@@ -102,7 +102,7 @@
             }
         }
 
-        else if((*list_Object)[index].Type_Identifier_Object == IDENTIFIER_Int_OBJECT_DINAMIC){
+        else if((*list_Object)[index].Type_Identifier_Object == IDENTIFIER_i32_OBJECT_DINAMIC){
 
         }
     }
@@ -113,63 +113,63 @@
 
 /*
 BigintObject*
-sum_IntDinamic_and_IntDinamic(BigintObject *IntObject_store,
-BigintObject *IntObject)
+sum_i32Dinamic_and_i32Dinamic(BigintObject *i32Object_store,
+BigintObject *i32Object)
 {
-    register u8 BiggerSizeIntObject;
-    register Long LengthBiggerIntObject;
-    u8 *NewDataIntObject;
+    register u8 BiggerSizei32Object;
+    register i64 LengthBiggeri32Object;
+    u8 *NewDatai32Object;
 
-    if(IntObject_store->extention >= IntObject->extention){
-        BiggerSizeIntObject = 1;
-        LengthBiggerIntObject = IntObject_store->extention;
-        NewDataIntObject = (u8*)malloc(LengthBiggerIntObject + 1);
-        NewDataIntObject = IntObject_store->data;
+    if(i32Object_store->extention >= i32Object->extention){
+        BiggerSizei32Object = 1;
+        LengthBiggeri32Object = i32Object_store->extention;
+        NewDatai32Object = (u8*)malloc(LengthBiggeri32Object + 1);
+        NewDatai32Object = i32Object_store->data;
     }
 
     else{
-        BiggerSizeIntObject = 2;
-        LengthBiggerIntObject = IntObject->extention;
-        NewDataIntObject = (u8*)malloc(LengthBiggerIntObject + 1);
-        NewDataIntObject = IntObject->data;
+        BiggerSizei32Object = 2;
+        LengthBiggeri32Object = i32Object->extention;
+        NewDatai32Object = (u8*)malloc(LengthBiggeri32Object + 1);
+        NewDatai32Object = i32Object->data;
     }
 
-    register Long i, y = ((BiggerSizeIntObject == 1) ? IntObject->extention : IntObject_store->extention) - 1;
+    register i64 i, y = ((BiggerSizei32Object == 1) ? i32Object->extention : i32Object_store->extention) - 1;
     register u8 upOne = 0;
-    for(i = LengthBiggerIntObject - 1; i >= 0; i--){
-        register u8 digit = NewDataIntObject[i];
+    for(i = LengthBiggeri32Object - 1; i >= 0; i--){
+        register u8 digit = NewDatai32Object[i];
         register u8 sum = 0;
         if(y >= 0){
-            register u8 digit2 = (BiggerSizeIntObject == 1) ? IntObject->data[y] : IntObject_store->data[y];
+            register u8 digit2 = (BiggerSizei32Object == 1) ? i32Object->data[y] : i32Object_store->data[y];
             sum = digit + digit2 + upOne;
-            NewDataIntObject[i + 1] = sum % 10;
+            NewDatai32Object[i + 1] = sum % 10;
             upOne = sum / 10;
             y--;
         }
 
         else{
             sum = digit + upOne;
-            NewDataIntObject[i + 1] = sum % 10;
+            NewDatai32Object[i + 1] = sum % 10;
             upOne = sum / 10;
         }
     }
     
-    NewDataIntObject[0] = upOne;
-    IntObject_store->data = NewDataIntObject;
-    IntObject_store->extention = LengthBiggerIntObject + 1;
+    NewDatai32Object[0] = upOne;
+    i32Object_store->data = NewDatai32Object;
+    i32Object_store->extention = LengthBiggeri32Object + 1;
 
-    return IntObject_store;
+    return i32Object_store;
 }
 */
 
 /*i = 0;
 while(i <= more_than_length_copy){
-    if(NewDataIntObject[i] != 0 && !flag2){
+    if(NewDatai32Object[i] != 0 && !flag2){
         flag2 = 1;
     }
 
     if(flag2){
-        NewDataIntObject[y++] = NewDataIntObject[i];
+        NewDatai32Object[y++] = NewDatai32Object[i];
     }
     else{
         _zeros++;
@@ -177,49 +177,49 @@ while(i <= more_than_length_copy){
     i++;
 }
 
-NewDataIntObject = realloc(NewDataIntObject, more_than_length_copy - _zeros + 1);*/
+NewDatai32Object = realloc(NewDatai32Object, more_than_length_copy - _zeros + 1);*/
 
 /*BigintObject*
-sum_IntDinamic_and_IntDinamic
-(BigintObject *IntObject_store,
-BigintObject *IntObject)
+sum_i32Dinamic_and_i32Dinamic
+(BigintObject *i32Object_store,
+BigintObject *i32Object)
 {
-    register u8 BiggerSizeIntObject;
-    register Long LengthBiggerIntObject;
-    u8 *NewDataIntObject;
+    register u8 BiggerSizei32Object;
+    register i64 LengthBiggeri32Object;
+    u8 *NewDatai32Object;
 
-    if(IntObject_store->extention >= IntObject->extention){
-        BiggerSizeIntObject = 1;
-        //NewDataIntObject = (u8*)malloc(IntObject_store->extention);
-        NewDataIntObject = IntObject_store->data;
-        LengthBiggerIntObject = IntObject_store->extention;
+    if(i32Object_store->extention >= i32Object->extention){
+        BiggerSizei32Object = 1;
+        //NewDatai32Object = (u8*)malloc(i32Object_store->extention);
+        NewDatai32Object = i32Object_store->data;
+        LengthBiggeri32Object = i32Object_store->extention;
     }
 
     else{
-        BiggerSizeIntObject = 2;
-        //NewDataIntObject = (u8*)malloc(IntObject->extention);
-        NewDataIntObject = IntObject->data;
-        LengthBiggerIntObject = IntObject->extention;
+        BiggerSizei32Object = 2;
+        //NewDatai32Object = (u8*)malloc(i32Object->extention);
+        NewDatai32Object = i32Object->data;
+        LengthBiggeri32Object = i32Object->extention;
     }
 
-    register Long i, y = ((BiggerSizeIntObject == 1) ? IntObject->extention : IntObject_store->extention) - 1;
+    register i64 i, y = ((BiggerSizei32Object == 1) ? i32Object->extention : i32Object_store->extention) - 1;
     register u8 upOne = 0;
-    for(i = LengthBiggerIntObject - 1; i != -1; i--){
-        register u8 digit = NewDataIntObject[i];
+    for(i = LengthBiggeri32Object - 1; i != -1; i--){
+        register u8 digit = NewDatai32Object[i];
         register u8 sum = 0;
         if(y >= 0){
-            register u8 digit2 = (BiggerSizeIntObject == 1) ? IntObject->data[y] : IntObject_store->data[y];
+            register u8 digit2 = (BiggerSizei32Object == 1) ? i32Object->data[y] : i32Object_store->data[y];
             sum = digit + digit2 + upOne;
             if(upOne){
                 upOne = 0;
             }
             
             if(sum > 9){
-                NewDataIntObject[i] = sum - 10;
+                NewDatai32Object[i] = sum - 10;
                 upOne = 1;
             }
             else{
-                NewDataIntObject[i] = sum;
+                NewDatai32Object[i] = sum;
             }
 
             y--;
@@ -232,11 +232,11 @@ BigintObject *IntObject)
             }
 
             if(sum > 9){
-                NewDataIntObject[i] = sum - 10;
+                NewDatai32Object[i] = sum - 10;
                 upOne = 1;
             }
             else{
-                NewDataIntObject[i] = sum;
+                NewDatai32Object[i] = sum;
             }
 
             if(upOne == 0){
@@ -246,57 +246,57 @@ BigintObject *IntObject)
     }
 
     if(upOne){
-        IntObject_store->data = expandDataIntDinamicObject(NewDataIntObject, upOne, LengthBiggerIntObject);
-        IntObject_store->extention = LengthBiggerIntObject + 1;
+        i32Object_store->data = expandDatai32DinamicObject(NewDatai32Object, upOne, LengthBiggeri32Object);
+        i32Object_store->extention = LengthBiggeri32Object + 1;
     }
     else{
-        IntObject_store->data = NewDataIntObject;
-        IntObject_store->extention = LengthBiggerIntObject;
+        i32Object_store->data = NewDatai32Object;
+        i32Object_store->extention = LengthBiggeri32Object;
     }
 
-    return IntObject_store;
+    return i32Object_store;
 }*/
 
 
 /*BigintObject
-sum_IntDinamic_and_IntDinamic
-(BigintObject IntObject_store,
-BigintObject IntObject)
+sum_i32Dinamic_and_i32Dinamic
+(BigintObject i32Object_store,
+BigintObject i32Object)
 {
-    register u8 BiggerSizeIntObject;
-    register Long LengthBiggerIntObject;
-    u8 *NewDataIntObject;
+    register u8 BiggerSizei32Object;
+    register i64 LengthBiggeri32Object;
+    u8 *NewDatai32Object;
 
-    if(IntObject_store.extention >= IntObject.extention){
-        BiggerSizeIntObject = 1;
-        NewDataIntObject = copyData(IntObject_store.data, NewDataIntObject, IntObject_store.extention);
-        LengthBiggerIntObject = IntObject_store.extention;
+    if(i32Object_store.extention >= i32Object.extention){
+        BiggerSizei32Object = 1;
+        NewDatai32Object = copyData(i32Object_store.data, NewDatai32Object, i32Object_store.extention);
+        LengthBiggeri32Object = i32Object_store.extention;
     }
 
     else{
-        BiggerSizeIntObject = 2;
-        NewDataIntObject = copyData(IntObject.data, NewDataIntObject, IntObject.extention);
-        LengthBiggerIntObject = IntObject.extention;
+        BiggerSizei32Object = 2;
+        NewDatai32Object = copyData(i32Object.data, NewDatai32Object, i32Object.extention);
+        LengthBiggeri32Object = i32Object.extention;
     }
 
-    register Long i, y = ((BiggerSizeIntObject == 1) ? IntObject.extention : IntObject_store.extention) - 1;
+    register i64 i, y = ((BiggerSizei32Object == 1) ? i32Object.extention : i32Object_store.extention) - 1;
     register u8 upOne = 0;
-    for(i = LengthBiggerIntObject - 1; i != -1; i--){
-        register u8 digit = NewDataIntObject[i];
+    for(i = LengthBiggeri32Object - 1; i != -1; i--){
+        register u8 digit = NewDatai32Object[i];
         register u8 sum = 0;
         if(y >= 0){
-            register u8 digit2 = (BiggerSizeIntObject == 1) ? IntObject.data[y] : IntObject_store.data[y];
+            register u8 digit2 = (BiggerSizei32Object == 1) ? i32Object.data[y] : i32Object_store.data[y];
             sum = digit + digit2 + upOne;
             if(upOne){
                 upOne = 0;
             }
             
             if(sum > 9){
-                NewDataIntObject[i] = sum - 10;
+                NewDatai32Object[i] = sum - 10;
                 upOne = 1;
             }
             else{
-                NewDataIntObject[i] = sum;
+                NewDatai32Object[i] = sum;
             }
 
             y--;
@@ -309,11 +309,11 @@ BigintObject IntObject)
             }
 
             if(sum > 9){
-                NewDataIntObject[i] = sum - 10;
+                NewDatai32Object[i] = sum - 10;
                 upOne = 1;
             }
             else{
-                NewDataIntObject[i] = sum;
+                NewDatai32Object[i] = sum;
             }
 
             if(upOne == 0){
@@ -323,21 +323,21 @@ BigintObject IntObject)
     }
 
     if(upOne){
-        IntObject_store.data = expandDataIntDinamicObject(NewDataIntObject, upOne, LengthBiggerIntObject);
-        IntObject_store.extention = LengthBiggerIntObject + 1;
+        i32Object_store.data = expandDatai32DinamicObject(NewDatai32Object, upOne, LengthBiggeri32Object);
+        i32Object_store.extention = LengthBiggeri32Object + 1;
     }
     else{
-        IntObject_store.data = NewDataIntObject;
-        IntObject_store.extention = LengthBiggerIntObject;
+        i32Object_store.data = NewDatai32Object;
+        i32Object_store.extention = LengthBiggeri32Object;
     }
 
-    return IntObject_store;
+    return i32Object_store;
 }*/
 
 /*#ifndef OBJECTSSTRUCT_H
 #define OBJECTSSTRUCT_H
 
-#include "../includedefines/inttypes.h"
+#include "../includedefines/referenceTypes.h"
 #include "../includedefines/sizeDefined.h"
 #include "../includedefines/defines.h"
 #include "../includeEnumerator/typeObjects.h"
@@ -346,16 +346,16 @@ BigintObject IntObject)
 
 typedef struct{
     u8 sign;
-    Long extention;
+    i64 extention;
     u8 *data;
     String _String_Data;
 }BigintObject;
 
 
 typedef struct{
-    Long dataLong;
-    char _String_data[Int_SIZE_64 + 1];
-}Identifier_Int_Static_Object;
+    i64 datai64;
+    char _String_data[i32_SIZE_64 + 1];
+}Identifier_i32_Static_Object;
 
 
 typedef struct{
@@ -366,15 +366,15 @@ typedef struct{
 typedef struct{
     u8 sign;
     u64 extention;
-    u8 *data_Int;
+    u8 *data_i32;
     u8 division;
     u8 *data_Float;
     String _String_Data;
-}BigfloatObject;
+}Bigf32Object;
 
 
 typedef struct{
-    double *data;
+    f64 *data;
     String _String_Data;
 }FloatTypeObject;
 
@@ -388,7 +388,7 @@ typedef struct{
     reference_types Type_Identifier_Object;
     union{
         BigintObject *int_Object_dinamic;
-        Identifier_Int_Static_Object *int_Object_static;
+        Identifier_i32_Static_Object *int_Object_static;
         StringTypeObject *StringObject;
         struct ListTypeObject *list_Object;
     }types;
@@ -399,25 +399,25 @@ typedef struct{
     reference_types Type_Identifier_Object;
     union{
         BigintObject *int_Object_dinamic;
-        Identifier_Int_Static_Object *int_Object_static;
+        Identifier_i32_Static_Object *int_Object_static;
         StringTypeObject *StringObject;
         ListTypeObject *list_Object;
-        BigfloatObject *float_Object_dinamic;
-        FloatTypeObject *float_Object_static;
+        Bigf32Object *f32_Object_dinamic;
+        FloatTypeObject *f32_Object_static;
     }types;
 
 }Objects;
 
 
 typedef struct{
-    Long extention;
-    Long capacity;
+    i64 extention;
+    i64 capacity;
     union{
-        Long *intStaticArray;
+        i64 *intStaticArray;
         String *strArray;
-        double *floatStaticArray;
+        f64 *f32StaticArray;
         BigintObject *intDinamicArray;
-        BigfloatObject *floatDinamicArray;
+        Bigf32Object *f32DinamicArray;
         ListTypeObject *listArray;
         struct ArrayTypeObject *arrayArray;
     }type_Arrays;
@@ -428,14 +428,14 @@ typedef struct{
     reference_types *params;
     reference_types *args;
     Objects *objects;
-    Int paramsQtty;
+    i32 paramsQtty;
     union{
         BigintObject *int_Object_dinamic;
-        Identifier_Int_Static_Object *int_Object_static;
+        Identifier_i32_Static_Object *int_Object_static;
         StringTypeObject *StringObject;
         ListTypeObject *list_Object;
-        BigfloatObject *float_Object_dinamic;
-        FloatTypeObject *float_Object_static;
+        Bigf32Object *f32_Object_dinamic;
+        FloatTypeObject *f32_Object_static;
         ArrayTypeObject *array_Object;
     }_return;
 }Identifier_Function_Object;
@@ -450,11 +450,11 @@ typedef struct{
 
         register u64 i;
         for(i = 0; i < (*list_Object)->extention; i++){
-            if((*list_Object)[i].Type_Identifier_Object == IDENTIFIER_Int_OBJECT_STATIC){
+            if((*list_Object)[i].Type_Identifier_Object == IDENTIFIER_i32_OBJECT_STATIC){
                 strcat((*list_Object)->list_String, (*list_Object)[i].types.int_Object_static->_String_data);
             }
 
-            else if((*list_Object)[i].Type_Identifier_Object == IDENTIFIER_Int_OBJECT_DINAMIC){
+            else if((*list_Object)[i].Type_Identifier_Object == IDENTIFIER_i32_OBJECT_DINAMIC){
                 strcat((*list_Object)->list_String, (*list_Object)[i].types.int_Object_dinamic->_String_Data);
             }
 
@@ -478,10 +478,10 @@ typedef struct{
 }*/
 
 /*
-register Long character = 0, index = 0;
-    register Byte find = 0;
-    Byte error = 0;
-    register Long counterCharacteres = 0, lenFontCode = strsize(code);
+register i64 character = 0, index = 0;
+    register i8 find = 0;
+    i8 error = 0;
+    register i64 counterCharacteres = 0, lenFontCode = strsize(code);
     String word = STRALLOC(INITSIZEWORDIDENTIFIER);
     String wordAux = STRALLOC(INITSIZEWORDIDENTIFIER);
     String identifier = STRALLOC(INITSIZEWORDIDENTIFIER);
@@ -579,21 +579,21 @@ register Long character = 0, index = 0;
             counterCharacteres--;
         }
 
-        else if((keyWord_table(wordAux, "int") == Int) || (keyWord_table(wordAux, "str") == STR) ||
-        (keyWord_table(wordAux, "float") == Float)){
+        else if((keyWord_table(wordAux, "int") == i32) || (keyWord_table(wordAux, "str") == STR) ||
+        (keyWord_table(wordAux, "f32") == Float)){
             code++;
             counterCharacteres++;
 
             if(*code == ' '){
                 switch(hashString(wordAux)){
-                    case Int:
+                    case i32:
                         token[index].type = _IDENTIFIER_int;
                         break;
                     case STR:
                         token[index].type = _IDENTIFIER_str;
                         break;
                     case Float:
-                        token[index].type = _IDENTIFIER_float;
+                        token[index].type = _IDENTIFIER_f32;
                         break;
                 }
 
@@ -974,7 +974,7 @@ register Long character = 0, index = 0;
 
         //validação de Strings
         else if((int)*code == 39 || (int)*code == 34){
-            Long lenString = 10;
+            i64 lenString = 10;
             String getString = (String)malloc(lenString);
             char typeStart_String = *code;
 
@@ -986,7 +986,7 @@ register Long character = 0, index = 0;
             code++;
             counterCharacteres++;
 
-            Long counter = 0;
+            i64 counter = 0;
             while(*code != typeStart_String && *code != '\0'){
                 getString[counter] = *code;
 
@@ -1026,11 +1026,11 @@ register Long character = 0, index = 0;
         }
 
         else if((int)*code >= 48 && (int)*code <= 57){
-            Long lenNum = 10;
-            Byte flagFloat = 0;
+            i64 lenNum = 10;
+            i8 flagFloat = 0;
             String getNum = (String)malloc(lenNum);
 
-            Long i = 0;
+            i64 i = 0;
             while(*code != ' ' && *code != '\0' && *code != '\n'){
                 if(!(((int)*code >= 48 && (int)*code <= 57) || *code == '.')){
                     token[index].type = _ERROR_FORMAT_IDENTIFIER;
@@ -1076,7 +1076,7 @@ register Long character = 0, index = 0;
                     }
                     
                     else{
-                        token[index].type = _IDENTIFIER_CONST_Int;
+                        token[index].type = _IDENTIFIER_CONST_i32;
                         token[index].value = (String)malloc(strsize(getNum));
                         strcpy(token[index].value, getNum);
                     }
@@ -1146,8 +1146,8 @@ register Long character = 0, index = 0;
             keyWordIdentify(word, "oper") == OPER ||
             keyWordIdentify(word, "case") == CASE || 
             keyWordIdentify(word, "default") == DEFAULT ||
-            keyWordIdentify(word, "int") == Int ||
-            keyWordIdentify(word, "float") == Float ||
+            keyWordIdentify(word, "int") == i32 ||
+            keyWordIdentify(word, "f32") == Float ||
             keyWordIdentify(word, "String") == String
         ){*/
 
@@ -1161,8 +1161,8 @@ register Long character = 0, index = 0;
         (keyWordIdentify(identifierObject, "default") == DEFAULT) ||
         (keyWordIdentify(identifierObject, "case") == CASE) ||
         (keyWordIdentify(identifierObject, "continue") == CONTINUE) ||
-        (keyWordIdentify(identifierObject, "int") == Int) ||
-        (keyWordIdentify(identifierObject, "float") == Float) ||
+        (keyWordIdentify(identifierObject, "int") == i32) ||
+        (keyWordIdentify(identifierObject, "f32") == Float) ||
         (keyWordIdentify(identifierObject, "String") == String) ||
         (keyWordIdentify(identifierObject, "and") == AND) ||
         (keyWordIdentify(identifierObject, "or") == OR) ||
@@ -1174,8 +1174,8 @@ register Long character = 0, index = 0;
             return;
     }*/
 
-/*register Long strEqualKey_word = codeString(key_word);
-    register Long lenStr = strsize(str), lenkeyWord = strsize(key_word);
+/*register i64 strEqualKey_word = codeString(key_word);
+    register i64 lenStr = strsize(str), lenkeyWord = strsize(key_word);
 
     if(lenStr != lenkeyWord){
         return 0;
@@ -1193,7 +1193,7 @@ register Long character = 0, index = 0;
 
     return strEqualKey_word;*/
 
-/*void verifyIdentifierDeclaration(String identifierObject, Byte *error){
+/*void verifyIdentifierDeclaration(String identifierObject, i8 *error){
     if(keyWordIdentify(identifierObject, KeyWordTable, KEYWORDsQTTY)){
         (*error) = _ERROR_INVALID_NAME_IDENTIFIER;
         return;
@@ -1278,7 +1278,7 @@ register Long character = 0, index = 0;
         }*/
 
 /*String format = *formatptr;
-    Long size = strsize(format), count = 0;
+    i64 size = strsize(format), count = 0;
     String dstny = STRALLOC((size + 1));
     String dty = dstny;
 
@@ -1304,19 +1304,19 @@ register Long character = 0, index = 0;
 
 
 /*typedef struct{
-    Byte sizeBits;
+    i8 sizeBits;
     union{
-        Byte data8bits;
-        Short data16bits;
-        Int data32bits;
-        Long data64bits;
-    //}TypeInt;
+        i8 data8bits;
+        i16 data16bits;
+        i32 data32bits;
+        i64 data64bits;
+    //}Typei32;
     String _String_data;
-}Identifier_Int_Static_Object;*/
+}Identifier_i32_Static_Object;*/
 
-/*String GetUTF(String path, Byte *Error){
+/*String GetUTF(String path, i8 *Error){
     FILE *f = _wfopen(path, L"rb");
-    Long len = 1024, counter = 0;
+    i64 len = 1024, counter = 0;
     String rune = STRALLOC(len);
 
     if(f == NULL){
@@ -1331,14 +1331,14 @@ register Long character = 0, index = 0;
         }
 
         else if((byte & 0xE0) == 0xC0){
-            u16 lastByte = byte;
+            u16 lasti8 = byte;
             fread(&byte, sizeof(u8), 1, f);
 
             if((byte & 0xC0) == 0x80){
-                lastByte &= 0x1F;
-                lastByte <<= 6;
+                lasti8 &= 0x1F;
+                lasti8 <<= 6;
                 byte &= 0x3F;
-                rune[counter] = lastByte | byte;
+                rune[counter] = lasti8 | byte;
             }
             else{
                 (*Error) = ERRORUTF2BYTES;
@@ -1349,20 +1349,20 @@ register Long character = 0, index = 0;
         }
 
         else if((byte & 0xF0) == 0xE0){
-            u16 firstByte = byte;
+            u16 firsti8 = byte;
             fread(&byte, sizeof(u8), 1, f);
-            u16 secondByte = byte;
+            u16 secondi8 = byte;
 
             fread(&byte, sizeof(u8), 1, f);
-            u16 thirdByte = byte;
+            u16 thirdi8 = byte;
 
-            if((secondByte & 0xC0) == 0x80 && (thirdByte & 0xC0) == 0x80){
-                firstByte &= 0x0F;
-                firstByte <<= 12;
-                secondByte &= 0x3F;
-                secondByte <<= 6;
-                thirdByte &= 0x3F;
-                rune[counter] = firstByte | secondByte | thirdByte;
+            if((secondi8 & 0xC0) == 0x80 && (thirdi8 & 0xC0) == 0x80){
+                firsti8 &= 0x0F;
+                firsti8 <<= 12;
+                secondi8 &= 0x3F;
+                secondi8 <<= 6;
+                thirdi8 &= 0x3F;
+                rune[counter] = firsti8 | secondi8 | thirdi8;
             }
             else{
                 (*Error) = ERRORUTF3BYTES;
@@ -1371,26 +1371,26 @@ register Long character = 0, index = 0;
         }
 
         else if((byte & 0xF8) == 0xF0){
-            u16 firstByte = byte, secondByte, thirdByte, fourthByte;
+            u16 firsti8 = byte, secondi8, thirdi8, fourthi8;
 
             fread(&byte, sizeof(u8), 1, f);
-            secondByte = byte;
+            secondi8 = byte;
 
             fread(&byte, sizeof(u8), 1, f);
-            thirdByte = byte;
+            thirdi8 = byte;
 
             fread(&byte, sizeof(u8), 1, f);
-            fourthByte = byte;
+            fourthi8 = byte;
 
-            if((secondByte & 0xC0) == 0x80 && (thirdByte & 0xC0) == 0x80 && (fourthByte & 0xC0) == 0x80){
-                firstByte &= 0x07;
-                firstByte <<= 18;
-                secondByte &= 0x3F;
-                secondByte <<= 12;
-                thirdByte &= 0x3F;
-                thirdByte <<= 6;
-                fourthByte &= 0x3F;
-                rune[counter] = firstByte | secondByte | thirdByte | fourthByte;
+            if((secondi8 & 0xC0) == 0x80 && (thirdi8 & 0xC0) == 0x80 && (fourthi8 & 0xC0) == 0x80){
+                firsti8 &= 0x07;
+                firsti8 <<= 18;
+                secondi8 &= 0x3F;
+                secondi8 <<= 12;
+                thirdi8 &= 0x3F;
+                thirdi8 <<= 6;
+                fourthi8 &= 0x3F;
+                rune[counter] = firsti8 | secondi8 | thirdi8 | fourthi8;
             }
             else{
                 (*Error) = ERRORUTF4BYTES;
@@ -1418,9 +1418,9 @@ register Long character = 0, index = 0;
     return rune;
 }*/
 
-/*String GetUTF(String path, Byte *Error){
+/*String GetUTF(String path, i8 *Error){
     FILE *f = _wfopen(path, L"rb");
-    Long len = 1024, counter = 0;
+    i64 len = 1024, counter = 0;
     String rune = STRALLOC(len);
 
     if(f == NULL){
@@ -1435,14 +1435,14 @@ register Long character = 0, index = 0;
         }
 
         else if((byte & 0xE0) == 0xC0){
-            u16 lastByte = byte;
+            u16 lasti8 = byte;
             fread(&byte, sizeof(u8), 1, f);
 
             if((byte & 0xC0) == 0x80){
-                lastByte &= 0x1F;
-                lastByte <<= 6;
+                lasti8 &= 0x1F;
+                lasti8 <<= 6;
                 byte &= 0x3F;
-                rune[counter] = lastByte | byte;
+                rune[counter] = lasti8 | byte;
             }
             else{
                 (*Error) = ERRORUTF2BYTES;
@@ -1453,18 +1453,18 @@ register Long character = 0, index = 0;
         }
 
         else if((byte & 0xF0) == 0xE0){
-            u16 firstByte = byte;
-            u8 nextBytes[2];
-            fread(nextBytes, sizeof(u8), 2, f);
+            u16 firsti8 = byte;
+            u8 nexti8s[2];
+            fread(nexti8s, sizeof(u8), 2, f);
 
-            if((nextBytes[0] & 0xC0) == 0x80 && (nextBytes[1] & 0xC0) == 0x80){
-                u16 secondByte = nextBytes[0], thirdbyte = nextBytes[1];
-                firstByte &= 0x0F;
-                firstByte <<= 12;
-                nextBytes[0] &= 0x3F;
-                nextBytes[0] <<= 6;
-                nextBytes[1] &= 0x3F;
-                rune[counter] = firstByte | nextBytes[0] | nextBytes[1];
+            if((nexti8s[0] & 0xC0) == 0x80 && (nexti8s[1] & 0xC0) == 0x80){
+                u16 secondi8 = nexti8s[0], thirdbyte = nexti8s[1];
+                firsti8 &= 0x0F;
+                firsti8 <<= 12;
+                nexti8s[0] &= 0x3F;
+                nexti8s[0] <<= 6;
+                nexti8s[1] &= 0x3F;
+                rune[counter] = firsti8 | nexti8s[0] | nexti8s[1];
             }
             else{
                 (*Error) = ERRORUTF3BYTES;
@@ -1473,20 +1473,20 @@ register Long character = 0, index = 0;
         }
 
         else if((byte & 0xF8) == 0xF0){
-            u16 firstByte = byte;
-            u16 nextBytes[3];
+            u16 firsti8 = byte;
+            u16 nexti8s[3];
 
-            fread(nextBytes, sizeof(u8), 3, f);
+            fread(nexti8s, sizeof(u8), 3, f);
 
-            if((nextBytes[0] & 0xC0) == 0x80 && (nextBytes[1] & 0xC0) == 0x80 && (nextBytes[2] & 0xC0) == 0x80){
-                firstByte &= 0x07;
-                firstByte <<= 18;
-                nextBytes[0] &= 0x3F;
-                nextBytes[0] <<= 12;
-                nextBytes[1] &= 0x3F;
-                nextBytes[1] <<= 6;
-                nextBytes[2] &= 0x3F;
-                rune[counter] = firstByte | nextBytes[0] | nextBytes[1] | nextBytes[1];
+            if((nexti8s[0] & 0xC0) == 0x80 && (nexti8s[1] & 0xC0) == 0x80 && (nexti8s[2] & 0xC0) == 0x80){
+                firsti8 &= 0x07;
+                firsti8 <<= 18;
+                nexti8s[0] &= 0x3F;
+                nexti8s[0] <<= 12;
+                nexti8s[1] &= 0x3F;
+                nexti8s[1] <<= 6;
+                nexti8s[2] &= 0x3F;
+                rune[counter] = firsti8 | nexti8s[0] | nexti8s[1] | nexti8s[1];
             }
             else{
                 (*Error) = ERRORUTF4BYTES;
@@ -1514,11 +1514,11 @@ register Long character = 0, index = 0;
     return rune;
 }*/
 
-/*BigintObject* create_Int_Dinamic_Object(String parseToInt){
-    u64 int_Length = strsize(parseToInt);
-    BigintObject *int_Object = DIntALLOC(1);
+/*BigintObject* create_i32_Dinamic_Object(String parseToi32){
+    u64 int_Length = strsize(parseToi32);
+    BigintObject *int_Object = BIGINTALLOC(1);
 
-    if(parseToInt[0] == L'-'){
+    if(parseToi32[0] == L'-'){
         int_Object->sign = 1;
     }
 
@@ -1527,11 +1527,11 @@ register Long character = 0, index = 0;
     }
 
     int_Object->extention = int_Length;
-    int_Object->data = uByteALLOC(int_Object->extention);
+    int_Object->data = UINT8ALLOC(int_Object->extention);
 
-    register Long i;
+    register i64 i;
     for(i = int_Object->sign; i < int_Object->extention; i++){
-        int_Object->data[i] = (int)parseToInt[i] - 48;
+        int_Object->data[i] = (int)parseToi32[i] - 48;
     }
 
     return int_Object;
@@ -1562,19 +1562,19 @@ StringTypeObject* create_String_Object(String data, u64 length_Data){
 
         switch(list[index].ref_ty){
             case _long_:
-                v = list[index].types.long_ty;
+                v = list[index].types.i64_ty;
                 str = inttstr(v);
                 break;
             case _int_:
-                v = (long long)list[index].types.int_ty;
+                v = (long long)list[index].types.i32_ty;
                 str = inttstr(v);
                 break;
             case _short_:
-                v = (long long)list[index].types.short_ty;
+                v = (long long)list[index].types.i16_ty;
                 str = inttstr(v);
                 break;
             case _byte_:
-                v = (long long)list[index].types.byte_ty;
+                v = (long long)list[index].types.i8_ty;
                 str = inttstr(v);
                 break;
             case _string_:
@@ -1605,23 +1605,23 @@ StringTypeObject* create_String_Object(String data, u64 length_Data){
 
 /*
 typedef struct{
-    LongTypeObject *LongArray;
-}ArrayLongObject;
+    i64TypeObject *i64Array;
+}Arrayi64Object;
 
 
 typedef struct{
-    IntTypeObject *IntArray;
-}ArrayIntObject;
+    i32TypeObject *i32Array;
+}Arrayi32Object;
 
 
 typedef struct{
-    ShortTypeObject *ShortArray;
-}ArrayShortObject;
+    i16TypeObject *i16Array;
+}Arrayi16Object;
 
 
 typedef struct{
-    ByteTypeObject *ByteArray;
-}ArrayByteObject;
+    i8TypeObject *i8Array;
+}Arrayi8Object;
 
 
 typedef struct{
@@ -1640,37 +1640,37 @@ typedef struct{
 
 
 typedef struct{
-    DoubleTypeObject *doubleArray;
+    DoubleTypeObject *f64Array;
 }ArrayDoubleObject;
 
 
 typedef struct{
     BigintObject *intDinamicArray;
-}ArrayIntDinamicObject;
+}Arrayi32DinamicObject;
 
 
 typedef struct{
-    BigfloatObject *floatDinamicArray;
-}ArrayBigfloatObject;
+    Bigf32Object *f32DinamicArray;
+}ArrayBigf32Object;
 
 typedef struct{
-    Long LongObject;
-}LongTypeObject;
-
-
-typedef struct{
-    Int IntObject;
-}IntTypeObject;
+    i64 i64Object;
+}i64TypeObject;
 
 
 typedef struct{
-    Short ShortObject;
-}ShortTypeObject;
+    i32 i32Object;
+}i32TypeObject;
 
 
 typedef struct{
-    Byte ByteObject;
-}ByteTypeObject;
+    i16 i16Object;
+}i16TypeObject;
+
+
+typedef struct{
+    i8 i8Object;
+}i8TypeObject;
 */
 
 /*
@@ -1694,10 +1694,10 @@ void print_List_Object_define(ListTypeObject **list_Object){
                     break;
 
                 default:
-                    if((*list_Object)[i].Type_Identifier_Object == __Long__ ||
-                        (*list_Object)[i].Type_Identifier_Object == __Int__ ||
-                        (*list_Object)[i].Type_Identifier_Object == __Short__ ||
-                        (*list_Object)[i].Type_Identifier_Object == __Byte__){
+                    if((*list_Object)[i].Type_Identifier_Object == __i64__ ||
+                        (*list_Object)[i].Type_Identifier_Object == __i32__ ||
+                        (*list_Object)[i].Type_Identifier_Object == __i16__ ||
+                        (*list_Object)[i].Type_Identifier_Object == __i8__){
                         current_position += sprintf(current_position, "%s", (*list_Object)[i].types.int_Object_static->_String_data);
                     }
                     break;
@@ -1740,30 +1740,30 @@ reference_types type_Object, size_ty Data_length)
     printf("Type    %d\n", type_Object);
 
     for(int i = 0; i < Data_length; i++){
-        //printf("Byte[%d]    %d\n", i, pkrv.bytePack[i]);
+        //printf("i8[%d]    %d\n", i, pkrv.bytePack[i]);
     }
     printf("end byte[]\n\n");
 
     switch(type_Object){
-        case __Long__:
-            printf("Type: Long\n");
-            (*list_Object)[_extention - 1].Types.IntTypes.LongType.LongObject = compressToInteger(pkrv.bytePack, Data_length);
-            printf("n: %lld\n", (*list_Object)[_extention - 1].Types.IntTypes.LongType.LongObject);
+        case __i64__:
+            printf("Type: i64\n");
+            (*list_Object)[_extention - 1].Types.i32Types.i64Type.i64Object = compressToi32eger(pkrv.bytePack, Data_length);
+            printf("n: %lld\n", (*list_Object)[_extention - 1].Types.i32Types.i64Type.i64Object);
             break;
-        case __Int__:
-            printf("Type: Int\n");
-            (*list_Object)[_extention - 1].Types.IntTypes.IntType.IntObject = (Int)compressToInteger(pkrv.bytePack, Data_length);
-            printf("n: %lld\n", (*list_Object)[_extention - 1].Types.IntTypes.IntType.IntObject);
+        case __i32__:
+            printf("Type: i32\n");
+            (*list_Object)[_extention - 1].Types.i32Types.i32Type.i32Object = (i32)compressToi32eger(pkrv.bytePack, Data_length);
+            printf("n: %lld\n", (*list_Object)[_extention - 1].Types.i32Types.i32Type.i32Object);
             break;
-        case __Short__:
-            printf("Type: Short\n");
-            (*list_Object)[_extention - 1].Types.IntTypes.ShortType.ShortObject = (Short)compressToInteger(pkrv.bytePack, Data_length);
-            printf("n: %lld\n", (*list_Object)[_extention - 1].Types.IntTypes.ShortType.ShortObject);
+        case __i16__:
+            printf("Type: i16\n");
+            (*list_Object)[_extention - 1].Types.i32Types.i16Type.i16Object = (i16)compressToi32eger(pkrv.bytePack, Data_length);
+            printf("n: %lld\n", (*list_Object)[_extention - 1].Types.i32Types.i16Type.i16Object);
             break;
-        case __Byte__:
-            printf("Type: Byte\n");
-            (*list_Object)[_extention - 1].Types.IntTypes.ByteType.ByteObject = (Byte)compressToInteger(pkrv.bytePack, Data_length);
-            printf("n: %lld\n", (*list_Object)[_extention - 1].Types.IntTypes.ByteType.ByteObject);
+        case __i8__:
+            printf("Type: i8\n");
+            (*list_Object)[_extention - 1].Types.i32Types.i8Type.i8Object = (i8)compressToi32eger(pkrv.bytePack, Data_length);
+            printf("n: %lld\n", (*list_Object)[_extention - 1].Types.i32Types.i8Type.i8Object);
             break;
         case __String__:
             (*list_Object)[_extention - 1].Types.StringObject.StringObject = strcopy(pkrv.shortPack);
@@ -1776,20 +1776,20 @@ reference_types type_Object, size_ty Data_length)
 /*
 
 
-void assemblePackage(packageReceived *pkrv, size_ty size, u8 receivedBytes[]){
+void assemblePackage(packageReceived *pkrv, size_ty size, u8 receivedi8s[]){
     if(pkrv->size_b != 0){
         free(pkrv->bytePack);
         pkrv->bytePack = (u8*)realloc(pkrv->bytePack, size);
     }
 
     else{
-        pkrv->bytePack = ByteALLOC(size);
+        pkrv->bytePack = INT8ALLOC(size);
     }
 
     pkrv->size_b = size;
 
     for(size_ty i = 0; i < size; i++){
-        pkrv->bytePack[i] = receivedBytes[i];
+        pkrv->bytePack[i] = receivedi8s[i];
     }
 }
 */
@@ -1818,20 +1818,20 @@ packageReceived pkrv, size_ty size)
     }
 
     switch(ref_ty){
-        case __Long__:
-            (*list)[index].Types.primitiveTy.intTys.long_ty = compressToInteger(pkrv.package_ty.pack_bytes, size);
+        case __i64__:
+            (*list)[index].Types.primitiveTy.intTys.i64_ty = compressToi32eger(pkrv.package_ty.pack_bytes, size);
             break;
 
-        case __Int__:
-            (*list)[index].Types.primitiveTy.intTys.int_ty = compressToInteger(pkrv.package_ty.pack_bytes, size);
+        case __i32__:
+            (*list)[index].Types.primitiveTy.intTys.i32_ty = compressToi32eger(pkrv.package_ty.pack_bytes, size);
             break;
 
-        case __Short__:
-            (*list)[index].Types.primitiveTy.intTys.short_ty = compressToInteger(pkrv.package_ty.pack_bytes, size);
+        case __i16__:
+            (*list)[index].Types.primitiveTy.intTys.i16_ty = compressToi32eger(pkrv.package_ty.pack_bytes, size);
             break;
         
-        case __Byte__:
-            (*list)[index].Types.primitiveTy.intTys.byte_ty = compressToInteger(pkrv.package_ty.pack_bytes, size);
+        case __i8__:
+            (*list)[index].Types.primitiveTy.intTys.i8_ty = compressToi32eger(pkrv.package_ty.pack_bytes, size);
             break;
 
         case __String__:
@@ -1878,8 +1878,8 @@ typedef struct{
     reference_types object_ty;
     union{
         PrimitiveTypes primitiveTy;
-        BigintObject IntDinamicType;
-        BigfloatObject FloatDinamicType;
+        BigintObject i32DinamicType;
+        Bigf32Object FloatDinamicType;
         All_Arrays all_arrays;
         ArrayList *ArrayList;
         struct HashMap *HashObject;
@@ -1896,17 +1896,17 @@ ListTypeObject* copyList(ListTypeObject *list){
     List->GN_Fields.lengthstr = list->GN_Fields.lengthstr;
     for(size_ty i = 0; i < List->GN_Fields.extention; i++){
         switch(list[i].object_ty){
-            case __Long__:
-                List[i].Types.primitiveTy.intTys.long_ty = list[i].Types.primitiveTy.intTys.long_ty;
+            case __i64__:
+                List[i].Types.primitiveTy.intTys.i64_ty = list[i].Types.primitiveTy.intTys.i64_ty;
                 break;
-            case __Int__:
-                List[i].Types.primitiveTy.intTys.int_ty = list[i].Types.primitiveTy.intTys.int_ty;
+            case __i32__:
+                List[i].Types.primitiveTy.intTys.i32_ty = list[i].Types.primitiveTy.intTys.i32_ty;
                 break;
-            case __Short__:
-                List[i].Types.primitiveTy.intTys.short_ty = list[i].Types.primitiveTy.intTys.short_ty;
+            case __i16__:
+                List[i].Types.primitiveTy.intTys.i16_ty = list[i].Types.primitiveTy.intTys.i16_ty;
                 break;
-            case __Byte__:
-                List[i].Types.primitiveTy.intTys.byte_ty = list[i].Types.primitiveTy.intTys.byte_ty;
+            case __i8__:
+                List[i].Types.primitiveTy.intTys.i8_ty = list[i].Types.primitiveTy.intTys.i8_ty;
                 break;
         }
         List[i].object_ty = list[i].object_ty;
@@ -1925,25 +1925,25 @@ ListTypeObject* copyList(ListTypeObject *list){
     setBuffer(&liststrcpy, L"[");
 
     for(size_ty index = 0; index < list->GN_Fields.extention; index++){
-        Long v;
+        i64 v;
 
         printf("Type: %d\n", list[index].object_ty);
         switch(list[index].object_ty){
-            case __Long__:
+            case __i64__:
                 printf("Caiu aqui: long\n");
-                v = list[index].Types.primitiveTy.intTys.long_ty;
+                v = list[index].Types.primitiveTy.intTys.i64_ty;
                 break;
-            case __Int__:
+            case __i32__:
                 printf("Caiu aqui: int\n");
-                v = (long long)list[index].Types.primitiveTy.intTys.int_ty;
+                v = (long long)list[index].Types.primitiveTy.intTys.i32_ty;
                 break;
-            case __Short__:
+            case __i16__:
                 printf("Caiu aqui: short\n");
-                v = (long long)list[index].Types.primitiveTy.intTys.short_ty;
+                v = (long long)list[index].Types.primitiveTy.intTys.i16_ty;
                 break;
-            case __Byte__:
+            case __i8__:
                 printf("Caiu aqui: byte\n");
-                v = (long long)list[index].Types.primitiveTy.intTys.byte_ty;
+                v = (long long)list[index].Types.primitiveTy.intTys.i8_ty;
                 break;
             case __String__:
                 str = STRALLOC((strsize(list->Types.primitiveTy.string_ty) + 3));
@@ -1987,49 +1987,49 @@ ListTypeObject* copyList(ListTypeObject *list){
 
     pkrv.pack_ty = PACK_BYTES;
 
-    pkrv.package_ty.pack_bytes = (data_c[]){0x00, 0x09, 0x02, 0x02};
-    pushList(&list, __Long__, pkrv, 4);
+    pkrv.package_ty.pack_bytes = (u8[]){0x00, 0x09, 0x02, 0x02};
+    pushList(&list, __i64__, pkrv, 4);
 
-    pkrv.package_ty.pack_bytes = (data_c[]){0x00, 0x03, 0x05};
-    pushList(&list, __Long__, pkrv, 3);
+    pkrv.package_ty.pack_bytes = (u8[]){0x00, 0x03, 0x05};
+    pushList(&list, __i64__, pkrv, 3);
 
-    pkrv.package_ty.pack_bytes = (data_c[]){0x01, 0x03, 0x05};
-    pushList(&list, __Byte__, pkrv, 3);
+    pkrv.package_ty.pack_bytes = (u8[]){0x01, 0x03, 0x05};
+    pushList(&list, __i8__, pkrv, 3);
 
-    pkrv.package_ty.pack_bytes = (data_c[]){0x00, 0x03, 0x05, 0x00};
-    pushList(&list, __Short__, pkrv, 4);
+    pkrv.package_ty.pack_bytes = (u8[]){0x00, 0x03, 0x05, 0x00};
+    pushList(&list, __i16__, pkrv, 4);
 
-    Long limit = 1000000;
-    for(Long i = 0; i < limit; i++){
+    i64 limit = 1000000;
+    for(i64 i = 0; i < limit; i++){
         if(i % 7 == 0){
             pkrv.pack_ty = PACK_DOUBLE_BYTES;
             i_n = inttstr(i);
-            pkrv.package_ty.pack_doubleBytes = i_n;
+            pkrv.package_ty.pack_f64i8s = i_n;
             pushList(&list, __String__, pkrv, strsize(i_n) + 1);
         }
 
         else{
             pkrv.pack_ty = PACK_BYTES;
             char size = 0;
-            bytes = expandsToBytes(i, &size);
+            bytes = expandsToi8s(i, &size);
             pkrv.package_ty.pack_bytes = bytes;
 
             if(i <= 127 && i >= -128){
-                pushList(&list, __Byte__, pkrv, (unsigned long long)size);
+                pushList(&list, __i8__, pkrv, (unsigned long long)size);
             }
 
             else if(i <= 32767 && i >= -32768){
-                pushList(&list, __Short__, pkrv, (unsigned long long)size);
+                pushList(&list, __i16__, pkrv, (unsigned long long)size);
             }
 
             else if(i % 2 == 0){
-                pushList(&list, __Int__, pkrv, (unsigned long long)size);
+                pushList(&list, __i32__, pkrv, (unsigned long long)size);
             }
 
             else{
                 pkrv.pack_ty = PACK_INTEGER;
                 pkrv.package_ty.pack_integer = i;
-                pushList(&list, __Long__, pkrv, (unsigned long long)size);
+                pushList(&list, __i64__, pkrv, (unsigned long long)size);
             }
         }
     }
@@ -2040,37 +2040,37 @@ ListTypeObject* copyList(ListTypeObject *list){
     pkrv.pack_ty = PACK_BYTES;
 
     pkrv.package_ty.pack_bytes = (unsigned char[]){0x00, 0x03, 0x05, 0x00, 0x00, 0x00};
-    pushList(&list, __Long__, pkrv, 6);
+    pushList(&list, __i64__, pkrv, 6);
     pkrv.package_ty.pack_bytes[0] = 0x01;
-    pushList(&list, __Long__, pkrv, 6);
+    pushList(&list, __i64__, pkrv, 6);
 
     pkrv.package_ty.pack_bytes = (unsigned char[]){0x00, 0x03, 0x05, 0x00, 0x00};
-    pushList(&list, __Int__, pkrv, 5);
+    pushList(&list, __i32__, pkrv, 5);
     pkrv.package_ty.pack_bytes[0] = 0x01;
-    pushList(&list, __Int__, pkrv, 5);
+    pushList(&list, __i32__, pkrv, 5);
 
     pkrv.package_ty.pack_bytes = (unsigned char[]){0x00, 0x03, 0x05, 0x00};
-    pushList(&list, __Short__, pkrv, 4);
+    pushList(&list, __i16__, pkrv, 4);
     pkrv.package_ty.pack_bytes[0] = 0x01;
-    pushList(&list, __Short__, pkrv, 4);
+    pushList(&list, __i16__, pkrv, 4);
 
     pkrv.package_ty.pack_bytes = (unsigned char[]){0x00, 0x03, 0x05};
-    pushList(&list, __Byte__, pkrv, 3);
+    pushList(&list, __i8__, pkrv, 3);
     pkrv.package_ty.pack_bytes[0] = 0x01;
-    pushList(&list, __Byte__, pkrv, 3);
+    pushList(&list, __i8__, pkrv, 3);
 
     pkrv.pack_ty = PACK_DOUBLE_BYTES;
 
     lchar hello_world[] = {0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x2C, 0x20, 0x57, 0x6F, 0x72, 0x6C, 0x64, 0x21, 0x00};
-    pkrv.package_ty.pack_doubleBytes = hello_world;
+    pkrv.package_ty.pack_f64i8s = hello_world;
     pushList(&list, __String__, pkrv, 14);
 
     lchar input[] = L"Todos esses momentos se perderão no tempo, como lágrimas na chuva...";
-    pkrv.package_ty.pack_doubleBytes = input;
+    pkrv.package_ty.pack_f64i8s = input;
     pushList(&list, __String__, pkrv, 69);
 
     lchar blade_runner[] = L"Blade Runner: Melhor filme de toda a história do cinema!";
-    pkrv.package_ty.pack_doubleBytes = blade_runner;
+    pkrv.package_ty.pack_f64i8s = blade_runner;
     pushList(&list, __String__, pkrv, 43);
 
     lchar *games[] = {
@@ -2081,50 +2081,50 @@ ListTypeObject* copyList(ListTypeObject *list){
                       };
 
     for(char y = 0; y < 11; y++){
-        pkrv.package_ty.pack_doubleBytes = games[y];
+        pkrv.package_ty.pack_f64i8s = games[y];
         pushList(&list, __String__, pkrv, strsize(games[y]) + 1);
     }
 
     lchar maxnum_long_long[] = L"9223372036854775807";
-    Long max_nLL = convert_StringToInteger(L"9223372036854775807");
+    i64 max_nLL = convert_StringToi32eger(L"9223372036854775807");
 
     pkrv.pack_ty = PACK_BYTES;
 
     charsize_t len = 0;
-    data_c *newData_c = expandsToBytes(max_nLL, &len);
+    u8 *newData_c = expandsToi8s(max_nLL, &len);
     pkrv.package_ty.pack_bytes = newData_c;
-    pushList(&list, __Long__, pkrv, (Long)len);
+    pushList(&list, __i64__, pkrv, (i64)len);
 
     pkrv.pack_ty = PACK_DOUBLE_BYTES;
 
     free(newData_c);
-    pkrv.package_ty.pack_doubleBytes = maxnum_long_long;
+    pkrv.package_ty.pack_f64i8s = maxnum_long_long;
     pushList(&list, __String__, pkrv, strsize(maxnum_long_long) + 1);
 
     lchar ellen[] = L"Ellen, morzinho di mi vida";
-    pkrv.package_ty.pack_doubleBytes = ellen;
+    pkrv.package_ty.pack_f64i8s = ellen;
     pushList(&list, __String__, pkrv, strsize(ellen) + 1);
 
     pkrv.pack_ty = PACK_BYTES;
 
-    pkrv.package_ty.pack_bytes = (data_c[]){0x00, 0x09, 0x02, 0x02, 0x03, 0x03, 0x07, 0x02, 0x00, 0x03, 0x06};
-    pushList(&list, __Long__, pkrv, 11);
+    pkrv.package_ty.pack_bytes = (u8[]){0x00, 0x09, 0x02, 0x02, 0x03, 0x03, 0x07, 0x02, 0x00, 0x03, 0x06};
+    pushList(&list, __i64__, pkrv, 11);
 
     pkrv.pack_ty = PACK_INTEGER;
 
     pkrv.package_ty.pack_integer = 9223372036854775807;
-    pushList(&list, __Long__, pkrv, strsize(L"9223372036854775807") + 1);
+    pushList(&list, __i64__, pkrv, strsize(L"9223372036854775807") + 1);
 
     pkrv.package_ty.pack_integer = 25042006;
-    pushList(&list, __Int__, pkrv, strsize(L"25042006") + 1);
+    pushList(&list, __i32__, pkrv, strsize(L"25042006") + 1);
 
     pkrv.pack_ty = PACK_DOUBLE_BYTES;
 
-    pkrv.package_ty.pack_doubleBytes = L"Ton-618";
-    pushList(&list, __String__, pkrv, strsize(pkrv.package_ty.pack_doubleBytes) + 1);
+    pkrv.package_ty.pack_f64i8s = L"Ton-618";
+    pushList(&list, __String__, pkrv, strsize(pkrv.package_ty.pack_f64i8s) + 1);
 
-    pkrv.package_ty.pack_doubleBytes = L"End List";
-    pushList(&list, __String__, pkrv, strsize(pkrv.package_ty.pack_doubleBytes) + 1);
+    pkrv.package_ty.pack_f64i8s = L"End List";
+    pushList(&list, __String__, pkrv, strsize(pkrv.package_ty.pack_f64i8s) + 1);
 
     printList(&list);
     freeList(list);
@@ -2135,8 +2135,8 @@ ListTypeObject* copyList(ListTypeObject *list){
 reference_types TypeReturn;
     union{
         PrimitiveTypes primitiveTys;
-        BigintObject IntDinamicType;
-        BigfloatObject FloatDinamicType;
+        BigintObject i32DinamicType;
+        Bigf32Object FloatDinamicType;
         All_Arrays all_arrays;
         ArrayList *ArrayList;
         HashMap *HashObject;
@@ -2146,29 +2146,29 @@ reference_types TypeReturn;
 
 /*void* initializeDataArray(void *data, size_ty init, size_ty end, reference_types ref_dataTy){
     switch(ref_dataTy){
-        case __ARRAYLONG__:{
-            Long *array = (Long*)data;
+        case __ARRAYi64__:{
+            i64 *array = (i64*)data;
             for(size_ty i = init; i < end; i++){
                 array[i] = 0;
             }
             break;
         }
-        case __ARRAYINT__:{
-            Int *array = (Int*)data;
+        case __ARRAYi32__:{
+            i32 *array = (i32*)data;
             for(size_ty i = init; i < end; i++){
                 array[i] = 0;
             }
             break;
         }
-        case __ARRAYSHORT__:{
-            Short *array = (Short*)data;
+        case __ARRAYi16__:{
+            i16 *array = (i16*)data;
             for(size_ty i = init; i < end; i++){
                 array[i] = 0;
             }
             break;
         }
-        case __ARRAYBYTE__:{
-            Byte *array = (Byte*)data;
+        case __ARRAYi8__:{
+            i8 *array = (i8*)data;
             for(size_ty i = init; i < end; i++){
                 array[i] = 0;
             }
@@ -2188,29 +2188,29 @@ reference_types TypeReturn;
             }
             break;
         }
-        case __ARRAYFLOAT__:{
-            float *array = (float*)data;
+        case __ARRAYf32__:{
+            f32 *array = (f32*)data;
             for(size_ty i = init; i < end; i++){
                 array[i] = 0.0f;
             }
             break;
         }
-        case __ARRAYDOUBLE__:{
-            double *array = (double*)data;
+        case __ARRAYf64__:{
+            f64 *array = (f64*)data;
             for(size_ty i = init; i < end; i++){
                 array[i] = 0.0;
             }
             break;
         }
         case __ARRAYBIGINT__:{
-            data_c *array = (data_c*)data;
+            u8 *array = (u8*)data;
             for(size_ty i = init; i < end; i++){
                 array[i] = 0;
             }
             break;
         }
         case __ARRAYBIGFLOAT__:{
-            data_c *array = (data_c*)data;
+            u8 *array = (u8*)data;
             for(size_ty i = init; i < end; i++){
                 array[i] = 0;
             }
@@ -2225,15 +2225,15 @@ reference_types TypeReturn;
     String finalString;
     String current_position;
 
-    Long size = 1024, sizeStr = 0, sizeRes = size;
+    i64 size = 1024, sizeStr = 0, sizeRes = size;
     finalString = STRALLOC(size);
 
     while(*copyScope && *copyIndex){
         String scp;
         String ind;
         if(!(strgetnextstr(&scp, &_scope) && strgetnextstr(&ind, &_index))){
-            Int scpValue = convert_StringToInteger(scp);
-            Int indValue = convert_StringToInteger(ind);
+            i32 scpValue = convert_StringToi32eger(scp);
+            i32 indValue = convert_StringToi32eger(ind);
             
             if(scpValue == NULL || indValue == NULL){
                 return 2;
@@ -2241,10 +2241,10 @@ reference_types TypeReturn;
 
             reference_types typeIndexObject = matrObjects[scpValue][indValue].Type_Identifier_Object;
 
-            if(typeIndexObject == __Long__ ||
-               typeIndexObject == __Int__ ||
-               typeIndexObject == __Short__ ||
-               typeIndexObject == __Byte__)
+            if(typeIndexObject == __i64__ ||
+               typeIndexObject == __i32__ ||
+               typeIndexObject == __i16__ ||
+               typeIndexObject == __i8__)
             {
                 sizeStr = strsize(matrObjects[scpValue][indValue].types.int_Object_static->_String_data);
                 sizeRes -= sizeStr;
@@ -2274,19 +2274,19 @@ reference_types TypeReturn;
                         actString = strfastcopy(matrObjects[scpValue][indValue].types.int_Object_dinamic->_String_Data, sizeStr);
                         break;
 
-                    case __Float__:
-                        sizeStr = strsize(matrObjects[scpValue][indValue].types.float_Object_static->_String_Data);
-                        actString = strfastcopy(matrObjects[scpValue][indValue].types.float_Object_static->_String_Data, sizeStr);
+                    case __f32__:
+                        sizeStr = strsize(matrObjects[scpValue][indValue].types.f32_Object_static->_String_Data);
+                        actString = strfastcopy(matrObjects[scpValue][indValue].types.f32_Object_static->_String_Data, sizeStr);
                         break;
 
                     case __BIGFLOAT__:
-                        sizeStr = strsize(matrObjects[scpValue][indValue].types.float_Object_dinamic->_String_Data);
-                        actString = strfastcopy(matrObjects[scpValue][indValue].types.float_Object_dinamic->_String_Data, sizeStr);
+                        sizeStr = strsize(matrObjects[scpValue][indValue].types.f32_Object_dinamic->_String_Data);
+                        actString = strfastcopy(matrObjects[scpValue][indValue].types.f32_Object_dinamic->_String_Data, sizeStr);
                         break;
 
-                    case __Double__:
-                        sizeStr = strsize(matrObjects[scpValue][indValue].types.double_Object->_String_Data);
-                        actString = strfastcopy(matrObjects[scpValue][indValue].types.double_Object->_String_Data, sizeStr);
+                    case __f64__:
+                        sizeStr = strsize(matrObjects[scpValue][indValue].types.f64_Object->_String_Data);
+                        actString = strfastcopy(matrObjects[scpValue][indValue].types.f64_Object->_String_Data, sizeStr);
                         break;
 
                     case __Char__:
@@ -2338,14 +2338,14 @@ reference_types TypeReturn;
     return 0;*/
 //}
 
-/*void getmemory(void *copy, data_c source[], size_ty size){
-    Byte startByte = 0x18;
-    *((Int*)copy) = 0;
+/*void getmemory(void *copy, u8 source[], size_ty size){
+    i8 starti8 = 0x18;
+    *((i32*)copy) = 0;
 
     int i = 0;
     for(; i < size; i++){
-        *((Int*)copy) |= (source[i] << startByte);
-        startByte -= 0x08;
+        *((i32*)copy) |= (source[i] << starti8);
+        starti8 -= 0x08;
     }
 }*/
 
@@ -2382,49 +2382,49 @@ for(charsize_t i = 0; i < size / 2; i++){
     }*/
 
 /*
-data_c* byteParser(void *any, reference_types ref_anyTy, size_ty qtty){
-    data_c *bytes;
+u8* byteParser(void *any, reference_types ref_anyTy, size_ty qtty){
+    u8 *bytes;
     u8 startdata = 0;
     size_ty i = 0;
 
     switch(ref_anyTy){
-        case __Long__:
-        case __Int__:
-        case __Short__:
-        case __Byte__ :
+        case __i64__:
+        case __i32__:
+        case __i16__:
+        case __i8__ :
         case __Char__:
             switch(ref_anyTy){
-                case __Long__:
-                    bytes = uByteALLOC(long_size);
+                case __i64__:
+                    bytes = UINT8ALLOC(i64_size);
                     startdata = 0x38;
-                    for(; i < long_size; i++){
-                        bytes[i] = (data_c) (*((Long*)any) >> startdata);
+                    for(; i < i64_size; i++){
+                        bytes[i] = (u8) (*((i64*)any) >> startdata);
                         startdata -= 0x08;
                     }
                     break;
                 
-                case __Int__:
-                    bytes = uByteALLOC(int_size);
+                case __i32__:
+                    bytes = UINT8ALLOC(i32_size);
                     startdata = 0x18;
-                    for(; i < int_size; i++){
-                        bytes[i] = (data_c) (*((Int*)any) >> startdata);
+                    for(; i < i32_size; i++){
+                        bytes[i] = (u8) (*((i32*)any) >> startdata);
                         startdata -= 0x08;
                     }
                     break;
                 
-                case __Short__:
+                case __i16__:
                 case __Char__:
-                    bytes = uByteALLOC(char_size);
+                    bytes = UINT8ALLOC(i16_size);
                     startdata = 0x10;
-                    for(; i < short_size; i++){
-                        bytes[i] = (data_c) (*((lchar*)any) >> startdata);
+                    for(; i < i16_size; i++){
+                        bytes[i] = (u8) (*((lchar*)any) >> startdata);
                         startdata -= 0x08;
                     }
                     break;
 
-                case __Byte__:
-                    bytes = uByteALLOC(byte_size);
-                    bytes[0] = (*(Byte*)any);
+                case __i8__:
+                    bytes = UINT8ALLOC(i8_size);
+                    bytes[0] = (*(i8*)any);
                     break;
             }
             break;
@@ -2435,9 +2435,9 @@ data_c* byteParser(void *any, reference_types ref_anyTy, size_ty qtty){
 */
 
 /*
-STATUS COMMAND_START(data_c *line, __System__ *System){
+STATUS COMMAND_START(u8 *line, __System__ *System){
     u8 addr_i = 0x01, flagset = 0, count = 0;
-    u8 *storages = uByteALLOC(OBJECTsQTTY);
+    u8 *storages = UINT8ALLOC(OBJECTsQTTY);
 
     while(line[addr_i] != END_INSTRUCTION){
         while(line[++addr_i] != END_SET){
@@ -2463,37 +2463,37 @@ STATUS COMMAND_START(data_c *line, __System__ *System){
             }
 
             else{
-                Long size_storage = 0;
-                data_c *bytes;
+                i64 size_storage = 0;
+                u8 *bytes;
                 charsize_t size_Obj = 0;
 
                 if(line[addr_i++] == SEND){
                     switch(line[addr_i++]){
                         case LONG:{
-                            size_Obj = long_size;
-                            /*bytes = uByteALLOC(long_size);
-                            memcopy(bytes, line, addr_i, long_size);
-                            memcpyint(&size_storage, bytes, long_size);
-                            addr_i += long_size - 1;
+                            size_Obj = i64_size;
+                            /*bytes = UINT8ALLOC(i64_size);
+                            memcopy(bytes, line, addr_i, i64_size);
+                            memcpyint(&size_storage, bytes, i64_size);
+                            addr_i += i64_size - 1;
                             break;
                         }
 
                         case INT:{
-                            size_Obj = long_size;
-                            bytes = uByteALLOC(int_size);
-                            memcopy(bytes, line, addr_i, int_size);
-                            memcpyint(&size_storage, bytes, int_size);
-                            addr_i += int_size - 1;
+                            size_Obj = i64_size;
+                            bytes = UINT8ALLOC(i32_size);
+                            memcopy(bytes, line, addr_i, i32_size);
+                            memcpyint(&size_storage, bytes, i32_size);
+                            addr_i += i32_size - 1;
                             break;
                         }
 
                         case SHORT:
                         case CHAR:{
-                            size_Obj = long_size;
-                            bytes = uByteALLOC(char_size);
-                            memcopy(bytes, line, addr_i, char_size);
-                            memcpyint(&size_storage, bytes, char_size);
-                            addr_i += char_size - 1;
+                            size_Obj = i64_size;
+                            bytes = UINT8ALLOC(i16_size);
+                            memcopy(bytes, line, addr_i, i16_size);
+                            memcpyint(&size_storage, bytes, i16_size);
+                            addr_i += i16_size - 1;
                             break;
                         }
 
@@ -2509,7 +2509,7 @@ STATUS COMMAND_START(data_c *line, __System__ *System){
                         
                     }
                     else{
-                        bytes = uByteALLOC(size_Obj);
+                        bytes = UINT8ALLOC(size_Obj);
                         memcopy(bytes, line, addr_i, size_Obj);
                         memcpyint(&size_storage, bytes, size_Obj);
                         addr_i += size_Obj - 1;
@@ -2518,6 +2518,245 @@ STATUS COMMAND_START(data_c *line, __System__ *System){
             }
         }
         addr_i++;     
+    }
+
+    return 0;
+}
+*/
+
+/*
+typedef struct{
+    size_ty extention;
+    u8 *data;
+}BigintObject;
+
+
+typedef struct{
+    size_ty extfData;
+    u8 *data_f32;
+}Bigf32Object;
+*/
+
+/*
+STATUS set_operation(u8 *line, u64 *addr_i, i64 *count, u8 *elements, i64 **forEach_loop1, i64 **forEach_loop2, u8 qttLoop){
+    u8 *bytes;
+    u8 lastLoop = 0;
+
+    if(line[*addr_i] != INIT_SET)
+        return -7;
+
+    i64 actSize = OBJECTsQTTY;
+    
+    while(line[++(*addr_i)] != END_SET){
+        if(*count == actSize){
+            actSize += actSize >> 1;
+            elements = (u8*)realloc(elements, actSize);
+        }
+
+        if(line[*addr_i] < STORAGE_LONG || line[*addr_i] > STORAGE_FN)
+            return -2;
+
+        else
+            elements[(*count)++] = line[*addr_i];
+    }
+
+    if(!qttLoop)
+        return 0;
+
+    if(qttLoop == 2){
+        (*forEach_loop1) = INT64ALLOC(*count);
+        (*forEach_loop2) = INT64ALLOC(*count);
+    }
+
+    else
+        (*forEach_loop1) = INT64ALLOC(*count);
+
+    i64 countObjs = *count;
+
+    (*addr_i)++;
+    while(qttLoop){
+        if(line[*addr_i] != INIT_SET)
+            return -8;
+
+        (*count) = 0;
+        while(line[++(*addr_i)] != END_SET){
+            if(*count == countObjs + 1)
+                return -3;
+
+            if((line[*addr_i] < LONG || line[*addr_i] > STRUCT) && line[*addr_i] != SEND)
+                return -4;
+            
+            i64 value = 0;
+            charsize_t size_Obj = 0;
+
+            (*addr_i)++;
+            switch(line[(*addr_i)++]){
+                case LONG:
+                    size_Obj = i64_size;
+                    break;
+
+                case INT:
+                    size_Obj = i32_size;
+                    break;
+
+                case SHORT:
+                case CHAR:
+                    size_Obj = i16_size;
+                    break;
+
+                case BYTE:
+                    value = line[*addr_i];
+                    break;
+
+                case STRING:
+
+                
+                default:
+                    return -5;
+            }
+
+            if(size_Obj){
+                if(line[*addr_i - 1] != BYTE){
+                    bytes = (u8*)malloc(size_Obj);
+                    memcopy(bytes, line, *addr_i, size_Obj);
+                    memcpyint(&value, bytes, size_Obj);
+                    (*addr_i) += size_Obj - 1;
+                    free(bytes);
+                }
+
+                if(qttLoop == 1 && lastLoop == 2)
+                    (*forEach_loop2)[(*count)++] = value;
+                else
+                    (*forEach_loop1)[(*count)++] = value;
+
+                size_Obj = 0;
+            }
+        }
+        lastLoop = qttLoop;
+        qttLoop--;
+
+        if(qttLoop == 1 && lastLoop == 2){
+            (*addr_i)++;
+        }
+    }
+
+    return 0;
+}
+*/
+
+/*
+STATUS set_operation(u8 *line, u64 *addr_i, i64 *count, u8 *elements, i64 **forEach_loop1, i64** forEach_loop2/*List **forEach_loop2, u8 qttLoop){
+    u8 *bytes;
+    u8 lastLoop = 0;
+
+    if(line[*addr_i] != INIT_SET)
+        return -7;
+
+    i64 actSize = OBJECTsQTTY;
+    
+    while(line[++(*addr_i)] != END_SET){
+        if(*count == actSize){
+            actSize += actSize >> 1;
+            elements = (u8*)realloc(elements, actSize);
+        }
+
+        if(line[*addr_i] < STORAGE_LONG || line[*addr_i] > STORAGE_FN)
+            return -2;
+
+        else
+            elements[(*count)++] = line[*addr_i];
+    }
+    printf("passou de storages\n");
+
+    if(!qttLoop)
+        return 0;
+
+    if(qttLoop == 2){
+        (*forEach_loop1) = INT64ALLOC(*count);
+        (*forEach_loop2) = INT64ALLOC(*count);//(List*)malloc(*count * sizeof(List));
+    }
+
+    else
+        (*forEach_loop1) = INT64ALLOC(*count);
+
+    i64 countObjs = *count, indexList = 0;
+
+    (*addr_i)++;
+    while(qttLoop){
+        if(line[*addr_i] != INIT_SET)
+            return -8;
+
+        (*count) = 0;
+        while(line[++(*addr_i)] != END_SET){
+            if(*count == countObjs + 1)
+                return -3;
+
+            if((line[*addr_i] < LONG || line[*addr_i] > STRUCT) && line[*addr_i] != SEND)
+                return -4;
+            
+            i64 value = 0;
+            charsize_t size_Obj = 0;
+
+            (*addr_i)++;
+            switch(line[(*addr_i)++]){
+                case LONG:
+                    size_Obj = i64_size;
+                    break;
+
+                case INT:
+                    size_Obj = i32_size;
+                    break;
+
+                case SHORT:
+                case CHAR:
+                    size_Obj = i16_size;
+                    break;
+
+                case BYTE:
+                    size_Obj = 1;
+                    value = line[*addr_i];
+                    break;
+
+                case STRING:
+                    if(qttLoop == 1 && lastLoop == 0)
+                        return -15;
+
+                    
+                
+                default:
+                    return -5;
+            }
+
+            if(size_Obj){
+                if(line[*addr_i - 1] != BYTE){
+                    bytes = (u8*)malloc(size_Obj);
+                    memcopy(bytes, line, *addr_i, size_Obj);
+                    memcpyint(&value, bytes, size_Obj);
+                    (*addr_i) += size_Obj - 1;
+                    free(bytes);
+                }
+
+                if(qttLoop == 1 && lastLoop == 2){
+                    /*switch(line[*addr_i - 1]){
+                        case LONG:
+                            (*forEach_loop2)[indexList++].ref_ty = __i64__;
+
+                    }
+                    (*forEach_loop2)[(*count)++] = value;
+                }
+                    
+                else
+                    (*forEach_loop1)[(*count)++] = value;
+
+                size_Obj = 0;
+            }
+        }
+        lastLoop = qttLoop;
+        qttLoop--;
+
+        if(qttLoop == 1 && lastLoop == 2){
+            (*addr_i)++;
+        }
     }
 
     return 0;

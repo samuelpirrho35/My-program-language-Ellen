@@ -1,4 +1,4 @@
-#include "includedefines/inttypes.h"
+#include "includedefines/referenceTypes.h"
 #include "includedefines/defines.h"
 #include "includedefines/allocs.h"
 //#include "includelib/basicMath.h"
@@ -8,9 +8,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-String convert_intArrayToStr(u8 *intArray, Long sizeArray){
+String convert_intArrayToStr(u8 *intArray, i64 sizeArray){
     String _str = STRALLOC(sizeArray + 1);
-    register Long i;
+    register i64 i;
     for(i = 0; i < sizeArray; i++){
         _str[i] = (char)intArray[i] + '0'; 
     }
@@ -20,28 +20,28 @@ String convert_intArrayToStr(u8 *intArray, Long sizeArray){
     return _str;
 }
 
-lchar* inttstr(Long Integer){
+lchar* inttstr(i64 i32eger){
     char sign = 0;
     
-    if(Integer < 0){
+    if(i32eger < 0){
         sign = 1;
-        Integer *= -1;
+        i32eger *= -1;
     }
 
     char digits = 0;
-    Long cpyInt = Integer;
+    i64 cpyi32 = i32eger;
     do{
         digits++;
-    }while(cpyInt /= 10);
+    }while(cpyi32 /= 10);
 
     lchar *result = (lchar*)malloc((digits + sign + 1) * sizeof(lchar));
 
     char index = digits + sign;
     result[index--] = L'\0';
     do{
-        result[index--] = L'0' + (Integer % 10);
-        Integer /= 10;
-    }while(Integer);
+        result[index--] = L'0' + (i32eger % 10);
+        i32eger /= 10;
+    }while(i32eger);
 
     if(sign){
         result[0] = L'-';
@@ -50,22 +50,23 @@ lchar* inttstr(Long Integer){
     return result;
 }
 
-Long convert_StringToInteger(String str){
-    Long result = 0;
-    u8 sign = 1;
+i64 convert_StringToi32eger(String str){
+    wprintf(L"string recebida: %ls\n", str);
+    i64 result = 0;
+    u8 sign = 1, c = 0;
 
-    if(*str == L'-'){
+    if(str[0] == L'-'){
         sign = -1;
-        str++;
+        c++;
     }
 
-    while(*str != L'\0'){
-        u8 charValue = (int)*str;
+    while(str[c] != L'\0'){
+        u8 charValue = (int)str[c];
         if(!(charValue >= 48 && charValue <= 57)){
             return 0;
         }
         result = result * 10 + (charValue - 48);
-        str++;
+        c++;
     }
 
     result *= sign;
