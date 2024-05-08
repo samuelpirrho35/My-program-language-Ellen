@@ -5,7 +5,7 @@
 #include "../includedefines/referenceTypes.h"
 
 String convert_intArrayToStr(u8 *intArray, i64 sizeArray);
-lchar* inttstr(i64 i32eger);
-i64 convert_StringToi32eger(String str);
+lchar* inttstr(i64 integer);
+i64 convert_StringToInteger(String str);
 
 #endif //CONVERTOBJECTSTYPES_H

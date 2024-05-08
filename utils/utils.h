@@ -19,18 +19,19 @@ u8 initializeListCache(CachingData ***Cache, i32 Address[], u8 *TypeStructureCac
 i8 AddListCache
 (CachingData ***Cache, i32 Address[], String IdentifierName,
 reference_types TypeObject, i64 Calls, String Value, u8 *TypeStructureCache);
-#endif
 
+
+#else
 typedef struct{
     char pack_ty;
     union{
         u8 *pack_bytes;
-        u16 *pack_f64i8s;
+        u16 *pack_doublebytes;
         i64 pack_integer;
         char character;
-        f64 pack_f32;
-        i64 pack_anyi32eger;
+        f64 pack_f64;
     }package_ty;
 }packageReceived;
+#endif
 
 #endif //UTILS_H

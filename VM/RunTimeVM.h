@@ -4,6 +4,6 @@
 #include "../includedefines/referenceTypes.h"
 #include "../System/System.h"
 
-int program(u8 global[][50], u8 local[][50], __System__ *System);
+int program(u8 global[][1000], u8 local[][1000], __System__ *System);
 
 #endif //RUNTIMRUNTIMEVM_H

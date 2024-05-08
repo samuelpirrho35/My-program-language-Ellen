@@ -10,7 +10,7 @@ u8 destroyObject(__System__ *System, u8 storagesUsing[], i64 address[], i64 inde
     for(; index >= 0; index--){
         switch(storagesUsing[index]){
             case STORAGE_LONG:
-                free(System->Manager.Objects.st_i32[address[index]]);
+                free(System->Manager.Objects.st_i64[address[index]]);
                 break;
             case STORAGE_INT:
                 free(System->Manager.Objects.st_i32[address[index]]);
@@ -57,4 +57,8 @@ u8 ENDPROGRAM(__System__ *System){
     }
 
     return 0;
+}
+
+void death(){
+    return;
 }

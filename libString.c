@@ -69,15 +69,14 @@ String strfastmerger(String str1, String str2, size_ty sizestr1, size_ty sizestr
     return newstr;
 }
 
-String strcopy(lchar *source){
-    i64 len = strsize(source);
+String strcopy(String source){
+    i64 len = strsize(source) + 1;
     if(source == NULL){
         return NULL;
     }
 
     String copy = STRALLOC((len + 1));
     copy[--len] = L'\0';
-    len--;
 
     while(len--)
         copy[len] = source[len];

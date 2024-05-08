@@ -2004,7 +2004,7 @@ ListTypeObject* copyList(ListTypeObject *list){
         if(i % 7 == 0){
             pkrv.pack_ty = PACK_DOUBLE_BYTES;
             i_n = inttstr(i);
-            pkrv.package_ty.pack_f64i8s = i_n;
+            pkrv.package_ty.pack_doublebytes = i_n;
             pushList(&list, __String__, pkrv, strsize(i_n) + 1);
         }
 
@@ -2062,15 +2062,15 @@ ListTypeObject* copyList(ListTypeObject *list){
     pkrv.pack_ty = PACK_DOUBLE_BYTES;
 
     lchar hello_world[] = {0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x2C, 0x20, 0x57, 0x6F, 0x72, 0x6C, 0x64, 0x21, 0x00};
-    pkrv.package_ty.pack_f64i8s = hello_world;
+    pkrv.package_ty.pack_doublebytes = hello_world;
     pushList(&list, __String__, pkrv, 14);
 
     lchar input[] = L"Todos esses momentos se perderão no tempo, como lágrimas na chuva...";
-    pkrv.package_ty.pack_f64i8s = input;
+    pkrv.package_ty.pack_doublebytes = input;
     pushList(&list, __String__, pkrv, 69);
 
     lchar blade_runner[] = L"Blade Runner: Melhor filme de toda a história do cinema!";
-    pkrv.package_ty.pack_f64i8s = blade_runner;
+    pkrv.package_ty.pack_doublebytes = blade_runner;
     pushList(&list, __String__, pkrv, 43);
 
     lchar *games[] = {
@@ -2081,12 +2081,12 @@ ListTypeObject* copyList(ListTypeObject *list){
                       };
 
     for(char y = 0; y < 11; y++){
-        pkrv.package_ty.pack_f64i8s = games[y];
+        pkrv.package_ty.pack_doublebytes = games[y];
         pushList(&list, __String__, pkrv, strsize(games[y]) + 1);
     }
 
     lchar maxnum_long_long[] = L"9223372036854775807";
-    i64 max_nLL = convert_StringToi32eger(L"9223372036854775807");
+    i64 max_nLL = convert_StringToInteger(L"9223372036854775807");
 
     pkrv.pack_ty = PACK_BYTES;
 
@@ -2098,11 +2098,11 @@ ListTypeObject* copyList(ListTypeObject *list){
     pkrv.pack_ty = PACK_DOUBLE_BYTES;
 
     free(newData_c);
-    pkrv.package_ty.pack_f64i8s = maxnum_long_long;
+    pkrv.package_ty.pack_doublebytes = maxnum_long_long;
     pushList(&list, __String__, pkrv, strsize(maxnum_long_long) + 1);
 
     lchar ellen[] = L"Ellen, morzinho di mi vida";
-    pkrv.package_ty.pack_f64i8s = ellen;
+    pkrv.package_ty.pack_doublebytes = ellen;
     pushList(&list, __String__, pkrv, strsize(ellen) + 1);
 
     pkrv.pack_ty = PACK_BYTES;
@@ -2120,11 +2120,11 @@ ListTypeObject* copyList(ListTypeObject *list){
 
     pkrv.pack_ty = PACK_DOUBLE_BYTES;
 
-    pkrv.package_ty.pack_f64i8s = L"Ton-618";
-    pushList(&list, __String__, pkrv, strsize(pkrv.package_ty.pack_f64i8s) + 1);
+    pkrv.package_ty.pack_doublebytes = L"Ton-618";
+    pushList(&list, __String__, pkrv, strsize(pkrv.package_ty.pack_doublebytes) + 1);
 
-    pkrv.package_ty.pack_f64i8s = L"End List";
-    pushList(&list, __String__, pkrv, strsize(pkrv.package_ty.pack_f64i8s) + 1);
+    pkrv.package_ty.pack_doublebytes = L"End List";
+    pushList(&list, __String__, pkrv, strsize(pkrv.package_ty.pack_doublebytes) + 1);
 
     printList(&list);
     freeList(list);
@@ -2232,8 +2232,8 @@ reference_types TypeReturn;
         String scp;
         String ind;
         if(!(strgetnextstr(&scp, &_scope) && strgetnextstr(&ind, &_index))){
-            i32 scpValue = convert_StringToi32eger(scp);
-            i32 indValue = convert_StringToi32eger(ind);
+            i32 scpValue = convert_StringToInteger(scp);
+            i32 indValue = convert_StringToInteger(ind);
             
             if(scpValue == NULL || indValue == NULL){
                 return 2;

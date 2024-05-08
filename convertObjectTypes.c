@@ -20,28 +20,30 @@ String convert_intArrayToStr(u8 *intArray, i64 sizeArray){
     return _str;
 }
 
-lchar* inttstr(i64 i32eger){
+String inttstr(i64 integer){
     char sign = 0;
     
-    if(i32eger < 0){
+    if(integer < 0){
         sign = 1;
-        i32eger *= -1;
+        integer *= -1;
     }
 
     char digits = 0;
-    i64 cpyi32 = i32eger;
+    i64 cpyi32 = integer;
     do{
         digits++;
     }while(cpyi32 /= 10);
 
-    lchar *result = (lchar*)malloc((digits + sign + 1) * sizeof(lchar));
+    String result = STRALLOC((digits + sign + 1));
+    if(result == NULL)
+        return NULL;
 
     char index = digits + sign;
     result[index--] = L'\0';
     do{
-        result[index--] = L'0' + (i32eger % 10);
-        i32eger /= 10;
-    }while(i32eger);
+        result[index--] = L'0' + (integer % 10);
+        integer /= 10;
+    }while(integer);
 
     if(sign){
         result[0] = L'-';
@@ -50,10 +52,9 @@ lchar* inttstr(i64 i32eger){
     return result;
 }
 
-i64 convert_StringToi32eger(String str){
-    wprintf(L"string recebida: %ls\n", str);
+i64 convert_StringToInteger(String str){
     i64 result = 0;
-    u8 sign = 1, c = 0;
+    i8 sign = 1, c = 0;
 
     if(str[0] == L'-'){
         sign = -1;

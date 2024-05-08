@@ -84,16 +84,16 @@ i8 pushList(List **list, reference_types ref_ty, packageReceived pkrv, size_ty s
                 (*list)[index].types.primitiveTys.intTys.i64_ty = pkrv.package_ty.pack_integer;
                 break;
             case __i32__:
-                (*list)[index].types.primitiveTys.intTys.i32_ty = pkrv.package_ty.pack_integer;
+                (*list)[index].types.primitiveTys.intTys.i32_ty = (i32)pkrv.package_ty.pack_integer;
                 break;
             case __i16__:
-                (*list)[index].types.primitiveTys.intTys.i16_ty = pkrv.package_ty.pack_integer;
+                (*list)[index].types.primitiveTys.intTys.i16_ty = (i16)pkrv.package_ty.pack_integer;
                 break;
             case __i8__:
-                (*list)[index].types.primitiveTys.intTys.i8_ty = pkrv.package_ty.pack_integer;
+                (*list)[index].types.primitiveTys.intTys.i8_ty = (i8)pkrv.package_ty.pack_integer;
                 break;
             case __Char__:
-                (*list)[index].types.primitiveTys.intTys.char_ty = pkrv.package_ty.pack_integer;
+                (*list)[index].types.primitiveTys.intTys.char_ty = (lchar)pkrv.package_ty.pack_integer;
                 break;
         }
     }
@@ -113,7 +113,7 @@ i8 pushList(List **list, reference_types ref_ty, packageReceived pkrv, size_ty s
                 (*list)[index].types.primitiveTys.intTys.i8_ty = compressToi32eger(pkrv.package_ty.pack_bytes);
                 break;
             case __String__:
-                (*list)[index].types.primitiveTys.string_ty = strfastcopy(pkrv.package_ty.pack_f64i8s, size);
+                (*list)[index].types.primitiveTys.string_ty = strfastcopy(pkrv.package_ty.pack_doublebytes, size);
                 break;
             default:
                 printf("Unsupported type or invalid type in pushList\n");
@@ -385,7 +385,7 @@ Ouroboros* sumOuroboros(Ouroboros *ouroboros1, Ouroboros *ouroboros2){
 //         if(i % 7 == 0){
 //             pkrv.pack_ty = PACK_DOUBLE_BYTES;
 //             i_n = inttstr(i);
-//             pkrv.package_ty.pack_f64i8s = i_n;
+//             pkrv.package_ty.pack_doublebytes = i_n;
 //             pushList(&list, __String__, pkrv, strsize(i_n) + 1);
 //         }
 
@@ -443,15 +443,15 @@ Ouroboros* sumOuroboros(Ouroboros *ouroboros1, Ouroboros *ouroboros2){
 //     pkrv.pack_ty = PACK_DOUBLE_BYTES;
 
 //     lchar hello_world[] = {0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x2C, 0x20, 0x57, 0x6F, 0x72, 0x6C, 0x64, 0x21, 0x00};
-//     pkrv.package_ty.pack_f64i8s = hello_world;
+//     pkrv.package_ty.pack_doublebytes = hello_world;
 //     pushList(&list, __String__, pkrv, 14);
 
 //     lchar input[] = L"Todos esses momentos se perderão no tempo, como lágrimas na chuva...";
-//     pkrv.package_ty.pack_f64i8s = input;
+//     pkrv.package_ty.pack_doublebytes = input;
 //     pushList(&list, __String__, pkrv, 69);
 
 //     lchar blade_runner[] = L"Blade Runner: Melhor filme de toda a história do cinema!";
-//     pkrv.package_ty.pack_f64i8s = blade_runner;
+//     pkrv.package_ty.pack_doublebytes = blade_runner;
 //     pushList(&list, __String__, pkrv, 43);
 
 //     lchar *games[] = {
@@ -462,12 +462,12 @@ Ouroboros* sumOuroboros(Ouroboros *ouroboros1, Ouroboros *ouroboros2){
 //                       };
 
 //     for(char y = 0; y < 11; y++){
-//         pkrv.package_ty.pack_f64i8s = games[y];
+//         pkrv.package_ty.pack_doublebytes = games[y];
 //         pushList(&list, __String__, pkrv, strsize(games[y]) + 1);
 //     }
 
 //     lchar maxnum_long_long[] = L"9223372036854775807";
-//     i64 max_nLL = convert_StringToi32eger(L"9223372036854775807");
+//     i64 max_nLL = convert_StringToInteger(L"9223372036854775807");
 
 //     pkrv.pack_ty = PACK_BYTES;
 
@@ -479,11 +479,11 @@ Ouroboros* sumOuroboros(Ouroboros *ouroboros1, Ouroboros *ouroboros2){
 //     pkrv.pack_ty = PACK_DOUBLE_BYTES;
 
 //     free(newData_c);
-//     pkrv.package_ty.pack_f64i8s = maxnum_long_long;
+//     pkrv.package_ty.pack_doublebytes = maxnum_long_long;
 //     pushList(&list, __String__, pkrv, strsize(maxnum_long_long) + 1);
 
 //     lchar ellen[] = L"Ellen, morzinho di mi vida";
-//     pkrv.package_ty.pack_f64i8s = ellen;
+//     pkrv.package_ty.pack_doublebytes = ellen;
 //     pushList(&list, __String__, pkrv, strsize(ellen) + 1);
 
 //     pkrv.pack_ty = PACK_BYTES;
@@ -501,14 +501,14 @@ Ouroboros* sumOuroboros(Ouroboros *ouroboros1, Ouroboros *ouroboros2){
 
 //     pkrv.pack_ty = PACK_DOUBLE_BYTES;
 
-//     pkrv.package_ty.pack_f64i8s = L"Ton-618";
-//     pushList(&list, __String__, pkrv, strsize(pkrv.package_ty.pack_f64i8s) + 1);
+//     pkrv.package_ty.pack_doublebytes = L"Ton-618";
+//     pushList(&list, __String__, pkrv, strsize(pkrv.package_ty.pack_doublebytes) + 1);
 
-//     pkrv.package_ty.pack_f64i8s = L"I Love You Ellen";
-//     pushList(&list, __String__, pkrv, strsize(pkrv.package_ty.pack_f64i8s) + 1);
+//     pkrv.package_ty.pack_doublebytes = L"I Love You Ellen";
+//     pushList(&list, __String__, pkrv, strsize(pkrv.package_ty.pack_doublebytes) + 1);
 
-//     pkrv.package_ty.pack_f64i8s = L"End List";
-//     pushList(&list, __String__, pkrv, strsize(pkrv.package_ty.pack_f64i8s) + 1);
+//     pkrv.package_ty.pack_doublebytes = L"End List";
+//     pushList(&list, __String__, pkrv, strsize(pkrv.package_ty.pack_doublebytes) + 1);
 
 //     printList(&list, MODE_PRINT_LIST, 0, list->GN_Fields.extention);
 //     freeList(&list);

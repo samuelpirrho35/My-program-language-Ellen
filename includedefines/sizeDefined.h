@@ -43,7 +43,7 @@
 
 #define KEYWORDsQTTY 41
 
-#define OBJECTsQTTY 25
+#define OBJECTsQTTY 29
 
 #define INTERNALOPERQTTY 12
 #define BUFFER_SIZE 1024

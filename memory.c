@@ -121,7 +121,7 @@ i64 getLengthSubDataOfBuffer(u8 *buffer, u64 *init){
     return length;
 }
 
-void* initializeBuffer(void *buffer, size_ty start, size_ty end){
+void* zeraBuffer(void *buffer, size_ty start, size_ty end){
     if(buffer == NULL)
         return NULL;
 

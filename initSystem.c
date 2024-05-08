@@ -82,11 +82,8 @@ u8 allocStoragesUsing(__Objects__ *objects, u8 objectsUsing, i64 index, i64 data
 u8 setValues(__Objects__ *objects, u8 objectsUsing[], List *values, i64 address[]){
     i64 index = 0, dataSize = 0;
     for(; index < values->GN_Fields.extention; index++){
-        //if(objectsUsing[index] >= STORAGE_STRING && objectsUsing[index] <= STOREGE_STRUCT){
-            
-        //}
-
         allocStoragesUsing(objects, objectsUsing[index], address[index], dataSize);
+        
         switch(objectsUsing[index]){
             case STORAGE_LONG:
                 objects->st_i64[address[index]]->i64Ty = values[index].types.primitiveTys.intTys.i64_ty;
