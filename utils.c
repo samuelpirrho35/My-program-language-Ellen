@@ -42,44 +42,20 @@ u8* expandsToi8s(i64 n, charsize_t *newSize){
     return bytes;
 }
 
-i64 codeString(String str){
-    i32 code = 0;
+u32 codeString(String str){
+    u32 code = 0;
+    lchar lastchar = 0;
 
     while(*str){
-        i32 characterUniCode = (u16)*str;
-        code += characterUniCode;
-        *str++;
+        code += ((lchar)*str << 1) + (lastchar - 47);
+        lastchar = *str;
+        str++;
     }
 
     return code;
 }
 
-i64 keyWordIdentify(String str, String *KeyWordTable, u8 lengthTable){
-    register i64 strEqualKey_word = 0, lenStr = strsize(str);
-    register i8 index = 0;
-    while(index < lengthTable){
-        register i8 lenKeyIndex = strsize(KeyWordTable[index]), countChar = 0;
-        if(lenStr == lenKeyIndex){
-            while(countChar < lenStr){
-                if(str[countChar] != KeyWordTable[index][countChar]){
-                    break;
-                }
-                else if((countChar == lenKeyIndex - 1) && str[countChar] == KeyWordTable[index][countChar]){
-                    strEqualKey_word = codeString(str);
-                }
-                countChar++;
-            }
-        }
-        if(strEqualKey_word){
-            break;
-        }
-        index++;
-    }
-
-    return strEqualKey_word;
-}
-
-i8 checkTokenValid(lchar actCharacter, String nextCharacters){
+u8 checkTokenValid(lchar actCharacter, String nextCharacters){
     while(*nextCharacters){
         if(actCharacter == *nextCharacters){
             return 1;

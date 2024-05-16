@@ -2762,3 +2762,1556 @@ STATUS set_operation(u8 *line, u64 *addr_i, i64 *count, u8 *elements, i64 **forE
     return 0;
 }
 */
+
+/*
+#include "includedefines/referenceTypes.h"
+#include "includedefines/sizeDefined.h"
+#include "includedefines/allocs.h"
+#include "includeerror/errors.h"
+#include "compiler/preObjects.h"
+#include "includelib/libString.h"
+#include "includelib/libIo.h"
+#include "utils/utils.h"
+#include <stdio.h>
+#include <stdlib.h>
+
+
+void TokenGenerator(String sourceCode, Token *token, i64 *line){
+    i8 ERROR = 0;
+    i64 counterCharacteres = 0, limit = INITSIZEWORDIDENTIFIER, tokenFound = 0, counter = 0;
+    String word = STRALLOC(limit);
+
+    while(*sourceCode){
+        if(!(checkTokenValid(*sourceCode, L"=+*-/%%(){}[]&$@#!|^,;:<>?\"'\\ \n\t\r\0"))){
+            word[counterCharacteres] = *sourceCode;
+            counterCharacteres++;
+
+            if(counterCharacteres == limit - 2){
+                limit += limit / 2;
+                String newWord = (String)realloc(word, limit * sizeof(lchar));
+                word = newWord;
+            }
+        }
+
+        word[counterCharacteres] = L'\0';
+
+        i64 identifyi32ernalOper = keyWordIdentify(word, internalOperTable, INTERNALOPERQTTY);
+        i64 identifyKeyWord = 0;
+
+        if(!identifyi32ernalOper){
+            identifyKeyWord = keyWordIdentify(word, KeyWordTable, KEYWORDsQTTY);
+        }
+
+        if(identifyi32ernalOper || identifyKeyWord){
+            register i8 flag = 0;
+            sourceCode++;
+            if(checkTokenValid(*sourceCode, ALLCHARACTERES)){
+                sourceCode--;
+                flag = 1;
+            }
+
+            if(*sourceCode == '\0' && !flag){
+                token[*line][index].type = __ERROR__;
+                token[*line][index].Identifiers.error.dataError = strcopy(ErrorsTable[_ERROR_SYNTAX_KEYWORD]);
+                (*line)++;
+                free(word);
+                return;
+            }
+
+            if(!flag){
+                if(identifyi32ernalOper){
+                    i64 codeFnCall = codeString(word);
+                    switch(codeFnCall){
+                        case WRT:
+                        case RD:
+                        case GETi8:
+                        case IMPORT:
+                        case LENGTH:
+                        case TYPE:
+                        case READFILEBYTE:
+                        case READFILELINE:
+                        case READFILE:
+                        case WRITEFILE:
+                        case FILEOPEN:
+                        case FILECLOSE:
+                            token[*line][index].type = _INTERNAL_FN;
+                    }
+
+                    token[*line][index].Identifiers.internaFn.fnCode = codeFnCall;
+                }
+                else{
+                    switch(codeString(word)){
+                        case CONTINUE:
+                            token[*line][index].type = _KEYWORD_continue;
+                            break;
+                        case AND:
+                            token[*line][index].type = _KEYWORD_and;
+                            break;
+                        case OR:
+                            token[*line][index].type = _KEYWORD_or;
+                            break;
+                        case RETURN:
+                            token[*line][index].type = _KEYWORD_return;
+                            break;
+                        case ENDIF:
+                            token[*line][index].type = _KEYWORD_endif;
+                            break;
+                        case IN:
+                            token[*line][index].type = _KEYWORD_in;
+                            break;
+                        case BREAK:
+                            token[*line][index].type = _KEYWORD_break;
+                            break;
+                        case ELSE:
+                            token[*line][index].type = _KEYWORD_else;
+                            break;
+                        case IF:
+                            token[*line][index].type = _KEYWORD_if;
+                            break;
+                        case ELIF:
+                            token[*line][index].type = _KEYWORD_elif;
+                            break;
+                        case FOR:
+                            token[*line][index].type = _KEYWORD_for;
+                            break;
+                        case WHILE:
+                            token[*line][index].type = _KEYWORD_while;
+                            break;
+                        case SWITCH:
+                            token[*line][index].type = _KEYWORD_switch;
+                            break;
+                        case FN:
+                            token[*line][index].type = _KEYWORD_fn;
+                            break;
+                        case CONST:
+                            token[*line][index].type = _KEYWORD_const;
+                            break;
+                        case _i32:
+                            token[*line][index].type = _KEYWORD_int;
+                            break;
+                        case _i64:
+                            token[*line][index].type = _KEYWORD_i64;
+                            break;
+                        case _i16:
+                            token[*line][index].type = _KEYWORD_short;
+                            break;
+                        case _i8:
+                            token[*line][index].type = _KEYWORD_byte;
+                            break;
+                        case _Float:
+                            token[*line][index].type = _KEYWORD_f32;
+                            break;
+                        case _Double:
+                            token[*line][index].type = _KEYWORD_f64;
+                            break;
+                        case _String:
+                            token[*line][index].type = _KEYWORD_str;
+                            break;
+                        case _CHAR:
+                            token[*line][index].type = _KEYWORD_char;
+                            break;
+                        case CASE:
+                            token[*line][index].type = _KEYWORD_case;
+                            break;
+                        case DEFAULT:
+                            token[*line][index].type = _KEYWORD_default;
+                            break;
+                        case CLASS:
+                            token[*line][index].type = _KEYWORD_class;
+                            break;
+                        case THIS:
+                            token[*line][index].type = _KEYWORD_this;
+                            break;
+                        case METHOD:
+                            token[*line][index].type = _KEYWORD_method;
+                            break;
+                        case ATTRIBUTE:
+                            token[*line][index].type = _KEYWORD_attribute;
+                            break;
+                        case PUBLIC:
+                            token[*line][index].type = _KEYWORD_public;
+                            break;
+                        case PRIVATE:
+                            token[*line][index].type = _KEYWORD_private;
+                            break;
+                        case EXPORT:
+                            token[*line][index].type = _KEYWORD_export;
+                            break;
+                        case TRY:
+                            token[*line][index].type = _KEYWORD_try;
+                            break;
+                        case CATCH:
+                            token[*line][index].type = _KEYWORD_catch;
+                            break;
+                        case ALL:
+                            token[*line][index].type = _KEYWORD_all;
+                            break;
+                        case SYS:
+                            token[*line][index].type = _KEYWORD_sys;
+                            break;
+                    }
+                }
+
+                sourceCode--;
+                tokenFound = 1;
+            }
+        }
+
+        sourceCode++;
+        lchar nextCharacters = *sourceCode;
+        sourceCode--;
+
+        if((checkTokenValid(*sourceCode, L"=+*-/%%(){}[]&$@#!|^,;:.<>?°~º´`¨/ª¹²³£¢¬§\"'\\ \n\t\r") ||
+        nextCharacters == L'\0') && tokenFound == 0){
+            register i8 flagAccessScope = 1, flagTokenPointer = 1;
+            if(word[0] != L'\0'){
+                if(word[0] == L'0'){
+                    sourceCode++;
+                    if(((int)word[1] >= 48 && (int)word[1] <= 57) && (word[1] != 'x' && word[1] != 'X')
+                    && codeString(word) != 48){
+                        token[*line][index].type = __ERROR__;
+                        token[*line][index].Identifiers.error.dataError = strcopy(ErrorsTable[_ERROR_INIT_IDENTIFIER]);
+                        (*line)++;
+                        free(word);
+                        return;
+                    }
+
+                    sourceCode--;
+                }
+
+                if((int)word[0] >= 48 && (int)word[0] <= 57){
+                    if(*sourceCode == '.'){
+                        flagAccessScope = 0;
+                        flagTokenPointer = 0;
+                    }
+
+                    if(flagAccessScope){
+                        u8 flagFloat = 0, flagHex = 0;
+                        String auxWord;
+                        auxWord = strcopy(word);
+
+                        while(*auxWord){
+                            if(!(checkTokenValid(*auxWord, L"0123456789aAbBcCdDeEfFxX."))){
+                                token[*line][index].type = __ERROR__;
+                                token[*line][index].Identifiers.error.dataError = strcopy(ErrorsTable[_ERROR_FORMAT_IDENTIFIER]);
+                                (*line)++;
+                                free(word);
+                                free(auxWord);
+                                return;
+                            }
+
+                            else if(*auxWord == L'x' || *auxWord == L'X'){
+                                auxWord++;
+                                if(!flagFloat && !flagHex && *auxWord != L'\0' && word[0] == L'0'){
+                                    flagHex = 1;
+                                    auxWord--;
+                                }
+                                else{
+                                    token[*line][index].type = __ERROR__;
+                                    token[*line][index].Identifiers.error.dataError = strcopy(ErrorsTable[_ERROR_FORMAT_IDENTIFIER]);
+                                    (*line)++;
+                                    free(word);
+                                    free(auxWord);
+                                    return;
+                                }
+                            }
+
+                            else if(*auxWord == L'.'){
+                                auxWord++;
+                                if(!flagFloat && *auxWord != L'\0'){
+                                    flagFloat = 1;
+                                    auxWord--;
+                                }
+                                else{
+                                    token[*line][index].type = __ERROR__;
+                                    token[*line][index].Identifiers.error.dataError = strcopy(ErrorsTable[_ERROR_FORMAT_IDENTIFIER]);
+                                    (*line)++;
+                                    free(word);
+                                    free(auxWord);
+                                    return;
+                                }
+                            }
+
+                            auxWord++;
+                        }
+
+                        token[*line][index].type = (flagFloat) ? _IDENTIFIER_CONST_Float : _IDENTIFIER_CONST_i32;
+                        token[*line][index].Identifiers.constData.addinfo = (flagHex) ? HEX : DEC;
+                        token[*line][index].Identifiers.constData.data = strcopy(word);
+                    }
+                }
+
+                else{
+                    if(codeString(word) != _INTERNAL_FNCHARPOINTERNUMCODE){
+                        if(*sourceCode == L'.'){
+                            word[counterCharacteres - 1] = L'\0';
+                            counterCharacteres--;
+                        }
+
+                        token[*line][index].type = __IDENTIFIER__;
+                        token[*line][index].Identifiers.Data.nameIdentifier = strcopy(word);
+                    }
+
+                    else{
+                        (*line)--;
+                    }
+                }
+
+                tokenFound = flagTokenPointer;
+            }
+
+            if(*sourceCode == L'.' && flagAccessScope){
+                if(tokenFound){
+                    (*line)++;
+                }
+                token[*line][index].type = _RESERVED_CHARACTER_ACCESS_SCOPE;
+            }
+
+            else if(*sourceCode == L'"' || *sourceCode == L'\''){
+                u8 flagChar = 0;
+
+                if(tokenFound){
+                    (*line)++;
+                }
+
+                word[0] = L'\0';
+                counterCharacteres = 0;
+                limit = INITSIZEWORDIDENTIFIER;
+
+                if(*sourceCode == L'"'){
+                    sourceCode++;
+                    while(1){
+                        if(*sourceCode == L'"'){
+                            break;
+                        }
+                        else if(*sourceCode == L'\0'){
+                            token[*line][index].type = __ERROR__;
+                            token[*line][index].Identifiers.error.dataError = strcopy(ErrorsTable[_ERROR_STRING]);
+                            (*line)++;
+                            free(word);
+                            return;
+                        }
+                        else{
+                            word[counterCharacteres] = *sourceCode;
+                            counterCharacteres++;
+
+                            if(counterCharacteres == limit - 2){
+                                limit += limit / 2;
+                                String newWord = (String)realloc(word, limit * sizeof(lchar));
+                                word = newWord;
+                            }
+                        }
+
+                        sourceCode++;
+                    }
+
+                    word[counterCharacteres] = L'\0';
+
+                    token[*line][index].type = _IDENTIFIER_CONST_STR;
+                    token[*line][index].Identifiers.constData.data = strcopy(word);
+                    tokenFound = 1;
+                }
+
+                else{
+                    sourceCode++;
+                    if(*sourceCode == '\\'){
+                        word[0] = *sourceCode;
+                        sourceCode++;
+                        if(checkTokenValid(*sourceCode, L"nt0r'\"\\")){
+                            word[1] = *sourceCode;
+                            flagChar = 2;
+                        }
+                        else{
+                            token[*line][index].type = __ERROR__;
+                            token[*line][index].Identifiers.error.dataError = strcopy(ErrorsTable[_ERROR_INVALID_SCAPE_CHARACTERE]);
+                            (*line)++;
+                            free(word);
+                            return;
+                        }
+                    }
+
+                    else if(checkTokenValid(*sourceCode, ALLCHARACTERES) ||
+                       checkTokenValid(*sourceCode, TOKENSCHARACTERES)){
+                        word[0] = *sourceCode;
+                        flagChar = 1;
+                    }
+                    sourceCode++;
+
+                    if(*sourceCode != L'\''){
+                        token[*line][index].type = __ERROR__;
+                        token[*line][index].Identifiers.error.dataError = strcopy(ErrorsTable[_ERROR_INVALID_CONST_CHAR]);
+                        (*line)++;
+                        free(word);
+                        return;
+                    }
+
+                    else{
+                        word[flagChar] = '\0';
+                        token[*line][index].type = _IDENTIFIER_CONST_CHAR;
+                        token[*line][index].Identifiers.constData.data = strcopy(word);
+                    }
+
+                    tokenFound = 1;
+                }
+            }
+
+            else if((*sourceCode != L' ' && *sourceCode != L'"' && *sourceCode != L'\'' && *sourceCode != L'.')){
+                register i8 flag = 1;
+                if(tokenFound){
+                    (*line)++;
+                }
+                switch(*sourceCode){
+                    case L'=':
+                        sourceCode++;
+                        if(*sourceCode == L'='){
+                            token[*line][index].type = _RESERVED_CHARACTER_EQUAL_EQUAL;
+                        }
+                        else{
+                            sourceCode--;
+                            token[*line][index].type = _RESERVED_CHARACTER_EQUAL;
+                        }
+                        break;
+                    
+                    case L'+':
+                        sourceCode++;
+                        if(*sourceCode == L'='){
+                            token[*line][index].type = _OPERATOR_ADD_EQUAL;
+                        }
+                        else if(*sourceCode == L'+'){
+                            token[*line][index].type = _OPERATOR_ADD_ADD;
+                        }
+                        else{
+                            sourceCode--;
+                            token[*line][index].type = _OPERATOR_ADD;
+                        }
+                        break;
+
+                    case L'-':
+                        sourceCode++;
+                        if(*sourceCode == L'='){
+                            token[*line][index].type = _OPERATOR_SUB_EQUAL;
+                        }
+                        else if(*sourceCode == L'-'){
+                            token[*line][index].type = _OPERATOR_SUB_SUB;
+                        }
+                        else if(*sourceCode == L'>'){
+                            token[*line][index].type = _RESERVED_CHARACTER_ADDRESS_POINTER;
+                        }
+                        else{
+                            sourceCode--;
+                            token[*line][index].type = _OPERATOR_SUB;
+                        }
+                        break;
+
+                    case L'/':
+                        sourceCode++;
+                        if(*sourceCode == L'='){
+                            token[*line][index].type = _OPERATOR_DIV_EQUAL;
+                        }
+                        else if(*sourceCode == L'/'){
+                            while(1){
+                                if(*sourceCode == L'\n' || nextCharacters == L'\0'){
+                                    break;
+                                }
+                                else{
+                                    sourceCode++;
+                                }
+                            }
+                            flag = 0;
+                        }
+                        else if(*sourceCode == L'*'){
+                            while(1){
+                                if(*sourceCode == L'*'){
+                                    sourceCode++;
+                                    if(*sourceCode == L'/'){
+                                        break;
+                                    }
+                                }
+                                else{
+                                    sourceCode++;
+                                }
+                                flag = 0;
+                            }
+                        }
+                        else{
+                            sourceCode--;
+                            token[*line][index].type = _OPERATOR_DIV;
+                        }
+                        break;
+
+                    case L'*':
+                        sourceCode++;
+                        if(*sourceCode == L'='){
+                            token[*line][index].type = _OPERATOR_MULT_EQUAL;
+                        }
+                        else if(*sourceCode == L'*'){
+                            sourceCode++;
+                            if(*sourceCode == L'='){
+                                token[*line][index].type = _OPERATOR_POW_EQUAL;
+                            }
+                            else{
+                                sourceCode--;
+                                token[*line][index].type = _OPERATOR_POW;
+                            }
+                        }
+                        else{
+                            sourceCode--;
+                            token[*line][index].type = _OPERATOR_MULT;
+                        }
+                        break;
+
+                    case L'%':
+                        sourceCode++;
+                        if(*sourceCode == L'='){
+                            token[*line][index].type = _OPERATOR_REST_EQUAL;
+                        }
+                        else{
+                            sourceCode--;
+                            token[*line][index].type = _OPERATOR_REST;
+                        }
+                        break;
+
+                    case L'(':
+                        token[*line][index].type = _RESERVED_CHARACTER_OPEN_EXPRESS;
+                        break;
+
+                    case L')':
+                        token[*line][index].type = _RESERVED_CHARACTER_CLOSE_EXPRESS;
+                        break;
+
+                    case L'{':
+                        token[*line][index].type = _RESERVED_CHARACTER_OPEN_BLOCK;
+                        break;
+                    
+                    case L'}':
+                        token[*line][index].type = _RESERVED_CHARACTER_CLOSE_BLOCK;
+                        break;
+
+                    case L'[':
+                        token[*line][index].type = _RESERVED_CHARACTER_OPEN_BRACKET;
+                        break;
+
+                    case L']':
+                        token[*line][index].type = _RESERVED_CHARACTER_CLOSE_BRACKET;
+                        break;
+
+                    case L'<':
+                        sourceCode++;
+                        if(*sourceCode == L'='){
+                            token[*line][index].type = _RESERVED_CHARACTER_SMALLER_EQUAL;
+                        }
+                        else if(*sourceCode == L'<'){
+                            token[*line][index].type = _RESERVED_CHARACTER_MOV_BIT_LEFT;
+                        }
+                        else{
+                            token[*line][index].type = _RESERVED_CHARACTER_SMALLER;
+                            sourceCode--;
+                        }
+                        break;
+
+                    case L'>':
+                        sourceCode++;
+                        if(*sourceCode == L'='){
+                            token[*line][index].type = _RESERVED_CHARACTER_BIGGER_EQUAL;
+                        }
+                        else if(*sourceCode == L'>'){
+                            token[*line][index].type = _RESERVED_CHARACTER_MOV_BIT_RIGHT;
+                        }
+                        else{
+                            token[*line][index].type = _RESERVED_CHARACTER_BIGGER;
+                            sourceCode--;
+                        }
+                        break;
+
+                    case L'&':
+                        token[*line][index].type = _RESERVED_CHARACTER_AND;
+                        break;
+
+                    case L'|':
+                        token[*line][index].type = _RESERVED_CHARACTER_OR;
+                        break;
+
+                    case L'^':
+                        token[*line][index].type = _RESERVED_CHARACTER_XOR;
+                        break;
+
+                    case L',':
+                        token[*line][index].type = _RESERVED_CHARACTER_COMMA;
+                        break;
+
+                    case L';':
+                        token[*line][index].type = _RESERVED_CHARACTER_SEMICOLON;
+                        break;
+
+                    case L':':
+                        sourceCode++;
+                        if(token[*line - 2].type == _KEYWORD_case ||
+                           token[*line - 1].type == _KEYWORD_default){
+                            token[*line][index].type = _RESERVED_CHARACTER_OPEN_CASE_AND_DEFAULT;
+                            sourceCode--;
+                        }
+                        else if(*sourceCode == L':'){
+                            token[*line][index].type = _KEYWORD_dataStructure;
+                        }
+                        else{
+                            token[*line][index].type = _KEYWORD_variable;
+                            sourceCode--;
+                        }
+                        break;
+
+                    case L'\n':
+                        token[*line][index].type = _RESERVED_CHARACTER_BROKEN_LINE;
+                        break;
+
+                    default:
+                        if((nextCharacters != L'\0')||
+                        nextCharacters == '\0' && checkTokenValid(*sourceCode, L"=+*-/%%(){}[]&$@#!|^,;:.<>?°~º´`¨/ª¹²³£¢¬§\"'\\ \n\t\r")){
+                            token[*line][index].type = __ERROR__;
+                            token[*line][index].Identifiers.error.dataError = strcopy(ErrorsTable[_ERROR_INVALID_CHARACTERE]);
+                            free(word);
+                            return;
+                        }
+                        else{
+                            flag = 0;
+                        }
+                }
+
+                tokenFound = flag;
+            }
+
+            else{
+                if(*sourceCode != L'.' && !flagAccessScope){
+                    word[0] = '\0';
+                    counterCharacteres = 0;
+                    limit = INITSIZEWORDIDENTIFIER;
+                }
+            }
+        }
+
+        if(tokenFound){
+            word[0] = L'\0';
+            counterCharacteres = 0;
+            limit = INITSIZEWORDIDENTIFIER;
+            (*line)++;
+            tokenFound = 0;
+        }
+
+        sourceCode++;
+    }
+
+    if(word != NULL){
+        free(word);
+    }
+}
+
+int main(){
+    String str = L"int:: array = [35, 0x3F]";
+    register i64 sourceSize = strsize(str);
+
+    Token *tokens = (Token*)malloc(sizeof(Token) * 1024);
+    i64 line = 0, i = 0;
+
+    TokenGenerator(str, tokens, &line);
+
+    while(i < line){
+        printf("token: %d\n", tokens[i].type);
+        if(tokens[i].type == __IDENTIFIER__){
+            WindowsWrt(L"name: ", tokens[i].Identifiers.Data.nameIdentifier);
+            printf("\n");
+        }
+        else if(tokens[i].type == __ERROR__){
+            WindowsWrt(tokens[i].Identifiers.error.dataError, L"\n");
+        }
+
+        else if(tokens[i].type == _IDENTIFIER_CONST_i32 || tokens[i].type == _IDENTIFIER_CONST_Float ||
+                tokens[i].type == _IDENTIFIER_CONST_STR || tokens[i].type == _IDENTIFIER_CONST_CHAR){
+            WindowsWrt(L"value: ", tokens[i].Identifiers.constData.data);
+            printf("\n");
+        }
+
+        else if(tokens[i].type == _INTERNAL_FN){
+            printf("i32ernal fn: %d\n", tokens[i].Identifiers.internaFn.fnCode);
+            printf("\n");
+        }
+
+        i++;
+    }
+
+    free(tokens);
+
+    return 0;
+}
+
+*/
+
+/*
+inline static i8 verifyIfTokensIsAKeyOrFN(String word, String sourceCode, Token **token, u64 line, u64 index){
+    printf("entrou em verifyIfTokensIsAKeyOrFN\n");
+    u64 identifyinternalOper = keyWordIdentify(word, internalOperTable, INTERNALOPERQTTY);
+    printf("Saiu de keyWordIdentify\n");
+    u64 identifyKeyWord = 0;
+    u8 tokenFound = 0;
+
+    if(!identifyinternalOper){
+        identifyKeyWord = keyWordIdentify(word, KeyWordTable, KEYWORDsQTTY);
+        printf("Saiu de keyWordIdentify\n");
+    }
+
+    if(identifyinternalOper || identifyKeyWord){
+        i8 flag = 0;
+        sourceCode++;
+        if(checkTokenValid(*sourceCode, ALLCHARACTERES)){
+            sourceCode--;
+            flag = 1;
+        }
+
+        if(*sourceCode == '\0' && !flag){
+            token[line][index].type = __ERROR__;
+            memcopy(token[line][index].Identifiers.error.dataError,
+            ErrorsTable[_ERROR_SYNTAX_KEYWORD], 0, ErrosTableSizes[_ERROR_SYNTAX_KEYWORD]);
+            free(word);
+            return -1;
+        }
+
+        if(!flag){
+            i64 codeFnKeyCall = codeString(word);
+            if(identifyinternalOper){
+                token[line][index].type = _INTERNAL_FN;
+                token[line][index].Identifiers.internaFn.fnCode = codeFnKeyCall;
+            }
+                
+            else{
+                token[line][index].type = _KEYWORD;
+                token[line][index].Identifiers.Key.keyword = codeFnKeyCall;
+            }
+            
+            sourceCode--;
+            tokenFound = 1;
+        }
+    }
+
+    return tokenFound;
+}
+
+
+u8 TokenGenerator(String sourceCode, Token **token, u64 *line){
+    printf("Entrou na fn TK\n");
+    i8 ERROR = 0;
+    u64 counterCharacteres = 0, limit = INITSIZEWORDIDENTIFIER;
+    u8 tokenFound = 0, index = 0;
+    String word = STRALLOC(limit);
+    if(word == NULL)
+        return 1;
+
+    while(*sourceCode){
+        if(!(checkTokenValid(*sourceCode, L"=+*-/%%(){}[]&$@#!|^,;:<>?\"'\\ \n\t\r\0"))){
+            word[counterCharacteres] = *sourceCode;
+            counterCharacteres++;
+
+            if(counterCharacteres == limit - 2){
+                limit += limit >> 1;
+                String newWord = (String)realloc(word, limit * sizeof(lchar));
+                if(newWord == NULL)
+                    return 4;
+
+                word = newWord;
+            }
+        }
+
+        word[counterCharacteres] = L'\0';
+        wprintf(L"---word: %ls\n\n", word);
+
+        tokenFound = verifyIfTokensIsAKeyOrFN(word, sourceCode, token, *line, index);
+        printf("saiu de verifyIfTokensIsAKeyOrFN\n");
+        if(tokenFound == -1)
+            return -1;
+
+        if(tokenFound)
+            goto TOKEN_IS_ONE;
+
+        sourceCode++;
+        lchar nextCharacters = *sourceCode;
+        sourceCode--;
+
+        if((checkTokenValid(*sourceCode, L"=+*-/%%(){}[]&$@#!|^,;:.<>?°~º´`¨/ª¹²³£¢¬§\"'\\ \n\t\r") ||
+        nextCharacters == L'\0') && tokenFound == 0){
+            i8 flagAccessScope = 0, flagTokenPointer = 1;
+            if(word[0] != L'\0'){
+                if(word[0] == L'0'){
+                    sourceCode++;
+                    if(((int)word[1] >= 48 && (int)word[1] <= 57) && (word[1] != 'x' && word[1] != 'X')
+                    && codeString(word) != 48){
+                        token[*line][index].type = __ERROR__;
+                        memcopy(token[*line][index].Identifiers.error.dataError,
+                        ErrorsTable[_ERROR_INIT_IDENTIFIER], 0, ErrosTableSizes[_ERROR_INIT_IDENTIFIER]);
+                        free(word);
+                        return 2;
+                    }
+
+                    sourceCode--;
+                }
+
+                if((int)word[0] >= 48 && (int)word[0] <= 57){
+                    if(*sourceCode == '.'){
+                        flagAccessScope = 1;
+                        flagTokenPointer = 0;
+                    }
+
+                    if(!flagAccessScope){
+                        u8 flagFloat = 0, flagHex = 0;
+                        String auxWord;
+                        auxWord = strcopy(word);
+
+                        while(*auxWord){
+                            if(!(checkTokenValid(*auxWord, L"0123456789aAbBcCdDeEfFxX."))){
+                                token[*line][index].type = __ERROR__;
+                                memcopy(token[*line][index].Identifiers.error.dataError,
+                                ErrorsTable[_ERROR_FORMAT_IDENTIFIER], 0, ErrosTableSizes[_ERROR_FORMAT_IDENTIFIER]);
+                                free(word);
+                                free(auxWord);
+                                return 3;
+                            }
+
+                            else if(*auxWord == L'x' || *auxWord == L'X'){
+                                auxWord++;
+                                if(!flagFloat && !flagHex && *auxWord != L'\0' && word[0] == L'0'){
+                                    flagHex = 1;
+                                    auxWord--;
+                                }
+                                else{
+                                    token[*line][index].type = __ERROR__;
+                                    memcopy(token[*line][index].Identifiers.error.dataError,
+                                    ErrorsTable[_ERROR_FORMAT_IDENTIFIER], 0, ErrosTableSizes[_ERROR_FORMAT_IDENTIFIER]);
+                                    free(word);
+                                    free(auxWord);
+                                    return 3;
+                                }
+                            }
+
+                            else if(*auxWord == L'.'){
+                                auxWord++;
+                                if(!flagFloat && *auxWord != L'\0' && !flagHex){
+                                    flagFloat = 1;
+                                    auxWord--;
+                                }
+
+                                else{
+                                    token[*line][index].type = __ERROR__;
+                                    memcopy(token[*line][index].Identifiers.error.dataError,
+                                    ErrorsTable[_ERROR_FORMAT_IDENTIFIER], 0, _ERROR_FORMAT_IDENTIFIER);
+                                    free(word);
+                                    free(auxWord);
+                                    return 3;
+                                }
+                            }
+
+                            auxWord++;
+                        }
+
+                        token[*line][index].type = (flagFloat) ? _IDENTIFIER_CONST_f64 : _IDENTIFIER_CONST_i64;
+                        token[*line][index].Identifiers.constData.addinfo = (flagHex) ? HEX : DEC;
+                        token[*line][index].Identifiers.constData.data = strcopy(word);
+                    }
+                }
+
+                else{
+                    if(codeString(word) != _INTERNAL_FNCHARPOINTERNUMCODE){
+                        if(*sourceCode == L'.'){
+                            word[counterCharacteres - 1] = L'\0';
+                            counterCharacteres--;
+                        }
+
+                        token[*line][index].type = __IDENTIFIER__;
+                        token[*line][index].Identifiers.Data.nameIdentifier = strcopy(word);
+                    }
+
+                    else{
+                        (*line)--;
+                    }
+                }
+
+                tokenFound = flagTokenPointer;
+            }
+
+            if(*sourceCode == L'.' && !flagAccessScope){
+                if(tokenFound){
+                    index++;
+                }
+                token[*line][index].type = _RESERVED_CHARACTER_ACCESS_SCOPE;
+            }
+
+            else if(*sourceCode == L'"' || *sourceCode == L'\''){
+                u8 flagChar = 0;
+
+                if(tokenFound){
+                    (*line)++;
+                }
+
+                word[0] = L'\0';
+                counterCharacteres = 0;
+                limit = INITSIZEWORDIDENTIFIER;
+
+                if(*sourceCode == L'"'){
+                    sourceCode++;
+                    while(1){
+                        if(*sourceCode == L'"'){
+                            break;
+                        }
+                        else if(*sourceCode == L'\0'){
+                            token[*line][index].type = __ERROR__;
+                            memcopy(token[*line][index].Identifiers.error.dataError,
+                            ErrorsTable[_ERROR_STRING], 0, ErrosTableSizes[_ERROR_STRING]);
+                            free(word);
+                            return 7;
+                        }
+                        else{
+                            word[counterCharacteres] = *sourceCode;
+                            counterCharacteres++;
+
+                            if(counterCharacteres == limit - 2){
+                                limit += limit / 2;
+                                String newWord = (String)realloc(word, limit * sizeof(lchar));
+                                word = newWord;
+                            }
+                        }
+
+                        sourceCode++;
+                    }
+
+                    word[counterCharacteres] = L'\0';
+
+                    token[*line][index].type = _IDENTIFIER_CONST_STRING;
+                    token[*line][index].Identifiers.constData.data = strcopy(word);
+                    tokenFound = 1;
+                }
+
+                else{
+                    sourceCode++;
+                    if(*sourceCode == '\\'){
+                        word[0] = *sourceCode;
+                        sourceCode++;
+                        if(checkTokenValid(*sourceCode, L"nt0r'\"\\")){
+                            word[1] = *sourceCode;
+                            flagChar = 2;
+                        }
+                        else{
+                            token[*line][index].type = __ERROR__;
+                            memcopy(token[*line][index].Identifiers.error.dataError,
+                            ErrorsTable[_ERROR_INVALID_SCAPE_CHARACTERE], 0, ErrosTableSizes[_ERROR_INVALID_SCAPE_CHARACTERE]);
+                            free(word);
+                            return 8;
+                        }
+                    }
+
+                    else if(checkTokenValid(*sourceCode, ALLCHARACTERES) ||
+                       checkTokenValid(*sourceCode, TOKENSCHARACTERES)){
+                        word[0] = *sourceCode;
+                        flagChar = 1;
+                    }
+                    sourceCode++;
+
+                    if(*sourceCode != L'\''){
+                        token[*line][index].type = __ERROR__;
+                        memcopy(token[*line][index].Identifiers.error.dataError,
+                        ErrorsTable[_ERROR_INVALID_CONST_CHAR], 0, ErrosTableSizes[_ERROR_INVALID_CONST_CHAR]);
+                        free(word);
+                        return 9;
+                    }
+
+                    else{
+                        word[flagChar] = '\0';
+                        token[*line][index].type = _IDENTIFIER_CONST_CHAR;
+                        token[*line][index].Identifiers.constData.data = strcopy(word);
+                    }
+
+                    tokenFound = 1;
+                }
+            }
+
+            else if((*sourceCode != L' ' && *sourceCode != L'"' && *sourceCode != L'\'' && *sourceCode != L'.')){
+                i8 flag = 1;
+                if(tokenFound)
+                    index++;
+                
+                switch(*sourceCode){
+                    case L'=':
+                        sourceCode++;
+                        if(*sourceCode == L'='){
+                            token[*line][index].type = _RESERVED_CHARACTER_EQUAL_EQUAL;
+                        }
+                        else{
+                            sourceCode--;
+                            token[*line][index].type = _RESERVED_CHARACTER_EQUAL;
+                        }
+                        break;
+                    
+                    case L'+':
+                        sourceCode++;
+                        if(*sourceCode == L'='){
+                            token[*line][index].type = _OPERATOR_ADD_EQUAL;
+                        }
+                        else if(*sourceCode == L'+'){
+                            token[*line][index].type = _OPERATOR_ADD_ADD;
+                        }
+                        else{
+                            sourceCode--;
+                            token[*line][index].type = _OPERATOR_ADD;
+                        }
+                        break;
+
+                    case L'-':
+                        sourceCode++;
+                        if(*sourceCode == L'='){
+                            token[*line][index].type = _OPERATOR_SUB_EQUAL;
+                        }
+                        else if(*sourceCode == L'-'){
+                            token[*line][index].type = _OPERATOR_SUB_SUB;
+                        }
+                        else if(*sourceCode == L'>'){
+                            token[*line][index].type = _RESERVED_CHARACTER_ADDRESS_POINTER;
+                        }
+                        else{
+                            sourceCode--;
+                            token[*line][index].type = _OPERATOR_SUB;
+                        }
+                        break;
+
+                    case L'/':
+                        sourceCode++;
+                        if(*sourceCode == L'='){
+                            token[*line][index].type = _OPERATOR_DIV_EQUAL;
+                        }
+                        else if(*sourceCode == L'/'){
+                            while(1){
+                                if(*sourceCode == L'\n' || nextCharacters == L'\0'){
+                                    break;
+                                }
+                                else{
+                                    sourceCode++;
+                                }
+                            }
+                            flag = 0;
+                        }
+                        else if(*sourceCode == L'*'){
+                            while(1){
+                                if(*sourceCode == L'*'){
+                                    sourceCode++;
+                                    if(*sourceCode == L'/'){
+                                        break;
+                                    }
+                                }
+                                else{
+                                    sourceCode++;
+                                }
+                                flag = 0;
+                            }
+                        }
+                        else{
+                            sourceCode--;
+                            token[*line][index].type = _OPERATOR_DIV;
+                        }
+                        break;
+
+                    case L'*':
+                        sourceCode++;
+                        if(*sourceCode == L'='){
+                            token[*line][index].type = _OPERATOR_MULT_EQUAL;
+                        }
+                        else if(*sourceCode == L'*'){
+                            sourceCode++;
+                            if(*sourceCode == L'='){
+                                token[*line][index].type = _OPERATOR_POW_EQUAL;
+                            }
+                            else{
+                                sourceCode--;
+                                token[*line][index].type = _OPERATOR_POW;
+                            }
+                        }
+                        else{
+                            sourceCode--;
+                            token[*line][index].type = _OPERATOR_MULT;
+                        }
+                        break;
+
+                    case L'%':
+                        sourceCode++;
+                        if(*sourceCode == L'='){
+                            token[*line][index].type = _OPERATOR_REST_EQUAL;
+                        }
+                        else{
+                            sourceCode--;
+                            token[*line][index].type = _OPERATOR_REST;
+                        }
+                        break;
+
+                    case L'(':
+                        token[*line][index].type = _RESERVED_CHARACTER_OPEN_EXPRESS;
+                        break;
+
+                    case L')':
+                        token[*line][index].type = _RESERVED_CHARACTER_CLOSE_EXPRESS;
+                        break;
+
+                    case L'{':
+                        token[*line][index].type = _RESERVED_CHARACTER_OPEN_BLOCK;
+                        break;
+                    
+                    case L'}':
+                        token[*line][index].type = _RESERVED_CHARACTER_CLOSE_BLOCK;
+                        break;
+
+                    case L'[':
+                        token[*line][index].type = _RESERVED_CHARACTER_OPEN_BRACKET;
+                        break;
+
+                    case L']':
+                        token[*line][index].type = _RESERVED_CHARACTER_CLOSE_BRACKET;
+                        break;
+
+                    case L'<':
+                        sourceCode++;
+                        if(*sourceCode == L'='){
+                            token[*line][index].type = _RESERVED_CHARACTER_SMALLER_EQUAL;
+                        }
+                        else if(*sourceCode == L'<'){
+                            token[*line][index].type = _RESERVED_CHARACTER_MOV_BIT_LEFT;
+                        }
+                        else{
+                            token[*line][index].type = _RESERVED_CHARACTER_SMALLER;
+                            sourceCode--;
+                        }
+                        break;
+
+                    case L'>':
+                        sourceCode++;
+                        if(*sourceCode == L'='){
+                            token[*line][index].type = _RESERVED_CHARACTER_BIGGER_EQUAL;
+                        }
+                        else if(*sourceCode == L'>'){
+                            token[*line][index].type = _RESERVED_CHARACTER_MOV_BIT_RIGHT;
+                        }
+                        else{
+                            token[*line][index].type = _RESERVED_CHARACTER_BIGGER;
+                            sourceCode--;
+                        }
+                        break;
+
+                    case L'&':
+                        token[*line][index].type = _RESERVED_CHARACTER_AND;
+                        break;
+
+                    case L'|':
+                        token[*line][index].type = _RESERVED_CHARACTER_OR;
+                        break;
+
+                    case L'^':
+                        token[*line][index].type = _RESERVED_CHARACTER_XOR;
+                        break;
+
+                    case L',':
+                        token[*line][index].type = _RESERVED_CHARACTER_COMMA;
+                        break;
+
+                    case L';':
+                        token[*line][index].type = _RESERVED_CHARACTER_SEMICOLON;
+                        (*line)++;
+                        break;
+
+                    case L':':
+                        sourceCode++;
+                        if(token[*line][index - 2].type == _KEYWORD_case ||
+                           token[*line][index - 1].type == _KEYWORD_default){
+                            token[*line][index].type = _RESERVED_CHARACTER_OPEN_CASE_AND_DEFAULT;
+                            sourceCode--;
+                        }
+                        else if(*sourceCode == L':')
+                            token[*line][index].type = _KEYWORD_dataStructure;
+                        
+                        else{
+                            token[*line][index].type = _KEYWORD_variable;
+                            sourceCode--;
+                        }
+                        break;
+
+                    case L'\n':
+                        token[*line][index].type = _RESERVED_CHARACTER_BROKEN_LINE;
+                        (*line)++;
+                        break;
+
+                    default:
+                        if((nextCharacters != L'\0')||
+                        nextCharacters == '\0' && checkTokenValid(*sourceCode, L"=+*-/%%(){}[]&$@#!|^,;:.<>?°~º´`¨/ª¹²³£¢¬§\"'\\ \n\t\r")){
+                            token[*line][index].type = __ERROR__;
+                            memcopy(token[*line][index].Identifiers.error.dataError,
+                            ErrorsTable[_ERROR_INVALID_CHARACTERE], 0, ErrosTableSizes[_ERROR_INVALID_CHARACTERE]);
+                            free(word);
+                            return 5;
+                        }
+                        else
+                            flag = 0;
+                }
+
+                tokenFound = flag;
+            }
+
+            else{
+                if(*sourceCode != L'.' && flagAccessScope){
+                    word[0] = '\0';
+                    counterCharacteres = 0;
+                    limit = INITSIZEWORDIDENTIFIER;
+                }
+            }
+        }
+
+    TOKEN_IS_ONE:
+
+        if(tokenFound){
+            printf("\n--------Token = 1\n");
+            if(token[*line][index].type == _KEYWORD)
+                printf("token found: %d---------\n\n", token[*line][index].Identifiers.Key.keyword);
+            word[0] = L'\0';
+            counterCharacteres = 0;
+            limit = INITSIZEWORDIDENTIFIER;
+            index++;
+            tokenFound = 0;
+        }
+
+        sourceCode++;
+    }
+
+    if(word != NULL)
+        free(word);
+}
+
+int main(){
+    String str = L"i8 i16 i32 i64";
+    Token **tokens = (Token**)malloc(sizeof(Token*) * START_TOKENS);
+    i16 j = 0;
+    u64 codelength = 0;
+
+    for(; j < START_TOKENS; j++)
+        tokens[j] = (Token*)malloc(sizeof(Token) * START_LINE);
+
+    TokenGenerator(str, tokens, &codelength);
+
+    j = 0;
+    for(int y = 0; y < codelength; y++){
+        while(1){
+            if(tokens[y][j].type != ENDLINE)
+                break;
+
+            if(tokens[y][j].type != __ERROR__){
+                wprintf(L"Error: %ls\n", tokens[y][j].Identifiers.error.dataError);
+                break;
+            }
+
+            printf("TOKEN: %d\n", tokens[y][j].type);
+        }
+    }
+
+    for(j = 0; j < START_TOKENS; j++)
+        free(tokens[j]);
+    
+    free(tokens);
+
+    return 0;
+}
+*/
+
+/*
+typedef struct{
+    String nameIdentifier;
+    String codeName;
+}IdentifierData;
+
+
+typedef struct{
+    String data;
+    u8 addinfo;
+}IdentifierConst;
+
+
+typedef struct{
+    u16 fnCode;
+}IdentifierinternalFn;
+
+
+typedef struct{
+    lchar dataError[60];
+}ERROR_;
+
+
+typedef struct{
+    u16 keyword;
+}KeyWordType;
+
+
+typedef struct{
+    u16 type;
+    union{
+        KeyWordType Key;
+        IdentifierData Data;
+        IdentifierConst constData;
+        IdentifierinternalFn internaFn;
+        ERROR_ error;
+        u8 EndLine;
+    }Identifiers;
+}Token;
+*/
+
+// String KeyWordTable[KEYWORDsQTTY] = {
+//     L"i8",          L"u8",          L"f32",         L"if",
+//     L"i32",         L"i16",         L"f64",         L"fn",
+//     L"i64",         L"in",          L"u32",         L"u16",
+//     L"or",          L"u64",         L"FILE",        L"and",
+//     L"all",         L"Try",         L"key",         L"for",
+//     L"new",         L"not",         L"This",        L"List",
+//     L"char",        L"case",        L"elif",        L"else",
+//     L"Catch",       L"Class",       L"break",       L"while",
+//     L"const",       L"Method",      L"Resize",      L"public",
+//     L"HashMap",     L"switch",      L"import",      L"string",
+//     L"result",      L"default",     L"private",     L"continue",
+//     L"ArrayList",   L"Attribute"
+// };
+
+// String internalOperTable[INTERNALOPERQTTY] = {
+//     L"rd",           L"pop",          L"wrt",          L"Type",
+//     L"copy",         L"keys",         L"push",         L"clear",
+//     L"items",        L"length",       L"update",       L"values",
+//     L"remove",       L"ReadFile",     L"reverse",      L"FileOpen",
+//     L"FileClose",    L"WriteFile",    L"strtolist",    L"ReadFileLine",
+// };
+
+/*int main(){
+    Array_i8Ty *arrBty = (Array_i8Ty*)newArray(10, sizeof(Array_i8Ty), __ARRAYi8__);
+    int i = 0;
+
+    for(i = 0; i < arrBty->GN_Fields.capacity; i++){
+        arrBty->data[i] = i + 1;
+        printf("%d -> ", arrBty->data[i]);
+    }
+    printf("end\n");
+
+    Array_f32Ty *arrflt = (Array_f32Ty*)newArray(10, sizeof(Array_f32Ty), __ARRAYf32__);
+
+    for(i = 0; i < arrflt->GN_Fields.capacity; i++){
+        arrflt->data[i] = i * 0.3445;
+        arrflt->GN_Fields.extention++;
+        printf("%f -> ", arrflt->data[i]);
+    }
+    printf("end\n");
+
+    resizeArray(15, sizeof(Array_f32Ty), (GenericArray*)arrflt, __ARRAYf32__);
+    for(i = 0; i < arrflt->GN_Fields.capacity; i++){
+        printf("%f -> ", arrflt->data[i]);
+    }
+
+    printf("\n");
+
+
+    Array_stringTy *arrStr = (Array_stringTy*)newArray(7, sizeof(Array_stringTy), __ARRAYSTRING__);
+    for(i = 0; i < arrStr->GN_Fields.capacity; i++){
+        printf("string[%d]: ", i);
+        if(arrStr->data[i] == NULL){
+            printf("string null\n");
+        }
+        else{
+            WindowsWrt(arrStr->data[i], L"\n");
+        }
+    }
+
+
+    free(arrBty);
+    free(arrBty->data);
+    free(arrflt);
+    free(arrflt->data);
+}
+*/
+
+// int mainn(){
+//     List *list = newList(START_DATA_STRUCTURE);
+
+//     unsigned char *bytes;
+//     packageReceived pkrv;
+
+//     lchar *i_n = NULL;
+
+//     pkrv.pack_ty = PACK_BYTES;
+
+//     pkrv.package_ty.pack_bytes = (u8[]){STARTBYTE_0X0E, 0x09, 0x02, 0x02, ENDBYTE};
+//     pushList(&list, __i64__, pkrv, 4);
+
+//     pkrv.package_ty.pack_bytes = (u8[]){STARTBYTE_0X0E, 0x03, 0x05, ENDBYTE};
+//     pushList(&list, __i64__, pkrv, 3);
+
+//     pkrv.package_ty.pack_bytes = (u8[]){STARTBYTE_0X0F, 0x03, 0x05, ENDBYTE};
+//     pushList(&list, __i8__, pkrv, 3);
+
+//     pkrv.package_ty.pack_bytes = (u8[]){STARTBYTE_0X0E, 0x03, 0x05, 0x00, ENDBYTE};
+//     pushList(&list, __i16__, pkrv, 4);
+
+//     i64 limit = 1000000;
+//     for(i64 i = 0; i < limit; i++){
+//         if(i % 7 == 0){
+//             pkrv.pack_ty = PACK_DOUBLE_BYTES;
+//             i_n = inttstr(i);
+//             pkrv.package_ty.pack_doublebytes = i_n;
+//             pushList(&list, __String__, pkrv, strsize(i_n) + 1);
+//         }
+
+//         else{
+//             pkrv.pack_ty = PACK_BYTES;
+//             char size = 0;
+//             bytes = expandsToi8s(i, &size);
+//             pkrv.package_ty.pack_bytes = bytes;
+
+//             if(i <= 127 && i >= -128){
+//                 pushList(&list, __i8__, pkrv, (unsigned long long)size);
+//             }
+
+//             else if(i <= 32767 && i >= -32768){
+//                 pushList(&list, __i16__, pkrv, (unsigned long long)size);
+//             }
+
+//             else if(i % 2 == 0){
+//                 pushList(&list, __i32__, pkrv, (unsigned long long)size);
+//             }
+
+//             else{
+//                 pkrv.pack_ty = PACK_INTEGER;
+//                 pkrv.package_ty.pack_integer = i;
+//                 pushList(&list, __i64__, pkrv, (unsigned long long)size);
+//             }
+//         }
+//     }
+
+//     free(bytes);
+//     free(i_n);
+
+//     pkrv.pack_ty = PACK_BYTES;
+
+//     pkrv.package_ty.pack_bytes = (u8[]){STARTBYTE_0X0E, 0x03, 0x05, 0x00, 0x00, 0x00, ENDBYTE};
+//     pushList(&list, __i64__, pkrv, 6);
+//     pkrv.package_ty.pack_bytes[0] = STARTBYTE_0X0F;
+//     pushList(&list, __i64__, pkrv, 6);
+
+//     pkrv.package_ty.pack_bytes = (u8[]){STARTBYTE_0X0E, 0x03, 0x05, 0x00, 0x00, ENDBYTE};
+//     pushList(&list, __i32__, pkrv, 5);
+//     pkrv.package_ty.pack_bytes[0] = STARTBYTE_0X0F;
+//     pushList(&list, __i32__, pkrv, 5);
+
+//     pkrv.package_ty.pack_bytes = (u8[]){STARTBYTE_0X0E, 0x03, 0x05, 0x00, ENDBYTE};
+//     pushList(&list, __i16__, pkrv, 4);
+//     pkrv.package_ty.pack_bytes[0] = STARTBYTE_0X0F;
+//     pushList(&list, __i16__, pkrv, 4);
+
+//     pkrv.package_ty.pack_bytes = (u8[]){STARTBYTE_0X0E, 0x03, 0x05, ENDBYTE};
+//     pushList(&list, __i8__, pkrv, 3);
+//     pkrv.package_ty.pack_bytes[0] = STARTBYTE_0X0F;
+//     pushList(&list, __i8__, pkrv, 3);
+
+//     pkrv.pack_ty = PACK_DOUBLE_BYTES;
+
+//     lchar hello_world[] = {0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x2C, 0x20, 0x57, 0x6F, 0x72, 0x6C, 0x64, 0x21, 0x00};
+//     pkrv.package_ty.pack_doublebytes = hello_world;
+//     pushList(&list, __String__, pkrv, 14);
+
+//     lchar input[] = L"Todos esses momentos se perderão no tempo, como lágrimas na chuva...";
+//     pkrv.package_ty.pack_doublebytes = input;
+//     pushList(&list, __String__, pkrv, 69);
+
+//     lchar blade_runner[] = L"Blade Runner: Melhor filme de toda a história do cinema!";
+//     pkrv.package_ty.pack_doublebytes = blade_runner;
+//     pushList(&list, __String__, pkrv, 43);
+
+//     lchar *games[] = {
+//                         L"Dark Souls Remaster", L"Hollow Knight", L"Elden Ring",
+//                         L"Cyberpunk 2077", L"Dark Souls III", L"Batman: Arkham Knight",
+//                         L"Red Dead Redemption 2", L"Lies Of P", L"BloodBorne",
+//                         L"Sekiro", L"Dark Souls II"
+//                       };
+
+//     for(char y = 0; y < 11; y++){
+//         pkrv.package_ty.pack_doublebytes = games[y];
+//         pushList(&list, __String__, pkrv, strsize(games[y]) + 1);
+//     }
+
+//     lchar maxnum_long_long[] = L"9223372036854775807";
+//     i64 max_nLL = convert_StringToInteger(L"9223372036854775807");
+
+//     pkrv.pack_ty = PACK_BYTES;
+
+//     charsize_t len = 0;
+//     u8 *newData_c = expandsToi8s(max_nLL, &len);
+//     pkrv.package_ty.pack_bytes = newData_c;
+//     pushList(&list, __i64__, pkrv, (i64)len);
+
+//     pkrv.pack_ty = PACK_DOUBLE_BYTES;
+
+//     free(newData_c);
+//     pkrv.package_ty.pack_doublebytes = maxnum_long_long;
+//     pushList(&list, __String__, pkrv, strsize(maxnum_long_long) + 1);
+
+//     lchar ellen[] = L"Ellen, morzinho di mi vida";
+//     pkrv.package_ty.pack_doublebytes = ellen;
+//     pushList(&list, __String__, pkrv, strsize(ellen) + 1);
+
+//     pkrv.pack_ty = PACK_BYTES;
+
+//     pkrv.package_ty.pack_bytes = (u8[]){STARTBYTE_0X0E, 0x09, 0x02, 0x02, 0x03, 0x03, 0x07, 0x02, 0x00, 0x03, 0x06, ENDBYTE};
+//     pushList(&list, __i64__, pkrv, 11);
+
+//     pkrv.pack_ty = PACK_INTEGER;
+
+//     pkrv.package_ty.pack_integer = 9223372036854775807;
+//     pushList(&list, __i64__, pkrv, strsize(L"9223372036854775807") + 1);
+
+//     pkrv.package_ty.pack_integer = 25042006;
+//     pushList(&list, __i32__, pkrv, strsize(L"25042006") + 1);
+
+//     pkrv.pack_ty = PACK_DOUBLE_BYTES;
+
+//     pkrv.package_ty.pack_doublebytes = L"Ton-618";
+//     pushList(&list, __String__, pkrv, strsize(pkrv.package_ty.pack_doublebytes) + 1);
+
+//     pkrv.package_ty.pack_doublebytes = L"I Love You Ellen";
+//     pushList(&list, __String__, pkrv, strsize(pkrv.package_ty.pack_doublebytes) + 1);
+
+//     pkrv.package_ty.pack_doublebytes = L"End List";
+//     pushList(&list, __String__, pkrv, strsize(pkrv.package_ty.pack_doublebytes) + 1);
+
+//     printList(&list, MODE_PRINT_LIST, 0, list->GN_Fields.extention);
+//     freeList(&list);
+// }
+
+// #define KeyWordTable  (String[KEYWORDsQTTY]){                                                           \
+//                                     L"i8", L"u8", L"f32", L"if", L"i32", L"i16", L"f64", L"fn",         \
+//                                     L"i64", L"in", L"u32", L"u16", L"or", L"u64", L"FILE", L"and",      \
+//                                     L"all", L"Try", L"key", L"for", L"new", L"not", L"This", L"List",   \
+//                                     L"char", L"case", L"elif", L"else", L"Catch", L"Class", L"break",   \
+//                                     L"while", L"const", L"Method", L"Resize", L"thread", L"public", L"HashMap",    \
+//                                     L"switch", L"import", L"string", L"return", L"default", L"private", \
+//                                     L"continue", L"ArrayList", L"Attribute"                             \
+//                                }
+
+// #define internalOperTable (String[INTERNALOPERQTTY]){                                                        \
+//                                         L"rd", L"pop", L"wrt", L"Type", L"copy", L"keys", L"push", L"clear", \
+//                                         L"items", L"length", L"update", L"values", L"remove", L"ReadFile",   \
+//                                         L"reverse", L"FileOpen", L"FileClose", L"WriteFile", L"strtolist",   \
+//                                         L"ReadFileLine"                                                      \
+//                                    }
+
+
+// if(returnfn >= COMMENT){
+//     if(lastline != *line){
+//         if(*word)
+//             index++;
+
+//         tokens[lastline][index].type = ENDLINE;
+//         index = 0;
+//         lastline = *line;
+//         tf = 0;
+//     }
+
+//     goto TOKENFOUND;
+// }

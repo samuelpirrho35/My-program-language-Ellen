@@ -1,4 +1,17 @@
 {
+  "files.associations": {
+    "*.embeddedhtml": "html",
+    "system.h": "c",
+    "libstring.h": "c",
+    "cstdlib": "c",
+    "basicmath.h": "c",
+    "typeobjects.h": "c",
+    "defines.h": "c",
+    "preobjects.h": "c",
+    "tokens.h": "c",
+    "objectsstruct.h": "c",
+    "allocs.h": "c"
+  },
   "C_Cpp_Runner.msvcBatchPath": "",
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "g++",
@@ -55,14 +68,5 @@
   "C_Cpp_Runner.useLeakSanitizer": false,
   "C_Cpp_Runner.showCompilationTime": false,
   "C_Cpp_Runner.useLinkTimeOptimization": false,
-  "C_Cpp_Runner.msvcSecureNoWarnings": false,
-  "files.associations": {
-    "*.embeddedhtml": "html",
-    "system.h": "c",
-    "libstring.h": "c",
-    "cstdlib": "c",
-    "basicmath.h": "c",
-    "typeobjects.h": "c",
-    "defines.h": "c"
-  }
+  "C_Cpp_Runner.msvcSecureNoWarnings": false
 }

@@ -116,6 +116,49 @@ u8 strncopy(String *dstny, String source, i64 limit){
     return 0;
 }
 
+u8 strcompare(String str1, String str2){
+    if(str1 == NULL || str2 == NULL)
+        return 0;
+
+    u64 len1 = strsize(str1), len2 = strsize(str2);
+    if(len1 != len2)
+        return 0;
+
+    for(; *str1; str1++){
+        if(*str1 != *str2)
+            return 0;
+        
+        str2++;
+    }
+
+    return 1;
+}
+
+u8 strfastcompare(String str1, String str2, u64 len1){
+    if(str1 == NULL || str2 == NULL)
+        return 0;
+
+    u64 len2 = strsize(str2);
+    if(len1 != len2)
+        return 0;
+
+    for(; *str1; str1++){
+        if(*str1 != *str2)
+            return 0;
+        
+        str2++;
+    }
+
+    return 1;
+}
+
+void copyToStaticBuffer(lchar copy[], String src, u64 len){
+    copy[--len] = L'\0';
+
+    while(len--)
+        copy[len] = src[len];
+}
+
 u8 strgetnextstr(String *dstny, String *formatptr){
     String format = *formatptr;
     String dty;

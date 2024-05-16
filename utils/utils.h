@@ -9,9 +9,8 @@
 
 u8* expandsToi8s(i64 n, charsize_t *newSize);
 
-i64 codeString(String str);
-i64 keyWordIdentify(String str, String *KeyWordTable, u8 lengthTable);
-i8 checkTokenValid(lchar actCharacter, String nextCharacters);
+u32 codeString(String str);
+u8 checkTokenValid(lchar actCharacter, String nextCharacters);
 
 #ifndef RUNTIMEVM
 CachingData CreateCacheData(String IdentifierName, reference_types TypeObject, i64 Calls, String Value);

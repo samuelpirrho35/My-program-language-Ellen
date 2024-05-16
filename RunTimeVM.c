@@ -13,7 +13,8 @@
 #include "includelib/convertObjectsTypes.h"
 #include "includelib/libIo.h"
 #include "includelib/libString.h"
-#include "includelib/objectsFunctions.h"
+#include "includelib/List.h"
+#include "utils/utils.h"
 #include <stdlib.h>
 
 /*
@@ -391,13 +392,13 @@ inline static STATUS COMMAND_SYSOT(u8 *line, __System__ System){
                 pkrv.package_ty.pack_integer = System.Manager.Objects.st_i16[address[index]]->i16Ty;
                 ref_ty = __i16__;
                 break;
-            case STORAGE_CHAR:
-                pkrv.package_ty.pack_integer = System.Manager.Objects.st_char[address[index]]->charTy;
-                ref_ty = __Char__;
-                break;
             case STORAGE_BYTE:
                 pkrv.package_ty.pack_integer = System.Manager.Objects.st_i8[address[index]]->i8Ty;
                 ref_ty = __i8__;
+                break;
+            case STORAGE_CHAR:
+                pkrv.package_ty.pack_integer = System.Manager.Objects.st_char[address[index]]->charTy;
+                ref_ty = __Char__;
                 break;
             default:
                 return -10;

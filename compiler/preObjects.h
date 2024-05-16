@@ -4,39 +4,21 @@
 #include "../includedefines/defines.h"
 #include "../includeEnumerator/tokens.h"
 
-#define DEC 0
+#define BIN 0
 #define HEX 1
+#define DEC 2
 
 typedef struct{
-    String nameIdentifier;
-    String codeName;
-}IdentifierData;
-
-
-typedef struct{
-    String data;
-    u8 addinfo;
-}IdentifierConst;
-
-
-typedef struct{
-    u8 fnCode;
-}Identifieri32ernalFn;
-
-
-typedef struct{
-    String dataError;
-}ERROR_;
-
-
-typedef struct{
-    TokenType type;
+    u8 type;
+    u64 length;
     union{
-        IdentifierData Data;
-        IdentifierConst constData;
-        Identifieri32ernalFn internaFn;
-        ERROR_ error;
-    }Identifiers;
-}Token;
+        lchar        TokenError[60];
+        u16          TokenKeyWord;
+        u16          TokenFn;
+        String       Constint;
+        String       ConstValue;
+        String       IdentifierName;
+    }tokens;
+}Tokens;
 
 #endif //PREOBJECTS

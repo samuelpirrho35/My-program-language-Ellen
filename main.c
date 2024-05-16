@@ -8,7 +8,6 @@
 #include "includedefines/sizeDefined.h"
 #include "includedefines/allocs.h"
 #include "includelib/basicMath.h"
-#include "includelib/objectsFunctions.h"
 #include "includelib/libString.h"
 #include "includelib/convertObjectsTypes.h"
 #include "includeclass/objectsStruct.h"
@@ -26,8 +25,8 @@ int main(int argc, char *argv[]){
     
 #ifndef RUNTIMEVM
     Token *Tokens = (Token*)malloc(sizeof(Token) * 100);
-    i64 indexToken = 0;
-    TokenGenerator(L"", Tokens, &indexToken);
+    i64 line = 0;
+    TokenGenerator(L"", Tokens, &line);
 #endif
 
     i64 n = 305419896;
@@ -161,10 +160,10 @@ int main(int argc, char *argv[]){
     // if(program(global2, NULL, &System))
     //     printf("ERROR: Fatal error during program execution");
         
-    // if(program(global, local, &System))
-    //    printf("ERROR: Fatal error during program execution");
+    if(program(global, local, &System))
+       printf("ERROR: Fatal error during program execution");
 
-    program(global3, NULL, &System);
+    // program(global3, NULL, &System);
 
     free(bytes);
 
