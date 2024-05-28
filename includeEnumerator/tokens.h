@@ -20,6 +20,7 @@ typedef enum{
     _KEYWORD_f32,                              _KEYWORD_f64,
     _KEYWORD_string,                              _KEYWORD_char,
     _KEYWORD_FILE,                             _KEYWORD_ArrayList,
+    _KEYWORD_List,
     _KEYWORD_HashMap,                             _KEYWORD_and,
     _KEYWORD_or,                               _KEYWORD_in,
     _KEYWORD_endif,                            _KEYWORD_class,
@@ -30,8 +31,9 @@ typedef enum{
     _KEYWORD_export,                           _KEYWORD_all,
     _KEYWORD_new,                              _KEYWORD_Resize,
     _INTERNAL_FN,                              __IDENTIFIER__,
-    _IDENTIFIER_CONST_DEC,                     _IDENTIFIER_CONST_FLOAT,
+    _IDENTIFIER_CONST_DEC,                     
     _IDENTIFIER_CONST_HEX,                     _IDENTIFIER_CONST_BIN,
+    _IDENTIFIER_CONST_FLOAT,
     _IDENTIFIER_CONST_STRING,                  _IDENTIFIER_CONST_CHAR,
     _IDENTIFIER_CONST_LIST,                    _IDENTIFIER_CONST_HASHMAP,
     _IDENTIFIER_int,                           _IDENTIFIER_str,
@@ -45,6 +47,7 @@ typedef enum{
     _OPERATOR_SUB_EQUAL,                       _OPERATOR_DIV_EQUAL,
     _OPERATOR_MULT_EQUAL,                      _OPERATOR_POW_EQUAL,
     _OPERATOR_REST_EQUAL,                      _RESERVED_CHARACTER_EQUAL,
+    _RESERVED_CHARACTER_EQUAL_DEFINE_TYPE,
     _RESERVED_CHARACTER_EQUAL_EQUAL,           _RESERVED_CHARACTER_DENIAL,          
     _RESERVED_CHARACTER_SMALLER,               _RESERVED_CHARACTER_ADDRESS_POINTER,
     _RESERVED_CHARACTER_BIGGER,                _RESERVED_CHARACTER_SMALLER_EQUAL,
@@ -61,8 +64,8 @@ typedef enum{
     _RESERVED_CHARACTER_BROKEN_LINE,           _RESERVED_CHARACTER_XOR_EQUAL,
     _RESERVED_CHARACTER_TPOINTERS,             _RESERVED_CHARACTER_TTPOINTERS,
     _RESERVED_CHARACTER_TRANSFER,              _RESERVED_CHARACTER_DENIAL_EQUAL,
-    _RESERVED_CHARACTER_CLOSE_TAG,             
-    ENDLINE,                                   IDENTIFIERNAME,
+    _RESERVED_CHARACTER_CLOSE_TAG,             IDENTIFIERNAME,
+    ENDLINE,                              
     __ERROR__
 }TokenType;
 
@@ -78,7 +81,8 @@ typedef enum{
     _ERROR_INVALID_CHARACTERE,
     _ERROR_INVALID_SCAPE_CHARACTERE,
     _ERROR_INVALID_CONST_CHAR,
-    _ERROR_COMMENT
+    _ERROR_COMMENT,
+    _ERROR_COMPILATION
 }Errors;
 
 // typedef enum{

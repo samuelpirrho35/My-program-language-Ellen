@@ -1,5 +1,5 @@
-#ifndef TOKENGENERATOR_H
-#define TOKENGENERATOR_H
+#ifndef TOKEN_H
+#define TOKEN_H
 
 #include "../includedefines/defines.h"
 #include "../includedefines/referenceTypes.h"
@@ -45,6 +45,7 @@
                              }
 
 #define copyerror(ERR, TOK, LINE, INDEX) copyToStaticBuffer(TOK[LINE][INDEX].tokens.TokenError, ErrorsTable[ERR], ErrosTableSizes[ERR])
+#define getnptr(STR, CHR) (*(STR + CHR))
 
 #define INIINTERNFN 4
 
@@ -59,6 +60,9 @@
 
 #define OK     1
 #define NOT_OK 0
+
+#define errchar() tokens[*line][*index].type = __ERROR__;                       \
+                  copyerror(_ERROR_INVALID_CONST_CHAR, tokens, *line, *index)
 
 #define SPACE 255
 

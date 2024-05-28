@@ -22,17 +22,17 @@ typedef union{
 
 
 typedef struct{
-    u32     extention;
-    u32     capacity;
-    u32     lengthstr;
-    String  dataStructurestr;
-    char    modify_flag;
+    u32 extention;
+    u32 capacity;
+    u32 lengthstr;
+    String dataStructurestr;
+    u8     modify_flag;
 }GNFieldsStructures;
 
 
 typedef struct{
-    size_ty extention;
-    size_ty capacity;
+    u32 extention;
+    u32 capacity;
 }GNFieldsArrays;
 
 
@@ -194,6 +194,22 @@ typedef struct{
 }GenericArray;
 
 
+typedef struct{
+    u8  type;
+    u64 jump;
+
+    union{
+        u64 i_ival;
+        f64 i_fval;
+    }inivalue;
+
+    union{
+        u64 e_ival;
+        f64 e_fval;
+    }endvalue;
+}VirtualArray;
+
+
 typedef union{
     Array_i64Ty  a_i64Ty;
     Array_i32Ty  a_i32Ty;
@@ -216,24 +232,6 @@ typedef struct{
 }ArrayList;
 
 
-typedef struct{
-    reference_types hollow_ty;
-    PrimitiveTypes  primitiveTys;
-}VarHollow;
-
-
-typedef struct{
-    reference_types hollow_ty;
-    union{
-        All_Arrays all_arrays;
-        ArrayList  *arrayList;
-        List       *list;
-        HashMap    *hashMap;
-        Struct     *StructObj;
-    }HollowDsType;
-}DSHollow;
-
-
 typedef struct List{
     GNFieldsStructures GN_Fields;
     reference_types    ref_ty;
@@ -242,8 +240,8 @@ typedef struct List{
         Ouroboros      *BigintType;
         Ouroboros      *BigfloatType;
         All_Arrays     all_arrays;
-        ArrayList      *ArrayList;
-        HashMap        *HashObject;
+        ArrayList      ArrayListObject;
+        HashMap        *HashMapObject;
         List           *ListObject;
         Class          *classObject;
         Struct         *StructObject;
@@ -263,7 +261,7 @@ typedef struct Class{
 
 
 typedef struct HashMap{
-    i64             Key;
+    u64             Key;
     reference_types ref_keyTy;
     union{
         PrimitiveTypes primitiveTy;
@@ -320,28 +318,27 @@ typedef struct{
 
 //-----------<Array storage objects>-----------
 
-typedef i64Object**  storage_i64Ty;
-typedef i32Object**  storage_i32Ty;
-typedef i16Object**  storage_i16Ty;
-typedef i8Object**   storage_i8Ty;
-typedef u64Object**  storage_u64Ty;
-typedef u32Object**  storage_u32Ty;
-typedef u16Object**  storage_u16Ty;
-typedef u8Object**   storage_u8Ty;
-typedef charObject** storage_charTy;
-typedef String*      storage_stringTy;
-typedef f32Object**  storage_f32Ty;
-typedef f64Object**  storage_f64Ty;
-typedef VarHollow**  storage_varhollowTy;
-typedef DSHollow**   storage_dshollowTy;
+typedef i64Object**   storage_i64Ty;
+typedef i32Object**   storage_i32Ty;
+typedef i16Object**   storage_i16Ty;
+typedef i8Object**    storage_i8Ty;
+typedef u64Object**   storage_u64Ty;
+typedef u32Object**   storage_u32Ty;
+typedef u16Object**   storage_u16Ty;
+typedef u8Object**    storage_u8Ty;
+typedef charObject**  storage_charTy;
+typedef String*       storage_stringTy;
+typedef f32Object**   storage_f32Ty;
+typedef f64Object**   storage_f64Ty;
 
-typedef Ouroboros**  storage_Bigi32Ty;
-typedef Ouroboros**  storage_Bigf32Ty;
-typedef ArrayList**  storage_ArrayListTy;
-typedef List**       storage_ListTy;
-typedef HashMap**    storage_HashMapTy;
-typedef Struct**     storage_StructTy;
-typedef Class**      storage_ClassTy;
-typedef fn**         storage_fnTy;
+typedef Ouroboros**   storage_BigintTy;
+typedef Ouroboros**   storage_BigfloatTy;
+typedef ArrayList*    storage_ArrayListTy;
+typedef VirtualArray* storage_VirtualArray;
+typedef List**        storage_ListTy;
+typedef HashMap**     storage_HashMapTy;
+typedef Struct**      storage_StructTy;
+typedef Class**       storage_ClassTy;
+typedef fn**          storage_fnTy;
 
 #endif //OBJECTSSTRUCT_H

@@ -10,12 +10,13 @@
 #ifndef RUNTIMEVM
 CachingData** initializeCache(__Manager__ *manager){
     manager->Cache = (CachingData**)malloc(INITMANAGERCACHE * sizeof(CachingData*));
-    size_ty i = 0;
-    for(; i < INITMANAGERCACHE; i++){
+
+    for(size_t i = 0; i < INITMANAGERCACHE; i++){
         manager->Cache[i] = (CachingData*)malloc(INITSIZECACHE * sizeof(CachingData));
         manager->Cache[i]->TypeCache.Cache.Extention = 0;
         manager->Cache[i]->TypeCache.Cache.Capacity = INITSIZECACHE;
     }
+
     return manager->Cache;
 }
 #endif
@@ -117,13 +118,14 @@ __System__ __init__(){
     __System__ System;
     System.status = WORKING;
     System.version = L"0.6.7";
-    System.WRT = &wrt;
-    System.RD = &rd;
+    System.SysFunctions.RD = &rd;
+    System.SysFunctions.WRT = &wrt;
+
 #ifndef RUNTIMEVM
-    System->Manager.SizeCacheScopes = INITMANAGERCACHE;
-    System->Manager.Cache = initializeCache(&(System.Manager));
+    System.Manager.SizeCacheScopes = INITMANAGERCACHE;
+    System.Manager.Cache = initializeCache(&(System.Manager));
     System.Manager.FileManager.bytecode = UINT8ALLOC(BUFFER_SIZE);
-    System->Manager.FileManager.FileSourseCode = STRALLOC(BUFFER_SIZE);
+    System.Manager.FileManager.FileSourseCode = STRALLOC(BUFFER_SIZE);
 #endif
 
     return System;

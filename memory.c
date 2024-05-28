@@ -9,13 +9,13 @@ void* memcopy(void *dest, void *src, u64 start, u64 size){
     u8 *destcpy = (u8*)dest;
     u8 *srccpy = (u8*)src;
 
-    for(size_ty j = start; j < size + start; j++)
+    for(u64 j = start; j < size + start; j++)
         destcpy[j - start] = srccpy[j];
 
     return dest;
 }
 
-void* memcpyint(void *desty, u8 *src, charsize_t size){
+void* memcpyint(void *desty, u8 *src, charu64 size){
     u8 *srccpy;
 
     switch(size){
@@ -38,10 +38,10 @@ void* memcpyint(void *desty, u8 *src, charsize_t size){
     }
 }
 
-u8* byteParser(void *any, reference_types ref_anyTy, size_ty qtty){
+u8* byteParser(void *any, reference_types ref_anyTy, u64 qtty){
     u8 *bytes;
     u8 startdata = 0;
-    size_ty i = 0;
+    u64 i = 0;
 
     switch(ref_anyTy){
         case __i64__:
@@ -89,9 +89,9 @@ u8* byteParser(void *any, reference_types ref_anyTy, size_ty qtty){
     return bytes;
 }
 
-i64 getLengthSubDataOfBuffer(u8 *buffer, u64 *init){
-    i64 length = 0;
-    charsize_t size = 0;
+u64 getLengthSubDataOfBuffer(u8 *buffer, u64 *init){
+    u64 length = 0;
+    charu64 size = 0;
     u8 *newBuffer = NULL;
 
     switch(buffer[(*init)++]){
@@ -121,12 +121,11 @@ i64 getLengthSubDataOfBuffer(u8 *buffer, u64 *init){
     return length;
 }
 
-void* zeraBuffer(void *buffer, size_ty start, size_ty end){
+void* clearBuffer(void *buffer, u64 start, u64 end){
     if(buffer == NULL)
         return NULL;
 
     u8 *buffer_c = (u8*)buffer;
-    for(size_ty i = start; i < start + end; i++){
+    for(u64 i = start; i < start + end; i++)
         buffer_c[i - start] = 0x00;
-    }
 }

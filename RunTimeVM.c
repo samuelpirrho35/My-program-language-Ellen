@@ -32,7 +32,7 @@
 **        }
 */
 
-inline static STATUS set_operation
+static STATUS set_operation
 (u8 *line, u64 *addr_i, i64 *count, u8 *elements, u64 **forEach_loop1,
 List **forEach_loop2, u8 qttLoop)
 {
@@ -87,7 +87,7 @@ List **forEach_loop2, u8 qttLoop)
                 return -4;
             
             i64 value = 0;
-            charsize_t size_Obj = 0;
+            charu64 size_Obj = 0;
 
             (*addr_i)++;
             switch(line[(*addr_i)++]){
@@ -120,7 +120,7 @@ List **forEach_loop2, u8 qttLoop)
                     if(qttLoop == 1 && lastLoop == 0)
                         return -15;
 
-                    i64 length = getLengthSubDataOfBuffer(line, addr_i);
+                    u64 length = getLengthSubDataOfBuffer(line, addr_i);
                     pkrv.package_ty.pack_doublebytes = DataToString(line, length, *addr_i);
                     pkrv.pack_ty = PACK_DOUBLE_BYTES;
                     pushList(forEach_loop2, __String__, pkrv, length);
@@ -138,7 +138,7 @@ List **forEach_loop2, u8 qttLoop)
                 {
                     memcopy(bytes, line, *addr_i, size_Obj);
                     memcpyint(&value, bytes, size_Obj);
-                    zeraBuffer(bytes, 0, i64_size);
+                    clearBuffer(bytes, 0, i64_size);
                     (*addr_i) += size_Obj - 1;
                 }
 
@@ -191,7 +191,7 @@ inline static STATUS COMMAND_START(u8 *line, __System__ *System){
         return -35;
     }
 
-    zeraBuffer(System->Manager.objectsUsing, 0, OBJECTsQTTY);
+    clearBuffer(System->Manager.objectsUsing, 0, OBJECTsQTTY);
     memcopy(System->Manager.objectsUsing, storages, 0, count);
 
     initializeStorages(&(System->Manager.Objects), storages, memoryAlloc, count - 1);
@@ -242,7 +242,7 @@ inline static STATUS COMMAND_ADDRE(u8 *line, __System__ *System){
 
 inline static STATUS COMMAND_CALLC(u8 *line, u8 *scope, u64 *addr_l){
     u64 addr_i = 0x01;
-    charsize_t sizeObj = 0;
+    charu64 sizeObj = 0;
     u8 *bytes;
     i64 value = 0;
 
@@ -300,7 +300,7 @@ inline static STATUS COMMAND_CALLC(u8 *line, u8 *scope, u64 *addr_l){
 
 inline static STATUS COMMAND_JUMPC(u8 *line, u8 *scope, u64 *addr_l){
     u64 addr_i = 0x01;
-    charsize_t sizeObj = 0;
+    charu64 sizeObj = 0;
     u8 *bytes;
     i64 value = 0;
 
@@ -376,7 +376,7 @@ inline static STATUS COMMAND_SYSOT(u8 *line, __System__ System){
     List *list = newList(count);
     packageReceived pkrv;
     reference_types ref_ty;
-    charsize_t sizeObj = 0;
+    charu64 sizeObj = 0;
 
     for(i64 index = 0; index < count; index++){
         switch(objects[index]){
@@ -415,7 +415,7 @@ inline static STATUS COMMAND_SYSOT(u8 *line, __System__ System){
     }
 
     //printf("OUTPUT:\n\t");
-    wrt(&list);
+    System.SysFunctions.WRT(&list);
     free(objects);
     free(address);
     freeList(list);
@@ -447,7 +447,7 @@ inline static STATUS COMMAND_SYSIN(u8 *line, __System__ *System){
     if(line[++addr_i] != END_INSTRUCTION)
         return -35;
 
-    String input = System->RD(values[0].types.primitiveTys.string_ty);
+    String input = System->SysFunctions.RD(values[0].types.primitiveTys.string_ty);
 
     allocStoragesUsing(&(System->Manager.Objects), objects[0], address[0], 0);
 
@@ -545,48 +545,48 @@ int program(u8 global[][1000], u8 local[][1000], __System__ *System){
     while(command != END){
         switch(command){
             case START:
-                //printf("command start\n\n");
-                //printf("return start: %d\n", COMMAND_START((u8*)((scope == _GLOBAL) ? global[addr_l] : local[addr_l]), System));
+                // printf("command start\n\n");
+                // printf("return start: %d\n", COMMAND_START((u8*)((scope == _GLOBAL) ? global[addr_l] : local[addr_l]), System));
                 status = COMMAND_START((u8*)((scope == _GLOBAL) ? global[addr_l] : local[addr_l]), System);
                 addr_l++;
                 break;
 
             case ADDRE:
-                //printf("command addre\n\n");
-                //printf("return addre: %d\n", COMMAND_ADDRE((u8*)((scope == _GLOBAL) ? global[addr_l] : local[addr_l]), System));
+                // printf("command addre\n\n");
+                // printf("return addre: %d\n", COMMAND_ADDRE((u8*)((scope == _GLOBAL) ? global[addr_l] : local[addr_l]), System));
                 status = COMMAND_ADDRE((u8*)((scope == _GLOBAL) ? global[addr_l] : local[addr_l]), System);
                 addr_l++;
                 break;
 
             case DESTR:
-                //printf("command destr\n\n");
-                //printf("return destr: %d\n", COMMAND_DESTR((u8*)((scope == _GLOBAL) ? global[addr_l] : local[addr_l]), System));
+                // printf("command destr\n\n");
+                // printf("return destr: %d\n", COMMAND_DESTR((u8*)((scope == _GLOBAL) ? global[addr_l] : local[addr_l]), System));
                 status = COMMAND_DESTR((u8*)((scope == _GLOBAL) ? global[addr_l] : local[addr_l]), System);
                 addr_l++;
                 break;
 
             case CALLC:
-                //printf("command callc\n\n");
-                //printf("return callc: %d\n", COMMAND_CALLC((u8*)((scope == _GLOBAL) ? global[addr_l] : local[addr_l]), &scope, &addr_l));
+                // printf("command callc\n\n");
+                // printf("return callc: %d\n", COMMAND_CALLC((u8*)((scope == _GLOBAL) ? global[addr_l] : local[addr_l]), &scope, &addr_l));
                 status = COMMAND_CALLC((u8*)((scope == _GLOBAL) ? global[addr_l] : local[addr_l]), &scope, &addr_l);
                 break;
 
             case JUMPC:
-                //printf("command jumpc\n\n");
-                //printf("return jumpc: %d\n", COMMAND_JUMPC((u8*)((scope == _GLOBAL) ? global[addr_l] : local[addr_l]), &scope, &addr_l));
+                // printf("command jumpc\n\n");
+                // printf("return jumpc: %d\n", COMMAND_JUMPC((u8*)((scope == _GLOBAL) ? global[addr_l] : local[addr_l]), &scope, &addr_l));
                 status = COMMAND_JUMPC((u8*)((scope == _GLOBAL) ? global[addr_l] : local[addr_l]), &scope, &addr_l);
                 break;
 
             case SYSOT:
-                //printf("command sysot\n\n");
-                //printf("return sysot: %d\n", COMMAND_SYSOT((u8*)((scope == _GLOBAL) ? global[addr_l] : local[addr_l]), *System));
+                // printf("command sysot\n\n");
+                // printf("return sysot: %d\n", COMMAND_SYSOT((u8*)((scope == _GLOBAL) ? global[addr_l] : local[addr_l]), *System));
                 status = COMMAND_SYSOT((u8*)((scope == _GLOBAL) ? global[addr_l] : local[addr_l]), *System);
                 addr_l++;
                 break;
 
             case SYSIN:
-                //printf("command sysin\n\n");
-                //printf("return sysin: %d\n", COMMAND_SYSIN((u8*)((scope == _GLOBAL) ? global[addr_l] : local[addr_l]), System));
+                // printf("command sysin\n\n");
+                // printf("return sysin: %d\n", COMMAND_SYSIN((u8*)((scope == _GLOBAL) ? global[addr_l] : local[addr_l]), System));
                 status = COMMAND_SYSIN((u8*)((scope == _GLOBAL) ? global[addr_l] : local[addr_l]), System);
                 addr_l++;
                 break;

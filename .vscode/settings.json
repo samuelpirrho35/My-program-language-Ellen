@@ -10,7 +10,10 @@
     "preobjects.h": "c",
     "tokens.h": "c",
     "objectsstruct.h": "c",
-    "allocs.h": "c"
+    "allocs.h": "c",
+    "sizedefined.h": "c",
+    "referencetypes.h": "c",
+    "initsystem.h": "c"
   },
   "C_Cpp_Runner.msvcBatchPath": "",
   "C_Cpp_Runner.cCompilerPath": "gcc",

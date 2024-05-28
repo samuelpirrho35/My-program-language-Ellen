@@ -1725,12 +1725,12 @@ void print_List_Object_define(ListTypeObject **list_Object){
 /*
 void increaseList_Object
 (ListTypeObject **list_Object, packageReceived pkrv,
-reference_types type_Object, size_ty Data_length)
+reference_types type_Object, u64 Data_length)
 {
     (*list_Object)->length_in_String += Data_length + 2;
 
     (*list_Object)->extention++;
-    register size_ty _extention = (*list_Object)->extention;
+    register u64 _extention = (*list_Object)->extention;
 
     if((_extention) == (*list_Object)->capacity){
         (*list_Object)->capacity += (*list_Object)->capacity / 2;
@@ -1776,7 +1776,7 @@ reference_types type_Object, size_ty Data_length)
 /*
 
 
-void assemblePackage(packageReceived *pkrv, size_ty size, u8 receivedi8s[]){
+void assemblePackage(packageReceived *pkrv, u64 size, u8 receivedi8s[]){
     if(pkrv->size_b != 0){
         free(pkrv->bytePack);
         pkrv->bytePack = (u8*)realloc(pkrv->bytePack, size);
@@ -1788,13 +1788,13 @@ void assemblePackage(packageReceived *pkrv, size_ty size, u8 receivedi8s[]){
 
     pkrv->size_b = size;
 
-    for(size_ty i = 0; i < size; i++){
+    for(u64 i = 0; i < size; i++){
         pkrv->bytePack[i] = receivedi8s[i];
     }
 }
 */
 
-/*ListTypeObject* newList(size_ty size){
+/*ListTypeObject* newList(u64 size){
     ListTypeObject *list_Object = LISTALLOC(1);
     list_Object->GN_Fields.extention = 0;
     list_Object->GN_Fields.capacity = START_DATA_STRUCTURE;
@@ -1806,10 +1806,10 @@ void assemblePackage(packageReceived *pkrv, size_ty size, u8 receivedi8s[]){
 
 char pushList
 (ListTypeObject **list, reference_types ref_ty,
-packageReceived pkrv, size_ty size)
+packageReceived pkrv, u64 size)
 {
     (*list)->GN_Fields.extention++;
-    size_ty extention = (*list)->GN_Fields.extention, index = extention - 1;
+    u64 extention = (*list)->GN_Fields.extention, index = extention - 1;
     (*list)->GN_Fields.lengthstr += size + 2;
 
     if(extention == (*list)->GN_Fields.capacity - 1){
@@ -1847,7 +1847,7 @@ packageReceived pkrv, size_ty size)
 
 
 void freeList(ListTypeObject **list){
-    size_ty i = 0;
+    u64 i = 0;
     for(; i < (*list)->GN_Fields.extention; i++){
         if((*list)[i].object_ty == __String__){
             free((*list)[i].Types.primitiveTy.string_ty);
@@ -1894,7 +1894,7 @@ ListTypeObject* copyList(ListTypeObject *list){
     List->GN_Fields.capacity = list->GN_Fields.capacity;
     List->GN_Fields.extention = list->GN_Fields.extention;
     List->GN_Fields.lengthstr = list->GN_Fields.lengthstr;
-    for(size_ty i = 0; i < List->GN_Fields.extention; i++){
+    for(u64 i = 0; i < List->GN_Fields.extention; i++){
         switch(list[i].object_ty){
             case __i64__:
                 List[i].Types.primitiveTy.intTys.i64_ty = list[i].Types.primitiveTy.intTys.i64_ty;
@@ -1924,7 +1924,7 @@ ListTypeObject* copyList(ListTypeObject *list){
 
     setBuffer(&liststrcpy, L"[");
 
-    for(size_ty index = 0; index < list->GN_Fields.extention; index++){
+    for(u64 index = 0; index < list->GN_Fields.extention; index++){
         i64 v;
 
         printf("Type: %d\n", list[index].object_ty);
@@ -2090,7 +2090,7 @@ ListTypeObject* copyList(ListTypeObject *list){
 
     pkrv.pack_ty = PACK_BYTES;
 
-    charsize_t len = 0;
+    charu64 len = 0;
     u8 *newData_c = expandsToi8s(max_nLL, &len);
     pkrv.package_ty.pack_bytes = newData_c;
     pushList(&list, __i64__, pkrv, (i64)len);
@@ -2144,74 +2144,74 @@ reference_types TypeReturn;
     }Return;
 */
 
-/*void* initializeDataArray(void *data, size_ty init, size_ty end, reference_types ref_dataTy){
+/*void* initializeDataArray(void *data, u64 init, u64 end, reference_types ref_dataTy){
     switch(ref_dataTy){
         case __ARRAYi64__:{
             i64 *array = (i64*)data;
-            for(size_ty i = init; i < end; i++){
+            for(u64 i = init; i < end; i++){
                 array[i] = 0;
             }
             break;
         }
         case __ARRAYi32__:{
             i32 *array = (i32*)data;
-            for(size_ty i = init; i < end; i++){
+            for(u64 i = init; i < end; i++){
                 array[i] = 0;
             }
             break;
         }
         case __ARRAYi16__:{
             i16 *array = (i16*)data;
-            for(size_ty i = init; i < end; i++){
+            for(u64 i = init; i < end; i++){
                 array[i] = 0;
             }
             break;
         }
         case __ARRAYi8__:{
             i8 *array = (i8*)data;
-            for(size_ty i = init; i < end; i++){
+            for(u64 i = init; i < end; i++){
                 array[i] = 0;
             }
             break;
         }
         case __ARRAYCHAR__:{
             lchar *array = (lchar*)data;
-            for(size_ty i = init; i < end; i++){
+            for(u64 i = init; i < end; i++){
                 array[i] = '\0';
             }
             break;
         }
         case __ARRAYSTRING__:{
             lchar *array = (lchar*)data;
-            for(size_ty i = init; i < end; i++){
+            for(u64 i = init; i < end; i++){
                 array[i] = NULL;
             }
             break;
         }
         case __ARRAYf32__:{
             f32 *array = (f32*)data;
-            for(size_ty i = init; i < end; i++){
+            for(u64 i = init; i < end; i++){
                 array[i] = 0.0f;
             }
             break;
         }
         case __ARRAYf64__:{
             f64 *array = (f64*)data;
-            for(size_ty i = init; i < end; i++){
+            for(u64 i = init; i < end; i++){
                 array[i] = 0.0;
             }
             break;
         }
         case __ARRAYBIGINT__:{
             u8 *array = (u8*)data;
-            for(size_ty i = init; i < end; i++){
+            for(u64 i = init; i < end; i++){
                 array[i] = 0;
             }
             break;
         }
         case __ARRAYBIGFLOAT__:{
             u8 *array = (u8*)data;
-            for(size_ty i = init; i < end; i++){
+            for(u64 i = init; i < end; i++){
                 array[i] = 0;
             }
             break;
@@ -2338,7 +2338,7 @@ reference_types TypeReturn;
     return 0;*/
 //}
 
-/*void getmemory(void *copy, u8 source[], size_ty size){
+/*void getmemory(void *copy, u8 source[], u64 size){
     i8 starti8 = 0x18;
     *((i32*)copy) = 0;
 
@@ -2374,18 +2374,18 @@ typedef struct Class{
 /*
 u8 left_b = size - 1;
 
-    memcopy(srccpy, src, 0, (size_ty)size);
-for(charsize_t i = 0; i < size / 2; i++){
+    memcopy(srccpy, src, 0, (u64)size);
+for(charu64 i = 0; i < size / 2; i++){
         u8 right_b = src[i];
         srccpy[i] = srccpy[left_b];
         srccpy[left_b--] = right_b;
     }*/
 
 /*
-u8* byteParser(void *any, reference_types ref_anyTy, size_ty qtty){
+u8* byteParser(void *any, reference_types ref_anyTy, u64 qtty){
     u8 *bytes;
     u8 startdata = 0;
-    size_ty i = 0;
+    u64 i = 0;
 
     switch(ref_anyTy){
         case __i64__:
@@ -2465,7 +2465,7 @@ STATUS COMMAND_START(u8 *line, __System__ *System){
             else{
                 i64 size_storage = 0;
                 u8 *bytes;
-                charsize_t size_Obj = 0;
+                charu64 size_Obj = 0;
 
                 if(line[addr_i++] == SEND){
                     switch(line[addr_i++]){
@@ -2526,13 +2526,13 @@ STATUS COMMAND_START(u8 *line, __System__ *System){
 
 /*
 typedef struct{
-    size_ty extention;
+    u64 extention;
     u8 *data;
 }BigintObject;
 
 
 typedef struct{
-    size_ty extfData;
+    u64 extfData;
     u8 *data_f32;
 }Bigf32Object;
 */
@@ -2587,7 +2587,7 @@ STATUS set_operation(u8 *line, u64 *addr_i, i64 *count, u8 *elements, i64 **forE
                 return -4;
             
             i64 value = 0;
-            charsize_t size_Obj = 0;
+            charu64 size_Obj = 0;
 
             (*addr_i)++;
             switch(line[(*addr_i)++]){
@@ -2695,7 +2695,7 @@ STATUS set_operation(u8 *line, u64 *addr_i, i64 *count, u8 *elements, i64 **forE
                 return -4;
             
             i64 value = 0;
-            charsize_t size_Obj = 0;
+            charu64 size_Obj = 0;
 
             (*addr_i)++;
             switch(line[(*addr_i)++]){
@@ -4241,7 +4241,7 @@ typedef struct{
 
 //     pkrv.pack_ty = PACK_BYTES;
 
-//     charsize_t len = 0;
+//     charu64 len = 0;
 //     u8 *newData_c = expandsToi8s(max_nLL, &len);
 //     pkrv.package_ty.pack_bytes = newData_c;
 //     pushList(&list, __i64__, pkrv, (i64)len);
@@ -4315,3 +4315,23 @@ typedef struct{
 
 //     goto TOKENFOUND;
 // }
+
+// typedef struct{
+//     reference_types hollow_ty;
+//     PrimitiveTypes  primitiveTys;
+// }VarHollow;
+
+
+// typedef struct{
+//     reference_types hollow_ty;
+//     union{
+//         All_Arrays all_arrays;
+//         ArrayList  *arrayList;
+//         List       *list;
+//         HashMap    *hashMap;
+//         Struct     *StructObj;
+//     }HollowDsType;
+// }DSHollow;
+
+// typedef VarHollow**  storage_varhollowTy;
+// typedef DSHollow**   storage_dshollowTy;

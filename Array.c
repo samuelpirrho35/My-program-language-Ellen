@@ -10,55 +10,55 @@
 
 
 void initializeDataArray
-(GenericArray *Generic, size_ty init, size_ty end,
+(GenericArray *Generic, u64 init, u64 end,
 reference_types ref_dataTy)
 {
     switch(ref_dataTy){
         case __ARRAYi64__:{
             Array_i64Ty *array = (Array_i64Ty*)Generic;
-            for(size_ty i = init; i < end; i++){
+            for(u64 i = init; i < end; i++){
                 array->data[i] = 0;
             }
             break;
         }
         case __ARRAYi32__:{
             Array_i32Ty *array = (Array_i32Ty*)Generic;
-            for(size_ty i = init; i < end; i++){
+            for(u64 i = init; i < end; i++){
                 array->data[i] = 0;
             }
             break;
         }
         case __ARRAYi16__:{
             Array_i16Ty *array = (Array_i16Ty*)Generic;
-            for(size_ty i = init; i < end; i++){
+            for(u64 i = init; i < end; i++){
                 array->data[i] = 0;
             }
             break;
         }
         case __ARRAYi8__:{
             Array_i8Ty *array = (Array_i8Ty*)Generic;
-            for(size_ty i = init; i < end; i++){
+            for(u64 i = init; i < end; i++){
                 array->data[i] = 0;
             }
             break;
         }
         case __ARRAYCHAR__:{
             Array_charTy *array = (Array_charTy*)Generic;
-            for(size_ty i = init; i < end; i++){
+            for(u64 i = init; i < end; i++){
                 array->data[i] = 0;
             }
             break;
         }
         case __ARRAYf32__:{
             Array_f32Ty *array = (Array_f32Ty*)Generic;
-            for(size_ty i = init; i < end; i++){
+            for(u64 i = init; i < end; i++){
                 array->data[i] = 0.0f;
             }
             break;
         }
         case __ARRAYf64__:{
             Array_f64Ty *array = (Array_f64Ty*)Generic;
-            for(size_ty i = init; i < end; i++){
+            for(u64 i = init; i < end; i++){
                 array->data[i] = 0.0;
             }
             break;
@@ -67,7 +67,7 @@ reference_types ref_dataTy)
 }
 
 
-GenericArray* newArray(size_ty capacity, size_ty size, reference_types ref_dataTy){
+GenericArray* newArray(u64 capacity, u64 size, reference_types ref_dataTy){
     GenericArray *newArray = (GenericArray*)malloc(size);
     newArray->data = malloc(capacity * size);
     initializeDataArray(newArray, 0, capacity, ref_dataTy);
@@ -77,7 +77,7 @@ GenericArray* newArray(size_ty capacity, size_ty size, reference_types ref_dataT
 }
 
 
-void resizeArray(size_ty newCapacity, size_ty size, GenericArray *array, reference_types ref_dataTy){
+void resizeArray(u64 newCapacity, u64 size, GenericArray *array, reference_types ref_dataTy){
     void *newDataArray = realloc(array->data, newCapacity * size);
     array->data = newDataArray;
     initializeDataArray(array, array->GN_Fields.extention + 1, newCapacity, ref_dataTy);

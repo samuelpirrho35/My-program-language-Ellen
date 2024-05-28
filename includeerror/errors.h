@@ -20,10 +20,11 @@ String ErrorsTable[60] = {
     L"ERROR: Invalid scape charactere\n",
     L"ERROR: Const char is invalid\n",
     L"ERROR: comment not finished\n",
+    L"ERROR: FATAL ERROR"
 };
 
 u8 ErrosTableSizes[] = {
     41, 42, 40, 30,
     36, 23, 31, 27,
-    33, 30, 29
+    33, 30, 29, 12
 };

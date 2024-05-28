@@ -6,12 +6,35 @@
 #include "compiler/Token.h"
 #include "includelib/libString.h"
 #include "includelib/libIo.h"
-#include "utils/utils.h"
 #include "memory/memory.h"
 #include <stdio.h>
 #include <stdlib.h>
 
-inline static void getQuadrant
+static u32 codeString(String str){
+    u32 code = 0;
+    lchar lastchar = 0;
+
+    while(*str){
+        code += ((lchar)*str << 1) + (lastchar - 47);
+        lastchar = *str;
+        str++;
+    }
+
+    return code;
+}
+
+static u8 checkTokenValid(lchar actCharacter, String nextCharacters){
+    while(*nextCharacters){
+        if(actCharacter == *nextCharacters)
+            return 1;
+
+        nextCharacters++;
+    }
+
+    return 0;
+}
+
+static void getQuadrant
 (u32 cod, u8 inittable, InfoWord *info, u32 length){
     u8 i = inittable;
 
@@ -28,7 +51,7 @@ inline static void getQuadrant
     }
 }
 
-inline static u32 verifyIfStringInTable
+static u32 verifyIfStringInTable
 (TokensTable word, InfoWord info, TokensTable Table[])
 {
     u8 ini = info.ini, end = info.end;
@@ -44,7 +67,7 @@ inline static u32 verifyIfStringInTable
     return 0;
 }
 
-inline static u8 verifyKeyOrFn
+static u8 verifyKeyOrFn
 (String word, Tokens **tokens, u64 line,
 u32 index, u32 length)
 {
@@ -187,21 +210,83 @@ inline static u8 verifyIfaValidString
     return OK;
 }
 
-inline static lchar gnxchr(String s){
-    return *(s + 1);
+static lchar getScapeChar(String src){
+    lchar c = getnptr(src, 3);
+    
+    if(c != L'\'')
+        return c;
+
+    c = getnptr(src, 2);
+
+    switch(c){
+        case L'0':
+            c = L'\0';
+            break;
+        case L'n':
+            c = L'\n';
+            break;
+        case L'b':
+            c = L'\b';
+            break;
+        case L'r':
+            c = L'\r';
+            break;
+        case L't':
+            c = L'\t';
+            break;
+        case L'f':
+            c = L'\f';
+            break;
+        case L'\\':
+            c = L'\\';
+            break;
+    }
+
+    return c;
 }
 
-inline static u8 Interruption
+static u8 Interruption
 (String *source, Tokens **tokens, u64 *line, u64 *index)
 {
     u8 returnfn = OK;
     String src = *source;
+    lchar chr;
 
     if(*src == L' ')
         return SPACE;
 
     if(*src == L'\''){
-        
+        chr = getnptr(src, 1);
+
+        if(!chr){
+            errchar();
+            return NOT_OK;
+        }
+
+        if(chr == L'\\'){
+            chr = getnptr(src, 2);
+
+            if(!chr){
+                errchar();
+                return NOT_OK;
+            }
+            
+            tokens[*line][*index].type = _IDENTIFIER_CONST_CHAR;
+            tokens[*line][*index].tokens.ConstChar = getScapeChar(src);
+            
+            *source = src + 3;
+            return OK;
+        }
+
+        if(getnptr(src, 2) != L'\''){
+            errchar();
+            return NOT_OK;
+        }
+
+        tokens[*line][*index].type = _IDENTIFIER_CONST_CHAR;
+        tokens[*line][*index].tokens.ConstChar = chr;
+        *source = src + 2;
+        return OK;
     }
 
     if(*src == '"'){
@@ -209,7 +294,6 @@ inline static u8 Interruption
         returnfn = verifyIfaValidString(&src, tokens, *line, *index);
 
         if(returnfn == _ERROR_STRING){
-            printf("caiu em error string\n");
             tokens[*line][*index].type = __ERROR__;
             copyerror(_ERROR_STRING, tokens, *line, *index);
             return NOT_OK;
@@ -336,7 +420,6 @@ inline static u8 Interruption
             break;
 
         case L'#':
-            //returnfn = COMMENT;
             while(*src){
                 if(*src == L'\n'){
                     tokens[*line][*index].type = ENDLINE;
@@ -354,12 +437,14 @@ inline static u8 Interruption
             tokens[*line][*index].type = ENDLINE;
             (*line)++;
             (*index) = 0;
+
             break;
 
         case L'\n':
             tokens[*line][*index].type = ENDLINE;
             (*line)++;
             (*index) = 0;
+
             break;
 
         case L'%':
@@ -391,13 +476,18 @@ inline static u8 Interruption
                 break;
             }
 
+            if(*src == L'='){
+                tokens[*line][*index].type = _RESERVED_CHARACTER_EQUAL_DEFINE_TYPE;
+                break;
+            }
+
             src--;
             tokens[*line][*index].type = _RESERVED_CHARACTER_TPOINTERS;
             break;
 
         case L'.':
             src++;
-            if(*src == L'.' && gnxchr(src) == L'.'){
+            if(*src == L'.' && getnptr(src, 1) == L'.'){
                 src++;
                 tokens[*line][*index].type = _RESERVED_CHARACTER_TRANSFER;
                 break;
@@ -463,7 +553,7 @@ inline static u8 Interruption
             }
 
             if(*src == L'<'){
-                if(gnxchr(src) == L'='){
+                if(getnptr(src, 1) == L'='){
                     src++;
                     tokens[*line][*index].type = _RESERVED_CHARACTER_MOV_BIT_LEFT_EQUAL;
                     break;
@@ -485,7 +575,7 @@ inline static u8 Interruption
             }
 
             if(*src == L'>'){
-                if(gnxchr(src) == L'='){
+                if(getnptr(src, 1) == L'='){
                     src++;
                     tokens[*line][*index].type = _RESERVED_CHARACTER_MOV_BIT_RIGHT_EQUAL;
                     break;
@@ -529,7 +619,6 @@ inline static u8 Interruption
             break;
 
         default:
-            wprintf(L"caiu no default: %lc, %lc\n", *src, *(src - 1));
             tokens[*line][*index].type == __ERROR__;
             copyerror(_ERROR_INVALID_CHARACTERE, tokens, *line, *index);
             returnfn = NOT_OK;
@@ -537,15 +626,13 @@ inline static u8 Interruption
 
     *source = src;
 
-    if(returnfn == NOT_OK){
-        printf("not_ok\n");
+    if(returnfn == NOT_OK)
         return NOT_OK;
-    }
 
     return returnfn;
 }
 
-inline static void reset(u8 *tf, u8 *output, u64 *cChars,
+static void reset(u8 *tf, u8 *output, u64 *cChars,
 u64 *nChars, u64 *Tksline, u64 *index, String *word, Tokens **tokens)
 {
     (*tf) = 0;
@@ -570,7 +657,8 @@ u64 *nChars, u64 *Tksline, u64 *index, String *word, Tokens **tokens)
 
 u8 TokenParser(Tokens **tokens, u64 *line, String src){
     u64 nlines = START_TOKENS, Tksline = START_LINE, index = 0, cChars = 0;
-    u64 nChars = START_WORD, length, lastline = *line;
+    u64 nChars = START_WORD, lastline = *line;
+    u32 length = 0;
     u8 tf = 0, returnfn = 0, fpointer = 0, output = 0, getitt = 0;
     lchar nextchar = 1;
 
@@ -589,7 +677,7 @@ u8 TokenParser(Tokens **tokens, u64 *line, String src){
             tokens = ntokens;
         }
 
-        nextchar = gnxchr(src);
+        nextchar = getnptr(src, 1);
         getitt = checkTokenValid(*src, INTERRUPTIONCHARS);
 
         if(!getitt && nextchar){
@@ -626,10 +714,8 @@ u8 TokenParser(Tokens **tokens, u64 *line, String src){
             }
 
             else if(*src == '.' && fpointer){
-                printf("Error fpointer\n");
                 tokens[*line][index].type = __ERROR__;
                 copyerror(_ERROR_FORMAT_IDENTIFIER, tokens, *line, index);
-                tf = 1;
                 
                 break;
             }
@@ -637,10 +723,8 @@ u8 TokenParser(Tokens **tokens, u64 *line, String src){
             returnfn = verifyNumber(word, length);
 
             if(returnfn <= _ERROR_UNEXPECTED_EXPRESSION){
-                printf("Error expression\n");
                 tokens[*line][index].type = __ERROR__;
                 copyerror(returnfn, tokens, *line, index);
-                tf = 1;
 
                 break;
             }
@@ -651,13 +735,13 @@ u8 TokenParser(Tokens **tokens, u64 *line, String src){
                 tokens[*line][index].type = returnfn;
 
                 if(returnfn == _IDENTIFIER_CONST_FLOAT){
-                    tokens[*line][index].tokens.ConstValue = strfastcopy(word, length + 1);
+                    tokens[*line][index].tokens.ConstValue = formatNumber(word, length);
                     tf = 1;
 
                     goto GETINTRR;
                 }
 
-                tokens[*line][index].tokens.Constint = strfastcopy(word, length + 1);
+                tokens[*line][index].tokens.Constint = formatNumber(word, length);
                 tf = 1;
 
                 goto GETINTRR;
@@ -675,6 +759,9 @@ u8 TokenParser(Tokens **tokens, u64 *line, String src){
             }
 
         GETINTRR:
+            if((*src == L'\n' || *src == L';') && !index)
+                goto TOKENFOUND;
+
             if(!nextchar && !getitt)
                 goto TOKENFOUND;
 
@@ -692,7 +779,6 @@ u8 TokenParser(Tokens **tokens, u64 *line, String src){
                 break;
 
             if(*line != lastline){
-                printf("diferente\n");
                 lastline = *line;
                 reset(&tf, &output, &cChars, &nChars, &Tksline, &index, &word, tokens);
                 goto TOKENFOUND;
@@ -708,11 +794,6 @@ u8 TokenParser(Tokens **tokens, u64 *line, String src){
                 goto TOKENFOUND;
             }
 
-            tokens[*line][index - 1].type = __ERROR__;
-            printf("Error returnfn\n");
-            copyerror(returnfn, tokens, *line, index);
-            break;
-
         TOKENFOUND:
             if(tf){
                 index++;
@@ -722,10 +803,16 @@ u8 TokenParser(Tokens **tokens, u64 *line, String src){
 
         if(*src)
             src++;
+
+        if(output){
+            tokens[*line][index].type = __ERROR__;
+            copyerror(_ERROR_COMPILATION, tokens, *line, index);
+        }
     }
 
-    if(!output && tokens[*line][index].type != __ERROR__){
-        tokens[*line][index].type = ENDLINE;
+    if(!output){
+        if(tokens[*line][index].type != __ERROR__)
+            tokens[*line][index].type = ENDLINE;
         (*line)++;
     }
 
@@ -734,56 +821,38 @@ u8 TokenParser(Tokens **tokens, u64 *line, String src){
     return output;
 }
 
-int main(){
+Tokens** allocTokens(){
     Tokens **tokens = (Tokens**)malloc(START_TOKENS * sizeof(Tokens*));
-    String src = L"string name#var name\nu8 age = 18;\n";
-    u64 line = 0;
+    if(tokens == NULL)
+        return NULL;
 
-    int i = 0, j = 0;
-    for(; i < START_TOKENS; i++)
+    u64 i = 0;
+    for(; i < START_TOKENS; i++){
         tokens[i] = (Tokens*)malloc(START_LINE * sizeof(Tokens));
+        if(tokens[i] == NULL)
+            return NULL;
+    }
 
-    printf("out: %d\n\n", TokenParser(tokens, &line, src));
-    
-    for(i = 0; i < line; i++){
-        j = 0;
-        while(tokens[i][j].type != ENDLINE && tokens[i][j].type != __ERROR__){
-            printf("[i][j]: [%d][%d]\n", i, j);
-            if(tokens[i][j].type == _KEYWORD)
-                printf("KEYWORD: %d\n", tokens[i][j].tokens.TokenKeyWord);
+    return tokens;
+}
 
-            else if(tokens[i][j].type == _INTERNAL_FN)
-                printf("INTERNAL FN: %d\n", tokens[i][j].tokens.TokenFn);
-
-            else if(tokens[i][j].type == IDENTIFIERNAME){
-                wprintf(L"IDENTIFIER NAME: %ls\n", tokens[i][j].tokens.IdentifierName);
+void freeTokens(Tokens **tokens, u64 nlines, u64 i){
+    for(; i < nlines; i++){
+        u32 j = 0;
+        while(tokens[i][j].type < ENDLINE){
+            if(tokens[i][j].type == IDENTIFIERNAME && tokens[i][j].tokens.IdentifierName != NULL)
                 free(tokens[i][j].tokens.IdentifierName);
-            }
 
-            else if(tokens[i][j].type == _IDENTIFIER_CONST_BIN || tokens[i][j].type == _IDENTIFIER_CONST_HEX ||
-                tokens[i][j].type == _IDENTIFIER_CONST_DEC){
-                    wprintf(L"CONST INTEGER: %ls\n", tokens[i][j].tokens.Constint);
-                    free(tokens[i][j].tokens.Constint);
-            }
+            else if(tokens[i][j].type >= _IDENTIFIER_CONST_DEC && tokens[i][j].type <= _IDENTIFIER_CONST_BIN &&
+                    tokens[i][j].tokens.Constint != NULL)
+                free(tokens[i][j].tokens.Constint);
 
-            else if(tokens[i][j].type == _IDENTIFIER_CONST_FLOAT){
-                wprintf(L"CONST FLOAT: %ls\n", tokens[i][j].tokens.ConstValue);
+            else if((tokens[i][j].type == _IDENTIFIER_CONST_FLOAT ||
+                    tokens[i][j].type == _IDENTIFIER_CONST_STRING) && tokens[i][j].tokens.ConstValue != NULL)
                 free(tokens[i][j].tokens.ConstValue);
-            }
-
-            else if(tokens[i][j].type == _IDENTIFIER_CONST_STRING){
-                wprintf(L"CONST STRING: %ls\n", tokens[i][j].tokens.ConstValue);
-                free(tokens[i][j].tokens.ConstValue);
-            }
-
-            else
-                printf("TOKEN: %d\n", tokens[i][j].type);
 
             j++;
         }
-
-        if(tokens[i][j].type == __ERROR__)
-            wprintf(L"Line %d. %ls\n", i + 1, tokens[i][j].tokens.TokenError);
 
         free(tokens[i]);
     }
@@ -791,4 +860,64 @@ int main(){
     free(tokens);
 }
 
-//gcc Token.c utils.c libString.c memory.c -o tkg.exe
+// int main(){
+//     Tokens **tokens = (Tokens**)malloc(START_TOKENS * sizeof(Tokens*));
+//     String src = L"i32 n = 35_000;\n\n\n\n\n\nconst object = 78;\n\nwrt(\"Hello, World\");\n\nstring\ni32\n\n\nu8";
+//     u64 line = 0;
+
+//     int i = 0, j = 0;
+//     for(; i < START_TOKENS; i++)
+//         tokens[i] = (Tokens*)malloc(START_LINE * sizeof(Tokens));
+
+//     printf("out: %d\n\n", TokenParser(tokens, &line, src));
+    
+//     for(i = 0; i < line; i++){
+//         j = 0;
+//         while(tokens[i][j].type != ENDLINE && tokens[i][j].type != __ERROR__){
+//             printf("[i][j]: [%d][%d]\n", i, j);
+//             if(tokens[i][j].type == _KEYWORD)
+//                 printf("KEYWORD: %d\n", tokens[i][j].tokens.TokenKeyWord);
+
+//             else if(tokens[i][j].type == _INTERNAL_FN)
+//                 printf("INTERNAL FN: %d\n", tokens[i][j].tokens.TokenFn);
+
+//             else if(tokens[i][j].type == IDENTIFIERNAME){
+//                 wprintf(L"IDENTIFIER NAME: %ls\n", tokens[i][j].tokens.IdentifierName);
+//                 free(tokens[i][j].tokens.IdentifierName);
+//             }
+
+//             else if(tokens[i][j].type == _IDENTIFIER_CONST_BIN || tokens[i][j].type == _IDENTIFIER_CONST_HEX ||
+//                 tokens[i][j].type == _IDENTIFIER_CONST_DEC){
+//                     wprintf(L"CONST INTEGER: %ls\n", tokens[i][j].tokens.Constint);
+//                     free(tokens[i][j].tokens.Constint);
+//             }
+
+//             else if(tokens[i][j].type == _IDENTIFIER_CONST_FLOAT){
+//                 wprintf(L"CONST FLOAT: %ls\n", tokens[i][j].tokens.ConstValue);
+//                 free(tokens[i][j].tokens.ConstValue);
+//             }
+
+//             else if(tokens[i][j].type == _IDENTIFIER_CONST_STRING){
+//                 wprintf(L"CONST STRING: %ls\n", tokens[i][j].tokens.ConstValue);
+//                 free(tokens[i][j].tokens.ConstValue);
+//             }
+
+//             else if(tokens[i][j].type == _IDENTIFIER_CONST_CHAR)
+//                 wprintf(L"CONST CHAR: %lc\n", tokens[i][j].tokens.ConstChar);
+
+//             else
+//                 printf("TOKEN: %d\n", tokens[i][j].type);
+
+//             j++;
+//         }
+
+//         if(tokens[i][j].type == __ERROR__)
+//             wprintf(L"Line %d. %ls\n", i + 1, tokens[i][j].tokens.TokenError);
+
+//         free(tokens[i]);
+//     }
+
+//     free(tokens);
+// }
+
+// gcc Token.c utils.c libString.c memory.c -o tkg.exe

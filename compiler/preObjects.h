@@ -15,6 +15,7 @@ typedef struct{
         lchar        TokenError[60];
         u16          TokenKeyWord;
         u16          TokenFn;
+        lchar        ConstChar;
         String       Constint;
         String       ConstValue;
         String       IdentifierName;

@@ -7,8 +7,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-size_ty strsize(lchar *_String){
-    size_ty length = 0;
+u64 strsize(lchar *_String){
+    u64 length = 0;
     while(_String[length] != '\0'){
         length++;
     }
@@ -21,9 +21,9 @@ String strmerger(String str1, String str2){
         return NULL;
     }
 
-    size_ty sizestr1 = strsize(str1);
-    size_ty sizestr2 = strsize(str2);
-    size_ty totalSize = sizestr1 + sizestr2 + 1;
+    u64 sizestr1 = strsize(str1);
+    u64 sizestr2 = strsize(str2);
+    u64 totalSize = sizestr1 + sizestr2 + 1;
 
     String newstr = STRALLOC(totalSize);
     String nstr = newstr;
@@ -44,11 +44,11 @@ String strmerger(String str1, String str2){
     return newstr;
 }
 
-String strfastmerger(String str1, String str2, size_ty sizestr1, size_ty sizestr2){
+String strfastmerger(String str1, String str2, u64 sizestr1, u64 sizestr2){
     if(str1 == NULL || str2 == NULL){
         return NULL;
     }
-    size_ty totalSize = sizestr1 + sizestr2 + 1;
+    u64 totalSize = sizestr1 + sizestr2 + 1;
 
     String newstr = STRALLOC(totalSize);
     String nstr = newstr;
@@ -214,4 +214,24 @@ String DataToString(u8 data[], i64 size, i64 start){
         newString[i - start] = ((data[j++] << 8) | data[j++]);
 
     return newString;
+}
+
+String formatNumber(String src, u32 len){
+    if(src == NULL)
+        return NULL;
+
+    String cpy = STRALLOC((len + 1));
+    String s = src;
+    String c = cpy;
+
+    while(*s){
+        if(*s != L'_'){
+            *c = *s;
+            c++;
+        }
+        s++;
+    }
+
+    *c = '\0';
+    return cpy;
 }

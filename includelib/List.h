@@ -9,6 +9,6 @@
 List* newList(u64 size);
 void freeList(List *list);
 i8 printList(List **list, mode exhibition, i64 start, i64 end);
-i8 pushList(List **list, reference_types ref_ty, packageReceived pkrv, size_ty size);
+i8 pushList(List **list, reference_types ref_ty, packageReceived pkrv, u64 size);
 
 #endif //LIST_H

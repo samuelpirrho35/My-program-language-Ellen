@@ -39,7 +39,7 @@
 #define CONST_MIN_i16  -32768
 #define CONST_MIN_i8   -128
 
-#define CONST_MAX_u64  18446744073709551615
+#define CONST_MAX_u64  18446744073709551615ULL
 #define CONST_MAX_u32  4294967295
 #define CONST_MAX_u16  65535
 #define CONST_MAX_u8   255
@@ -65,6 +65,6 @@ typedef enum{
     i8_size   =   sizeof(i8),
     f32_size  =   sizeof(f32),
     f64_size  =   sizeof(f64)
-}referencesSize_t;
+}referencesu64;
 
 #endif //SIZEDEFINED_H

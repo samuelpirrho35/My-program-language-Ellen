@@ -19,7 +19,7 @@ List* newList(u64 size){
 
 
 void freeList(List *list){
-    size_ty i = 0;
+    u64 i = 0;
     for(; i < list->GN_Fields.extention; i++){
         if(list[i].ref_ty == __String__){
             if(list[i].types.primitiveTys.string_ty != NULL)
@@ -52,9 +52,9 @@ i8 printList(List **list, mode exhibition, i64 start, i64 end){
 }
 
 
-i8 pushList(List **list, reference_types ref_ty, packageReceived pkrv, size_ty size){
+i8 pushList(List **list, reference_types ref_ty, packageReceived pkrv, u64 size){
     (*list)->GN_Fields.extention++;
-    size_ty extention = (*list)->GN_Fields.extention, index = extention - 1;
+    u64 extention = (*list)->GN_Fields.extention, index = extention - 1;
     (*list)->GN_Fields.lengthstr += size + 3;
 
     if(extention == (*list)->GN_Fields.capacity - 1){

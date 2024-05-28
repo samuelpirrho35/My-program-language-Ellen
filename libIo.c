@@ -14,7 +14,7 @@
 #ifdef WINDOWS
 #include <windows.h>
 
-unsigned char WindowsWrt(String StringObject, String end){
+u8 WindowsWrt(String StringObject, String end){
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
     String str = strmerger(StringObject, end);
